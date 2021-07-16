@@ -79,13 +79,11 @@ Whenever an `ApiError` object is added to the builder, the resulting `Success` o
 
 `Severity` is an enumerable type with three possible values: Critical, High, and Low. Because errors imply failure to execute requested actions, they do not have severity (all errors are critical in nature). Warnings, however, aid users in understanding some action they may need to take to avoid errors in the future. Warnings could also be a message to a user about the state of the content given by the API.
 
-<div class="alert-success">
-    When ASP<area>.NET Core produces a ContentResult from your `ApiResponse`, Severity will be serialized as a string if you are using either `Newtonsoft.Json` or `System.Text.Json`. However, if you are using a different serializing library, it will be serialized as an `int`.
-
-    - Severity.Critical = 1
-    - Severity.High = 2
-    - Severity.Low = 3
-</div>
+> When ASP<area>.NET Core produces a ContentResult from your `ApiResponse`, Severity will be serialized as a `string` if you are using either `Newtonsoft.Json` or `System.Text.Json`. However, if you are using a different serializing library, it will be serialized as an `int`.
+>
+> - Severity.Critical = 1
+> - Severity.High = 2
+> - Severity.Low = 3
 
 # Configuration
 
