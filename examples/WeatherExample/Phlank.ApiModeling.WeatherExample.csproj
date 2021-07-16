@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ApiModeling\Phlank.ApiModeling.csproj" />
+    <ProjectReference Include="..\..\src\Phlank.ApiModeling.csproj" />
   </ItemGroup>
 
   <ItemGroup>
