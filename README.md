@@ -12,7 +12,7 @@
 
 # About
 
-This project is a way to return consistent objects from an ASP<area>.NET Core Web API for digestion in other systems. It is designed to be clean and make reading through controller methods much simpler.
+This project is meant to provide a means of generating consistent API responses from an ASP<area>.NET Core Web API for digestion in other systems. It is also designed to make reading through controller methods much easier, and it leaves the controller to focus on making sure errors and warnings are obvious and clear.
 
 # Usage
 
