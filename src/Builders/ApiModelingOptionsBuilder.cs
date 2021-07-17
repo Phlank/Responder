@@ -8,11 +8,17 @@ using System.Text.Json;
 
 namespace Phlank.ApiModeling
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ApiModelingOptionsBuilder
     {
         private IServiceCollection _services;
         private bool _isUsingApiResponseForModelStateErrors = false;
 
+        /// <summary>
+        /// Overrides the configured InvalidModelStateResponseFactory to use the <see cref="ApiResponse"/>.
+        /// </summary>
         public ApiModelingOptionsBuilder UseApiResponseForModelStateErrors()
         {
             _isUsingApiResponseForModelStateErrors = true;
