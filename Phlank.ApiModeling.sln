@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phlank.ApiModeling.Tests", "Phlank.ApiModeling.Tests\Phlank.ApiModeling.Tests.csproj", "{E0DA8EE2-3074-4D1F-BC8A-E9941CACCB75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phlank.ApiModeling.Tests", "src\Tests\Phlank.ApiModeling.Tests.csproj", "{74E7C732-5081-44C6-9ABA-04D9EEEA30F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,10 +30,10 @@ Global
 		{550AEFE9-7F25-4843-BAAD-659BB04CF2CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{550AEFE9-7F25-4843-BAAD-659BB04CF2CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{550AEFE9-7F25-4843-BAAD-659BB04CF2CB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E0DA8EE2-3074-4D1F-BC8A-E9941CACCB75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E0DA8EE2-3074-4D1F-BC8A-E9941CACCB75}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E0DA8EE2-3074-4D1F-BC8A-E9941CACCB75}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E0DA8EE2-3074-4D1F-BC8A-E9941CACCB75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74E7C732-5081-44C6-9ABA-04D9EEEA30F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74E7C732-5081-44C6-9ABA-04D9EEEA30F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74E7C732-5081-44C6-9ABA-04D9EEEA30F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74E7C732-5081-44C6-9ABA-04D9EEEA30F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
