@@ -25,3 +25,4 @@ jobs:
       uses: brandedoutcast/publish-nuget@v2.5.5
       with:
         PROJECT_FILE_PATH: src/ApiModeling/Phlank.ApiModeling.csproj
+        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
