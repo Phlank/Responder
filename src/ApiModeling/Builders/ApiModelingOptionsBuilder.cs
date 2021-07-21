@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,15 +40,16 @@ namespace Phlank.ApiModeling
 
         private void ConfigureApiBehaviorOptions(ServiceProvider provider)
         {
-            var apiBehaviorOptions = provider.GetService<ApiBehaviorOptions>();
+            var apiBehaviorOptions = provider.GetService<IOptions<ApiBehaviorOptions>>();
             if (apiBehaviorOptions == null)
             {
                 _services.Configure<ApiBehaviorOptions>(options => { options.InvalidModelStateResponseFactory = InvalidModelStateResponseFactory; });
             }
             else
             {
-                apiBehaviorOptions.InvalidModelStateResponseFactory = InvalidModelStateResponseFactory;
-                _services.Configure<ApiBehaviorOptions>(options => { options = apiBehaviorOptions; });
+                var newOptions = apiBehaviorOptions.Value;
+                newOptions.InvalidModelStateResponseFactory = InvalidModelStateResponseFactory;
+                _services.Configure<ApiBehaviorOptions>(options => { options = newOptions; });
             }
         }
 
