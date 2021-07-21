@@ -3,10 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Phlank.ApiModeling.Extensions;
-using Phlank.ApiModeling.Tests.Data;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Phlank.ApiModeling.Tests.Tests
 {
