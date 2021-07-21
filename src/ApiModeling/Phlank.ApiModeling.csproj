@@ -1,13 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+    
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <Description>A library that provides a pattern for building consistent API responses in a clean manner.</Description>
+        <Authors>Colin Ledbetter</Authors>
+        <Company>Colin Ledbetter</Company>
+        <Product>Phlank.ApiModeling</Product>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageProjectUrl>https://github.com/Phlank/ApiModeling</PackageProjectUrl>
+        <RepositoryType>Git</RepositoryType>
+        <PackageTags>API,api,Api,Clean,Code,Clean Code,ApiResponse,Response,Api Response,Small,MIT,MIT3,Builder,ApiResponseBuilder,Phlank,Open Source,Open,Source,FOSS</PackageTags>
+        <NeutralLanguage>en</NeutralLanguage>
+        <Copyright>Copyright 2021 Colin Ledbetter</Copyright>
+        <RepositoryUrl>https://github.com/Phlank/ApiModeling</RepositoryUrl>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Description>A library that provides a pattern for building API responses in a clean manner.</Description>
-  </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.17" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.17" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Include="..\..\LICENSE">
+            <Pack>True</Pack>
+            <PackagePath></PackagePath>
+        </None>
+    </ItemGroup>
 
 </Project>
