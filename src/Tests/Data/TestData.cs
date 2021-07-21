@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -19,6 +20,14 @@ namespace Phlank.ApiModeling.Tests.Data
             Code = "TestCode",
             Fields = new List<string> { "TestField" },
             Message = "TestMessage"
+        };
+
+        public static ApiBehaviorOptions ApiBehaviorOptions = new ApiBehaviorOptions
+        {
+            SuppressMapClientErrors = true,
+            SuppressConsumesConstraintForFormFileParameters = true,
+            SuppressInferBindingSourcesForParameters = true,
+            InvalidModelStateResponseFactory = e => null,
         };
     }
 }
