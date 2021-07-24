@@ -2,8 +2,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Phlank.ApiModeling.Extensions;
 using Phlank.ApiModeling.Tests.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
 namespace Phlank.ApiModeling.Tests.Tests
 {
@@ -96,6 +98,22 @@ namespace Phlank.ApiModeling.Tests.Tests
             Assert.AreEqual(_error.Code, responseError.Code);
             Assert.AreEqual(_error.Fields.First(), responseError.Fields.First());
             Assert.AreEqual(_error.Message, responseError.Message);
+        }
+
+        [TestMethod]
+        public void TestEmptyResultIsSuccessful()
+        {
+            var result = _resultBuilder.Build();
+            Assert.AreEqual((int)HttpStatusCode.OK, result.StatusCode);
+        }
+
+        [TestMethod]
+        public void TestExceptionWithUnsuccessfulCode()
+        {
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _resultBuilder.WithStatusCodeOnSuccess(HttpStatusCode.Continue));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _resultBuilder.WithStatusCodeOnSuccess(HttpStatusCode.Redirect));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _resultBuilder.WithStatusCodeOnSuccess(HttpStatusCode.BadRequest));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _resultBuilder.WithStatusCodeOnSuccess(HttpStatusCode.InternalServerError));
         }
     }
 }
