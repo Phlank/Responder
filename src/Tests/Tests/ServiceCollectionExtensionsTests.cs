@@ -49,7 +49,6 @@ namespace Phlank.ApiModeling.Tests.Tests
                 options.InvalidModelStateResponseFactory = e => null;
                 options.SuppressMapClientErrors = true;
                 options.SuppressModelStateInvalidFilter = true;
-                options.AllowInferringBindingSourceForCollectionTypesAsFromQuery = true;
             });
 
             _services.ConfigureApiResponseBuilder(options =>
@@ -64,7 +63,6 @@ namespace Phlank.ApiModeling.Tests.Tests
             Assert.IsNotNull(apiBehaviorOptions.InvalidModelStateResponseFactory);
             Assert.IsTrue(apiBehaviorOptions.SuppressMapClientErrors);
             Assert.IsTrue(apiBehaviorOptions.SuppressModelStateInvalidFilter);
-            Assert.IsTrue(apiBehaviorOptions.AllowInferringBindingSourceForCollectionTypesAsFromQuery);
         }
     }
 }
