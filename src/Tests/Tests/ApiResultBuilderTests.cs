@@ -8,9 +8,9 @@ using System.Linq;
 namespace Phlank.ApiModeling.Tests.Tests
 {
     [TestClass]
-    public class ApiResponseBuilderTests
+    public class ApiResultBuilderTests
     {
-        private IApiResponseBuilder _responseBuilder;
+        private IApiResultBuilder _resultBuilder;
         private ApiWarning _warning;
         private ApiError _error;
 
@@ -20,7 +20,7 @@ namespace Phlank.ApiModeling.Tests.Tests
             IServiceCollection services = new ServiceCollection();
             services.ConfigureApiResponseBuilder();
             var provider = services.BuildServiceProvider();
-            _responseBuilder = provider.GetRequiredService<IApiResponseBuilder>();
+            _resultBuilder = provider.GetRequiredService<IApiResultBuilder>();
             _warning = TestData.Warning;
             _error = TestData.Error;
         }
@@ -28,22 +28,24 @@ namespace Phlank.ApiModeling.Tests.Tests
         [TestMethod]
         public void TestResponseWithNoOptions()
         {
-            var response = _responseBuilder.Build();
+            var result = _resultBuilder.Build();
+            var response = (ApiResponse)result.Value;
 
             Assert.IsTrue(response.Success);
-            Assert.IsNull(response.Errors);
-            Assert.IsNull(response.Warnings);
+            Assert.AreEqual(0, response.Warnings.Count());
+            Assert.AreEqual(0, response.Errors.Count());
         }
 
         [TestMethod]
         public void TestResponseFromSingleWarning()
         {
-            _responseBuilder.WithWarning(_warning);
-            var response = _responseBuilder.Build();
+            _resultBuilder.WithWarning(_warning);
+            var result = _resultBuilder.Build();
+            var response = (ApiResponse)result.Value;
             var responseWarning = response.Warnings.First();
 
             Assert.IsTrue(response.Success);
-            Assert.IsNull(response.Errors);
+            Assert.AreEqual(0, response.Errors.Count());
             Assert.AreEqual(_warning.Code, responseWarning.Code);
             Assert.AreEqual(_warning.Fields.First(), responseWarning.Fields.First());
             Assert.AreEqual(_warning.Message, responseWarning.Message);
@@ -53,12 +55,13 @@ namespace Phlank.ApiModeling.Tests.Tests
         [TestMethod]
         public void TestResponseFromWarningList()
         {
-            _responseBuilder.WithWarnings(new List<ApiWarning> { _warning });
-            var response = _responseBuilder.Build();
+            _resultBuilder.WithWarnings(new List<ApiWarning> { _warning });
+            var result = _resultBuilder.Build();
+            var response = (ApiResponse)result.Value;
             var responseWarning = response.Warnings.First();
 
             Assert.IsTrue(response.Success);
-            Assert.IsNull(response.Errors);
+            Assert.AreEqual(0, response.Errors.Count());
             Assert.AreEqual(_warning.Code, responseWarning.Code);
             Assert.AreEqual(_warning.Fields.First(), responseWarning.Fields.First());
             Assert.AreEqual(_warning.Message, responseWarning.Message);
@@ -68,12 +71,13 @@ namespace Phlank.ApiModeling.Tests.Tests
         [TestMethod]
         public void TestResponseFromSingleError()
         {
-            _responseBuilder.WithError(_error);
-            var response = _responseBuilder.Build();
+            _resultBuilder.WithError(_error);
+            var result = _resultBuilder.Build();
+            var response = (ApiResponse)result.Value;
             var responseError = response.Errors.First();
 
             Assert.IsFalse(response.Success);
-            Assert.IsNull(response.Warnings);
+            Assert.AreEqual(0, response.Warnings.Count());
             Assert.AreEqual(_error.Code, responseError.Code);
             Assert.AreEqual(_error.Fields.First(), responseError.Fields.First());
             Assert.AreEqual(_error.Message, responseError.Message);
@@ -82,12 +86,13 @@ namespace Phlank.ApiModeling.Tests.Tests
         [TestMethod]
         public void TestResponseFromErrorList()
         {
-            _responseBuilder.WithErrors(new List<ApiError> { _error });
-            var response = _responseBuilder.Build();
+            _resultBuilder.WithErrors(new List<ApiError> { _error });
+            var result = _resultBuilder.Build();
+            var response = (ApiResponse)result.Value;
             var responseError = response.Errors.First();
 
             Assert.IsFalse(response.Success);
-            Assert.IsNull(response.Warnings);
+            Assert.AreEqual(0, response.Warnings.Count());
             Assert.AreEqual(_error.Code, responseError.Code);
             Assert.AreEqual(_error.Fields.First(), responseError.Fields.First());
             Assert.AreEqual(_error.Message, responseError.Message);

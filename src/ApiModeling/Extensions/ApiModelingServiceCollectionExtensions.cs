@@ -10,7 +10,7 @@ namespace Phlank.ApiModeling.Extensions
         /// </summary>
         public static void ConfigureApiResponseBuilder(this IServiceCollection services, Action<ApiModelingOptionsBuilder> configureOptions = null)
         {
-            services.AddTransient<IApiResponseBuilder, ApiResponseBuilder>();
+            services.AddTransient<IApiResultBuilder, ApiResultBuilder>();
             if (configureOptions != null)
             {
                 var options = new ApiModelingOptionsBuilder();

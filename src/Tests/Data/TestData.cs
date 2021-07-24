@@ -20,6 +20,8 @@ namespace Phlank.ApiModeling.Tests.Data
             Message = "TestMessage"
         };
 
+        public static string Content = "TestContent";
+
         public static ApiBehaviorOptions ApiBehaviorOptions = new ApiBehaviorOptions
         {
             SuppressMapClientErrors = true,

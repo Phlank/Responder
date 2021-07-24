@@ -23,7 +23,7 @@ namespace Phlank.ApiModeling.Tests.Tests
             _services.ConfigureApiResponseBuilder();
             var provider = _services.BuildServiceProvider();
 
-            Assert.IsNotNull(provider.GetService<IApiResponseBuilder>());
+            Assert.IsNotNull(provider.GetService<IApiResultBuilder>());
         }
 
         [TestMethod]
