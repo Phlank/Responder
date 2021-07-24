@@ -9,12 +9,12 @@ namespace Phlank.ApiModeling.WeatherExample.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private readonly IApiResponseBuilder _responseBuilder;
+        private readonly IApiResultBuilder _resultBuilder;
         private readonly IWeatherService _weatherService;
 
-        public WeatherForecastController(IApiResponseBuilder responseBuilder, IWeatherService weatherService)
+        public WeatherForecastController(IApiResultBuilder responseBuilder, IWeatherService weatherService)
         {
-            _responseBuilder = responseBuilder;
+            _resultBuilder = responseBuilder;
             _weatherService = weatherService;
         }
 
@@ -35,13 +35,14 @@ namespace Phlank.ApiModeling.WeatherExample.Controllers
         };
 
         [HttpGet]
-        public ApiResponse<WeatherForecast> GetForecast(WeatherForecastRequest request)
+        public ApiResult GetForecast(WeatherForecastRequest request)
         {
-            if (request.DaysAhead > 10) _responseBuilder.WithWarning(NoConfidenceForecastWarning);
-            else if (request.DaysAhead > 7) _responseBuilder.WithWarning(LowConfidenceForecastWarning);
+            if (request.DaysAhead > 10) _resultBuilder.WithWarning(NoConfidenceForecastWarning);
+            else if (request.DaysAhead > 7) _resultBuilder.WithWarning(LowConfidenceForecastWarning);
 
             var content = _weatherService.GetRandomWeatherForecast(request.DaysAhead, request.TemperatureUnits);
-            return _responseBuilder.Build(content);
+            _resultBuilder.WithContent(content);
+            return _resultBuilder.Build();
         }
     }
 }

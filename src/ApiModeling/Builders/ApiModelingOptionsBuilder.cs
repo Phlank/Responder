@@ -60,7 +60,7 @@ namespace Phlank.ApiModeling
                 ContentType = "application/json"
             };
 
-        private static ApiResponse ConvertModelStateDictionaryToApiResponse(ModelStateDictionary dictionary)
+        private static ApiResult ConvertModelStateDictionaryToApiResponse(ModelStateDictionary dictionary)
         {
             var invalidKeys = dictionary.Keys.Where(key =>
                 dictionary.GetValueOrDefault(key) != default
@@ -73,7 +73,7 @@ namespace Phlank.ApiModeling
                 Message = error.ErrorMessage
             }));
 
-            return new ApiResponseBuilder()
+            return new ApiResultBuilder()
                 .WithErrors(apiErrors)
                 .Build();
         }
