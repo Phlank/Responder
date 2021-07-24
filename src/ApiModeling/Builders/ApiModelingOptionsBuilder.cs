@@ -10,7 +10,6 @@ using System.Text.Json;
 namespace Phlank.ApiModeling
 {
     /// <summary>
-    /// 
     /// </summary>
     public class ApiModelingOptionsBuilder
     {
@@ -18,7 +17,8 @@ namespace Phlank.ApiModeling
         private bool _isUsingApiResponseForModelStateErrors = false;
 
         /// <summary>
-        /// Overrides the configured InvalidModelStateResponseFactory to use the <see cref="ApiResponse"/>.
+        /// Overrides the configured InvalidModelStateResponseFactory to use the
+        /// <see cref="ApiResponse"/>.
         /// </summary>
         public ApiModelingOptionsBuilder UseApiResponseForModelStateErrors()
         {
@@ -68,9 +68,11 @@ namespace Phlank.ApiModeling
 
             var apiErrors = invalidKeys.SelectMany(key => dictionary.GetValueOrDefault(key).Errors.Select(error => new ApiError()
             {
-                Code = error.Exception?.GetType().Name ?? "InvalidField",
-                Fields = new List<string> { key },
-                Message = error.ErrorMessage
+                Detail = error.ErrorMessage,
+                
+                //Code = error.Exception?.GetType().Name ?? "InvalidField",
+                //Fields = new List<string> { key },
+                //Message = error.ErrorMessage
             }));
 
             return new ApiResultBuilder()

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.Net;
 
 namespace Phlank.ApiModeling.Tests.Data
 {
@@ -15,9 +17,11 @@ namespace Phlank.ApiModeling.Tests.Data
 
         public static ApiError Error = new ApiError
         {
-            Code = "TestCode",
-            Fields = new List<string> { "TestField" },
-            Message = "TestMessage"
+            Status = HttpStatusCode.BadRequest,
+            Detail = "TestDetail",
+            Title = "TestTitle",
+            Instance = new Uri("about:blank"),
+            Type = new Uri("about:blank")
         };
 
         public static string Content = "TestContent";

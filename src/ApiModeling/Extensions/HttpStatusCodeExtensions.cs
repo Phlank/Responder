@@ -20,5 +20,17 @@ namespace Phlank.ApiModeling.Extensions
                 return false;
             }
         }
+
+        public static bool IsError(this HttpStatusCode code)
+        {
+            if ((int)code >= 400)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

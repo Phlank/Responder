@@ -1,4 +1,5 @@
-﻿using Phlank.ApiModeling.Extensions;
+﻿using Microsoft.AspNetCore.Mvc;
+using Phlank.ApiModeling.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,14 +34,12 @@ namespace Phlank.ApiModeling
 
         public IApiResultBuilder WithError(ApiError error)
         {
-            if (_errors == null) _errors = new List<ApiError>();
             _errors.Add(error);
             return this;
         }
 
         public IApiResultBuilder WithErrors(IEnumerable<ApiError> errors)
         {
-            if (_errors == null) _errors = new List<ApiError>();
             _errors.AddRange(errors);
             return this;
         }
