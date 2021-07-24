@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
-namespace Phlank.ApiModeling.Tests.Tests
+namespace Phlank.ApiModeling.Tests
 {
     [TestClass]
     public class ApiResultBuilderTests
@@ -80,9 +80,11 @@ namespace Phlank.ApiModeling.Tests.Tests
 
             Assert.IsFalse(response.Success);
             Assert.AreEqual(0, response.Warnings.Count());
-            Assert.AreEqual(_error.Code, responseError.Code);
-            Assert.AreEqual(_error.Fields.First(), responseError.Fields.First());
-            Assert.AreEqual(_error.Message, responseError.Message);
+            Assert.AreEqual(_error.Detail, responseError.Detail);
+            Assert.AreEqual(_error.Title, responseError.Title);
+            Assert.AreEqual(_error.Status, responseError.Status);
+            Assert.AreEqual(_error.Type.OriginalString, responseError.Type.OriginalString);
+            Assert.AreEqual(_error.Instance.OriginalString, responseError.Instance.OriginalString);
         }
 
         [TestMethod]
@@ -95,9 +97,11 @@ namespace Phlank.ApiModeling.Tests.Tests
 
             Assert.IsFalse(response.Success);
             Assert.AreEqual(0, response.Warnings.Count());
-            Assert.AreEqual(_error.Code, responseError.Code);
-            Assert.AreEqual(_error.Fields.First(), responseError.Fields.First());
-            Assert.AreEqual(_error.Message, responseError.Message);
+            Assert.AreEqual(_error.Detail, responseError.Detail);
+            Assert.AreEqual(_error.Title, responseError.Title);
+            Assert.AreEqual(_error.Status, responseError.Status);
+            Assert.AreEqual(_error.Type.OriginalString, responseError.Type.OriginalString);
+            Assert.AreEqual(_error.Instance.OriginalString, responseError.Instance.OriginalString);
         }
 
         [TestMethod]

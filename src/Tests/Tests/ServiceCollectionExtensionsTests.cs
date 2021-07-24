@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Phlank.ApiModeling.Extensions;
 
-namespace Phlank.ApiModeling.Tests.Tests
+namespace Phlank.ApiModeling.Tests
 {
     [TestClass]
     public class ServiceCollectionExtensionsTests
