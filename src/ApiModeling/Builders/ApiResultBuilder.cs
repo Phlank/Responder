@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Phlank.ApiModeling.Extensions;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,18 +19,55 @@ namespace Phlank.ApiModeling
 
         public ApiResult Build()
         {
-            var responseModel = new ApiResponse
+            object resultValue;
+            int resultStatus;
+            string resultContentType;
+
+            if (_errors.Count > 0)
             {
-                Errors = _errors,
-                Warnings = _warnings,
-                Content = _content
-            };
-            var result = new ApiResult(responseModel);
-            if (_errors.Count() == 0)
+                resultValue = CreateErrorValue();
+                resultStatus = (int)_errors.First().Status;
+                resultContentType = "application/problem+json";
+            } else
             {
-                result.StatusCode = (int)_successStatusCode;
+                resultValue = CreateSuccessValue();
+                resultStatus = (int)_successStatusCode;
+                resultContentType = "application/json";
             }
+
+            var result = new ApiResult(resultValue);
+            result.StatusCode = resultStatus;
+            result.ContentType = resultContentType;
+
             return result;
+        }
+
+        private ApiError CreateErrorValue()
+        {
+            var firstError = _errors.First();
+            var remainingErrors = _errors.GetRange(1, _errors.Count - 1);
+
+            var extensions = firstError.Extensions;
+            extensions.Add("otherErrors", remainingErrors);
+
+            return new ApiError
+            {
+                Detail = firstError.Detail,
+                Instance = firstError.Instance,
+                Status = firstError.Status,
+                Title = firstError.Title,
+                Type = firstError.Type,
+                Extensions = extensions
+            };
+        }
+
+        private ApiResponse CreateSuccessValue()
+        {
+            return new ApiResponse
+            {
+                Content = _content,
+                Warnings = _warnings
+            };
         }
 
         public IApiResultBuilder WithError(ApiError error)

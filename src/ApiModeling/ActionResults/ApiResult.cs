@@ -9,9 +9,8 @@ namespace Phlank.ApiModeling
 {
     public class ApiResult : JsonResult
     {
-        internal ApiResult(ApiResponse response) : base(response)
-        {
+        internal ApiResult() : base(null) { }
 
-        }
+        internal ApiResult(object response) : base(response) { }
     }
 }
