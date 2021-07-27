@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Phlank.ApiModeling.Extensions;
-using RestSharp;
+﻿using Phlank.ApiModeling.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,8 +45,12 @@ namespace Phlank.ApiModeling
             var firstError = _errors.First();
             var remainingErrors = _errors.GetRange(1, _errors.Count - 1);
 
-            var extensions = firstError.Extensions;
-            extensions.Add("otherErrors", remainingErrors);
+            var extensions = firstError.Extensions ?? new Dictionary<string, object>();
+
+            if (remainingErrors.Count() > 0)
+            {
+                extensions.Add("otherErrors", remainingErrors);
+            }
 
             return new ApiError
             {
