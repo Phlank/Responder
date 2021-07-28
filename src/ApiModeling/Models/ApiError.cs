@@ -75,6 +75,6 @@ namespace Phlank.ApiModeling
         /// </summary>
         [Newtonsoft.Json.JsonExtensionData]
         [System.Text.Json.Serialization.JsonExtensionData]
-        public Dictionary<string, object> Extensions { get; init; }
+        public Dictionary<string, object> Extensions { get; init; } = new Dictionary<string, object>();
     }
 }

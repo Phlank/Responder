@@ -24,6 +24,24 @@ namespace Phlank.ApiModeling.Tests.Data
             Type = new Uri("about:blank")
         };
 
+        public static ApiError Error2 = new ApiError
+        {
+            Status = HttpStatusCode.BadRequest,
+            Detail = "TestDetail2",
+            Title = "TestTitle2",
+            Instance = new Uri("about:blank"),
+            Type = new Uri("about:blank")
+        };
+
+        public static ApiError Error3 = new ApiError
+        {
+            Status = HttpStatusCode.BadRequest,
+            Detail = "TestDetail3",
+            Title = "TestTitle3",
+            Instance = new Uri("about:blank"),
+            Type = new Uri("about:blank")
+        };
+
         public static string Content = "TestContent";
 
         public static ApiBehaviorOptions ApiBehaviorOptions = new ApiBehaviorOptions
