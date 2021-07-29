@@ -25,7 +25,7 @@ namespace Phlank.ApiModeling
         public HttpStatusCode Status
         {
             get => _status;
-            init
+            set
             {
                 if (!value.IsError())
                 {
@@ -44,7 +44,7 @@ namespace Phlank.ApiModeling
         /// </summary>
         [JsonProperty(PropertyName = "type")]
         [JsonPropertyName("type")]
-        public Uri Type { get; init; } = new Uri("about:blank");
+        public Uri Type { get; set; } = new Uri("about:blank");
         /// <summary>
         /// A short, human-readable summary of the problem type. It SHOULD NOT
         /// change from occurrence to occurrence of the problem, except for
@@ -52,29 +52,31 @@ namespace Phlank.ApiModeling
         /// </summary>
         [JsonProperty(PropertyName = "title")]
         [JsonPropertyName("title")]
-        public string Title { get; init; }
+        public string Title { get; set; }
         /// <summary>
         /// A human-readable explanation specific to this occurrence of the
         /// problem.
         /// </summary>
         [JsonProperty(PropertyName = "detail")]
         [JsonPropertyName("detail")]
-        public string Detail { get; init; }
+        public string Detail { get; set; }
         /// <summary>
         /// A URI reference that identifies the specific occurrence of the
         /// problem. It may or may not yield further information if
         /// dereferenced.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "instance")]
+#if NET5_0_OR_GREATER
         [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+#endif
         [JsonPropertyName("instance")]
-        public Uri Instance { get; init; }
+        public Uri Instance { get; set; }
         /// <summary>
         /// Additional information to reflect back to the client. These items
         /// will be surfaced in the top level of the serialized response.
         /// </summary>
         [Newtonsoft.Json.JsonExtensionData]
         [System.Text.Json.Serialization.JsonExtensionData]
-        public Dictionary<string, object> Extensions { get; init; } = new Dictionary<string, object>();
+        public Dictionary<string, object> Extensions { get; set; } = new Dictionary<string, object>();
     }
 }
