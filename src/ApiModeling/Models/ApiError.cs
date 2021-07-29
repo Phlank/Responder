@@ -66,7 +66,9 @@ namespace Phlank.ApiModeling
         /// dereferenced.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "instance")]
+#if NET5_0_OR_GREATER
         [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+#endif
         [JsonPropertyName("instance")]
         public Uri Instance { get; init; }
         /// <summary>
