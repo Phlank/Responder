@@ -2,7 +2,6 @@
     
     <PropertyGroup>
         <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
-        <LangVersion>9</LangVersion>
         <Description>A library that provides a pattern for building consistent API responses in a clean manner.</Description>
         <Authors>Colin Ledbetter</Authors>
         <Company>Colin Ledbetter</Company>

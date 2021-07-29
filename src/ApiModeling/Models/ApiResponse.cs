@@ -12,10 +12,10 @@ namespace Phlank.ApiModeling
         /// <summary>
         /// Warnings regarding the attempted operation.
         /// </summary>
-        public IEnumerable<ApiWarning> Warnings { get; internal init; }
+        public IEnumerable<ApiWarning> Warnings { get; internal set; }
         /// <summary>
         /// The content to return back to the user as a result of the operation.
         /// </summary>
-        public object Content { get; internal init; }
+        public object Content { get; internal set; }
     }
 }
