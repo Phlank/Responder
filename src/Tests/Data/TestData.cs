@@ -51,5 +51,10 @@ namespace Phlank.ApiModeling.Tests.Data
             SuppressInferBindingSourcesForParameters = true,
             InvalidModelStateResponseFactory = e => null,
         };
+
+        public static Exception BasicException = new Exception("Test exception description.");
+
+        public static NotImplementedException NotImplementedException = new NotImplementedException("Not implemented exception description.");
+
     }
 }

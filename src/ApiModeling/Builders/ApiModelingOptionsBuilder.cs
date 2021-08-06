@@ -53,7 +53,7 @@ namespace Phlank.ApiModeling
             }
         }
 
-        private static Func<ActionContext, IActionResult> InvalidModelStateResponseFactory = actionContext =>
+        private static readonly Func<ActionContext, IActionResult> InvalidModelStateResponseFactory = actionContext =>
             new ContentResult
             {
                 Content = JsonSerializer.Serialize(ConvertModelStateDictionaryToApiResponse(actionContext.ModelState)),
@@ -69,7 +69,7 @@ namespace Phlank.ApiModeling
             var apiErrors = invalidKeys.SelectMany(key => dictionary.GetValueOrDefault(key).Errors.Select(error => new ApiError()
             {
                 Detail = error.ErrorMessage,
-                
+
                 //Code = error.Exception?.GetType().Name ?? "InvalidField",
                 //Fields = new List<string> { key },
                 //Message = error.ErrorMessage
