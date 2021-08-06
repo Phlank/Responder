@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 
@@ -22,6 +22,14 @@ namespace Phlank.ApiModeling
         /// Adds warnings to the <see cref="IApiResultBuilder"/>.
         /// </summary>
         IApiResultBuilder WithWarnings(IEnumerable<ApiWarning> warnings);
+        /// <summary>
+        /// Adds an exception to the <see cref="IApiResultBuilder"/> as an error.
+        /// </summary>
+        IApiResultBuilder WithException<TException>(TException exception) where TException : Exception;
+        /// <summary>
+        /// Adds exceptions to the <see cref="IApiResultBuilder"/> as errors.
+        /// </summary>
+        IApiResultBuilder WithExceptions<TException>(IEnumerable<TException> exception) where TException : Exception;
         /// <summary>
         /// Adds content to the <see cref="IApiResultBuilder"/>
         /// </summary>

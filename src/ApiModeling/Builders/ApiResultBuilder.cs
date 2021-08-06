@@ -8,7 +8,7 @@ namespace Phlank.ApiModeling
 {
     internal class ApiResultBuilder : IApiResultBuilder
     {
-        private List<ApiError> _errors = new List<ApiError>();
+        private readonly List<ApiError> _errors = new List<ApiError>();
         private List<ApiWarning> _warnings = new List<ApiWarning>();
         private object _content;
         private HttpStatusCode _successStatusCode = HttpStatusCode.OK;
@@ -17,27 +17,22 @@ namespace Phlank.ApiModeling
 
         public ApiResult Build()
         {
-            object resultValue;
-            int resultStatus;
-            string resultContentType;
-
             if (_errors.Count > 0)
             {
-                resultValue = CreateErrorValue();
-                resultStatus = (int)_errors.First().Status;
-                resultContentType = "application/problem+json";
-            } else
-            {
-                resultValue = CreateSuccessValue();
-                resultStatus = (int)_successStatusCode;
-                resultContentType = "application/json";
+                return new ApiResult(CreateErrorValue())
+                {
+                    StatusCode = (int)_errors.First().Status,
+                    ContentType = "application/problem+json"
+                };
             }
-
-            var result = new ApiResult(resultValue);
-            result.StatusCode = resultStatus;
-            result.ContentType = resultContentType;
-
-            return result;
+            else
+            {
+                return new ApiResult(CreateSuccessValue())
+                {
+                    StatusCode = (int)_successStatusCode,
+                    ContentType = "application/json"
+                };
+            }
         }
 
         private ApiError CreateErrorValue()
@@ -95,6 +90,21 @@ namespace Phlank.ApiModeling
         {
             if (_warnings == null) _warnings = new List<ApiWarning>();
             _warnings.AddRange(warnings);
+            return this;
+        }
+
+        public IApiResultBuilder WithException<TException>(TException exception) where TException : Exception
+        {
+            _errors.Add(exception.ToApiError());
+            return this;
+        }
+
+        public IApiResultBuilder WithExceptions<TException>(IEnumerable<TException> exceptions) where TException : Exception
+        {
+            foreach (var exception in exceptions)
+            {
+                _errors.Add(exception.ToApiError());
+            }
             return this;
         }
 

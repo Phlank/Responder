@@ -18,7 +18,7 @@ namespace Phlank.ApiModeling.WeatherExample.Controllers
             _weatherService = weatherService;
         }
 
-        private static ApiWarning LowConfidenceForecastWarning = new ApiWarning
+        private static readonly ApiWarning LowConfidenceForecastWarning = new ApiWarning
         {
             Code = "LowConfidenceForecast",
             Fields = new List<string> { "DaysAhead" },
@@ -26,7 +26,7 @@ namespace Phlank.ApiModeling.WeatherExample.Controllers
             Severity = Severity.Low
         };
 
-        private static ApiWarning NoConfidenceForecastWarning = new ApiWarning
+        private static readonly ApiWarning NoConfidenceForecastWarning = new ApiWarning
         {
             Code = "NoConfidenceForecast",
             Fields = new List<string> { "DaysAhead" },
