@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    
+
     <PropertyGroup>
         <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
         <Description>A library that provides a pattern for building consistent API responses in a clean manner.</Description>
@@ -15,6 +15,7 @@
         <RepositoryUrl>https://github.com/Phlank/ApiModeling</RepositoryUrl>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Version>1.0.0</Version>
+        <DocumentationFile>ApiModeling.xml</DocumentationFile>
     </PropertyGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
@@ -35,7 +36,7 @@
             <PackagePath></PackagePath>
         </None>
     </ItemGroup>
-    
+
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
