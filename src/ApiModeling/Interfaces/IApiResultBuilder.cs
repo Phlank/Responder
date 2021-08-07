@@ -5,7 +5,7 @@ using System.Net;
 namespace Phlank.ApiModeling
 {
     /// <summary>
-    /// 
+    /// An instance of IApiResultBuilder is used to build an <see cref="ApiResult"/>.
     /// </summary>
     public interface IApiResultBuilder
     {
