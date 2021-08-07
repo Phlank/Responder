@@ -15,7 +15,7 @@
         <RepositoryUrl>https://github.com/Phlank/ApiModeling</RepositoryUrl>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Version>1.0.0</Version>
-        <DocumentationFile>ApiModeling.xml</DocumentationFile>
+        <DocumentationFile>Phlank.ApiModeling.xml</DocumentationFile>
     </PropertyGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
