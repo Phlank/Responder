@@ -1,0 +1,576 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface IApiResultBuilder
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface IApiResultBuilder
+   ">
+    <meta name="generator" content="docfx 2.58.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Phlank.ApiModeling.IApiResultBuilder">
+  
+  
+  <h1 id="Phlank_ApiModeling_IApiResultBuilder" data-uid="Phlank.ApiModeling.IApiResultBuilder" class="text-break">Interface IApiResultBuilder
+  </h1>
+  <div class="markdown level0 summary"><p>An instance of IApiResultBuilder is used to build an <a class="xref" href="Phlank.ApiModeling.ApiResult.html">ApiResult</a>.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Phlank.ApiModeling.html">Phlank.ApiModeling</a></h6>
+  <h6><strong>Assembly</strong>: Phlank.ApiModeling.dll</h6>
+  <h5 id="Phlank_ApiModeling_IApiResultBuilder_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IApiResultBuilder</code></pre>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Phlank/ApiModeling/new/b71a24f69a7a0540025074e54812494ce8ce0188/apiSpec/new?filename=Phlank_ApiModeling_IApiResultBuilder_Build.md&amp;value=---%0Auid%3A%20Phlank.ApiModeling.IApiResultBuilder.Build%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Phlank/ApiModeling/blob/b71a24f69a7a0540025074e54812494ce8ce0188/src/ApiModeling/Interfaces/IApiResultBuilder.cs/#L55">View Source</a>
+  </span>
+  <a id="Phlank_ApiModeling_IApiResultBuilder_Build_" data-uid="Phlank.ApiModeling.IApiResultBuilder.Build*"></a>
+  <h4 id="Phlank_ApiModeling_IApiResultBuilder_Build" data-uid="Phlank.ApiModeling.IApiResultBuilder.Build">Build()</h4>
+  <div class="markdown level1 summary"><p>Creates an <a class="xref" href="Phlank.ApiModeling.ApiResponse.html">ApiResponse</a> from the provided errors and warnings.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ApiResult Build()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Phlank.ApiModeling.ApiResult.html">ApiResult</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Phlank/ApiModeling/new/b71a24f69a7a0540025074e54812494ce8ce0188/apiSpec/new?filename=Phlank_ApiModeling_IApiResultBuilder_WithContent_System_Object_.md&amp;value=---%0Auid%3A%20Phlank.ApiModeling.IApiResultBuilder.WithContent(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Phlank/ApiModeling/blob/b71a24f69a7a0540025074e54812494ce8ce0188/src/ApiModeling/Interfaces/IApiResultBuilder.cs/#L45">View Source</a>
+  </span>
+  <a id="Phlank_ApiModeling_IApiResultBuilder_WithContent_" data-uid="Phlank.ApiModeling.IApiResultBuilder.WithContent*"></a>
+  <h4 id="Phlank_ApiModeling_IApiResultBuilder_WithContent_System_Object_" data-uid="Phlank.ApiModeling.IApiResultBuilder.WithContent(System.Object)">WithContent(Object)</h4>
+  <div class="markdown level1 summary"><p>Adds content to the <a class="xref" href="Phlank.ApiModeling.IApiResultBuilder.html">IApiResultBuilder</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IApiResultBuilder WithContent(object content)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">content</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Phlank.ApiModeling.IApiResultBuilder.html">IApiResultBuilder</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Phlank/ApiModeling/new/b71a24f69a7a0540025074e54812494ce8ce0188/apiSpec/new?filename=Phlank_ApiModeling_IApiResultBuilder_WithError_Phlank_ApiModeling_ApiError_.md&amp;value=---%0Auid%3A%20Phlank.ApiModeling.IApiResultBuilder.WithError(Phlank.ApiModeling.ApiError)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Phlank/ApiModeling/blob/b71a24f69a7a0540025074e54812494ce8ce0188/src/ApiModeling/Interfaces/IApiResultBuilder.cs/#L15">View Source</a>
+  </span>
+  <a id="Phlank_ApiModeling_IApiResultBuilder_WithError_" data-uid="Phlank.ApiModeling.IApiResultBuilder.WithError*"></a>
+  <h4 id="Phlank_ApiModeling_IApiResultBuilder_WithError_Phlank_ApiModeling_ApiError_" data-uid="Phlank.ApiModeling.IApiResultBuilder.WithError(Phlank.ApiModeling.ApiError)">WithError(ApiError)</h4>
+  <div class="markdown level1 summary"><p>Adds an error to the <a class="xref" href="Phlank.ApiModeling.IApiResultBuilder.html">IApiResultBuilder</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IApiResultBuilder WithError(ApiError error)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Phlank.ApiModeling.ApiError.html">ApiError</a></td>
+        <td><span class="parametername">error</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Phlank.ApiModeling.IApiResultBuilder.html">IApiResultBuilder</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Phlank/ApiModeling/new/b71a24f69a7a0540025074e54812494ce8ce0188/apiSpec/new?filename=Phlank_ApiModeling_IApiResultBuilder_WithErrors_System_Collections_Generic_IEnumerable_Phlank_ApiModeling_ApiError__.md&amp;value=---%0Auid%3A%20Phlank.ApiModeling.IApiResultBuilder.WithErrors(System.Collections.Generic.IEnumerable%7BPhlank.ApiModeling.ApiError%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Phlank/ApiModeling/blob/b71a24f69a7a0540025074e54812494ce8ce0188/src/ApiModeling/Interfaces/IApiResultBuilder.cs/#L20">View Source</a>
+  </span>
+  <a id="Phlank_ApiModeling_IApiResultBuilder_WithErrors_" data-uid="Phlank.ApiModeling.IApiResultBuilder.WithErrors*"></a>
+  <h4 id="Phlank_ApiModeling_IApiResultBuilder_WithErrors_System_Collections_Generic_IEnumerable_Phlank_ApiModeling_ApiError__" data-uid="Phlank.ApiModeling.IApiResultBuilder.WithErrors(System.Collections.Generic.IEnumerable{Phlank.ApiModeling.ApiError})">WithErrors(IEnumerable&lt;ApiError&gt;)</h4>
+  <div class="markdown level1 summary"><p>Adds errors to the <a class="xref" href="Phlank.ApiModeling.IApiResultBuilder.html">IApiResultBuilder</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IApiResultBuilder WithErrors(IEnumerable&lt;ApiError&gt; errors)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Phlank.ApiModeling.ApiError.html">ApiError</a>&gt;</td>
+        <td><span class="parametername">errors</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Phlank.ApiModeling.IApiResultBuilder.html">IApiResultBuilder</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Phlank/ApiModeling/new/b71a24f69a7a0540025074e54812494ce8ce0188/apiSpec/new?filename=Phlank_ApiModeling_IApiResultBuilder_WithException__1___0_.md&amp;value=---%0Auid%3A%20Phlank.ApiModeling.IApiResultBuilder.WithException%60%601(%60%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Phlank/ApiModeling/blob/b71a24f69a7a0540025074e54812494ce8ce0188/src/ApiModeling/Interfaces/IApiResultBuilder.cs/#L35">View Source</a>
+  </span>
+  <a id="Phlank_ApiModeling_IApiResultBuilder_WithException_" data-uid="Phlank.ApiModeling.IApiResultBuilder.WithException*"></a>
+  <h4 id="Phlank_ApiModeling_IApiResultBuilder_WithException__1___0_" data-uid="Phlank.ApiModeling.IApiResultBuilder.WithException``1(``0)">WithException&lt;TException&gt;(TException)</h4>
+  <div class="markdown level1 summary"><p>Adds an exception to the <a class="xref" href="Phlank.ApiModeling.IApiResultBuilder.html">IApiResultBuilder</a> as an error.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IApiResultBuilder WithException&lt;TException&gt;(TException exception)
+    where TException : Exception</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TException</span></td>
+        <td><span class="parametername">exception</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Phlank.ApiModeling.IApiResultBuilder.html">IApiResultBuilder</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TException</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Phlank/ApiModeling/new/b71a24f69a7a0540025074e54812494ce8ce0188/apiSpec/new?filename=Phlank_ApiModeling_IApiResultBuilder_WithExceptions__1_System_Collections_Generic_IEnumerable___0__.md&amp;value=---%0Auid%3A%20Phlank.ApiModeling.IApiResultBuilder.WithExceptions%60%601(System.Collections.Generic.IEnumerable%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Phlank/ApiModeling/blob/b71a24f69a7a0540025074e54812494ce8ce0188/src/ApiModeling/Interfaces/IApiResultBuilder.cs/#L40">View Source</a>
+  </span>
+  <a id="Phlank_ApiModeling_IApiResultBuilder_WithExceptions_" data-uid="Phlank.ApiModeling.IApiResultBuilder.WithExceptions*"></a>
+  <h4 id="Phlank_ApiModeling_IApiResultBuilder_WithExceptions__1_System_Collections_Generic_IEnumerable___0__" data-uid="Phlank.ApiModeling.IApiResultBuilder.WithExceptions``1(System.Collections.Generic.IEnumerable{``0})">WithExceptions&lt;TException&gt;(IEnumerable&lt;TException&gt;)</h4>
+  <div class="markdown level1 summary"><p>Adds exceptions to the <a class="xref" href="Phlank.ApiModeling.IApiResultBuilder.html">IApiResultBuilder</a> as errors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IApiResultBuilder WithExceptions&lt;TException&gt;(IEnumerable&lt;TException&gt; exception)
+    where TException : Exception</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TException&gt;</td>
+        <td><span class="parametername">exception</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Phlank.ApiModeling.IApiResultBuilder.html">IApiResultBuilder</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TException</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Phlank/ApiModeling/new/b71a24f69a7a0540025074e54812494ce8ce0188/apiSpec/new?filename=Phlank_ApiModeling_IApiResultBuilder_WithStatusCodeOnSuccess_System_Net_HttpStatusCode_.md&amp;value=---%0Auid%3A%20Phlank.ApiModeling.IApiResultBuilder.WithStatusCodeOnSuccess(System.Net.HttpStatusCode)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Phlank/ApiModeling/blob/b71a24f69a7a0540025074e54812494ce8ce0188/src/ApiModeling/Interfaces/IApiResultBuilder.cs/#L50">View Source</a>
+  </span>
+  <a id="Phlank_ApiModeling_IApiResultBuilder_WithStatusCodeOnSuccess_" data-uid="Phlank.ApiModeling.IApiResultBuilder.WithStatusCodeOnSuccess*"></a>
+  <h4 id="Phlank_ApiModeling_IApiResultBuilder_WithStatusCodeOnSuccess_System_Net_HttpStatusCode_" data-uid="Phlank.ApiModeling.IApiResultBuilder.WithStatusCodeOnSuccess(System.Net.HttpStatusCode)">WithStatusCodeOnSuccess(HttpStatusCode)</h4>
+  <div class="markdown level1 summary"><p>Adds a status code to return to the <a class="xref" href="Phlank.ApiModeling.IApiResultBuilder.html">IApiResultBuilder</a> if the operation is successful.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IApiResultBuilder WithStatusCodeOnSuccess(HttpStatusCode statusCode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Net.HttpStatusCode</span></td>
+        <td><span class="parametername">statusCode</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Phlank.ApiModeling.IApiResultBuilder.html">IApiResultBuilder</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Phlank/ApiModeling/new/b71a24f69a7a0540025074e54812494ce8ce0188/apiSpec/new?filename=Phlank_ApiModeling_IApiResultBuilder_WithWarning_Phlank_ApiModeling_ApiWarning_.md&amp;value=---%0Auid%3A%20Phlank.ApiModeling.IApiResultBuilder.WithWarning(Phlank.ApiModeling.ApiWarning)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Phlank/ApiModeling/blob/b71a24f69a7a0540025074e54812494ce8ce0188/src/ApiModeling/Interfaces/IApiResultBuilder.cs/#L25">View Source</a>
+  </span>
+  <a id="Phlank_ApiModeling_IApiResultBuilder_WithWarning_" data-uid="Phlank.ApiModeling.IApiResultBuilder.WithWarning*"></a>
+  <h4 id="Phlank_ApiModeling_IApiResultBuilder_WithWarning_Phlank_ApiModeling_ApiWarning_" data-uid="Phlank.ApiModeling.IApiResultBuilder.WithWarning(Phlank.ApiModeling.ApiWarning)">WithWarning(ApiWarning)</h4>
+  <div class="markdown level1 summary"><p>Adds a warning to the <a class="xref" href="Phlank.ApiModeling.IApiResultBuilder.html">IApiResultBuilder</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IApiResultBuilder WithWarning(ApiWarning warning)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Phlank.ApiModeling.ApiWarning.html">ApiWarning</a></td>
+        <td><span class="parametername">warning</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Phlank.ApiModeling.IApiResultBuilder.html">IApiResultBuilder</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Phlank/ApiModeling/new/b71a24f69a7a0540025074e54812494ce8ce0188/apiSpec/new?filename=Phlank_ApiModeling_IApiResultBuilder_WithWarnings_System_Collections_Generic_IEnumerable_Phlank_ApiModeling_ApiWarning__.md&amp;value=---%0Auid%3A%20Phlank.ApiModeling.IApiResultBuilder.WithWarnings(System.Collections.Generic.IEnumerable%7BPhlank.ApiModeling.ApiWarning%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Phlank/ApiModeling/blob/b71a24f69a7a0540025074e54812494ce8ce0188/src/ApiModeling/Interfaces/IApiResultBuilder.cs/#L30">View Source</a>
+  </span>
+  <a id="Phlank_ApiModeling_IApiResultBuilder_WithWarnings_" data-uid="Phlank.ApiModeling.IApiResultBuilder.WithWarnings*"></a>
+  <h4 id="Phlank_ApiModeling_IApiResultBuilder_WithWarnings_System_Collections_Generic_IEnumerable_Phlank_ApiModeling_ApiWarning__" data-uid="Phlank.ApiModeling.IApiResultBuilder.WithWarnings(System.Collections.Generic.IEnumerable{Phlank.ApiModeling.ApiWarning})">WithWarnings(IEnumerable&lt;ApiWarning&gt;)</h4>
+  <div class="markdown level1 summary"><p>Adds warnings to the <a class="xref" href="Phlank.ApiModeling.IApiResultBuilder.html">IApiResultBuilder</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IApiResultBuilder WithWarnings(IEnumerable&lt;ApiWarning&gt; warnings)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Phlank.ApiModeling.ApiWarning.html">ApiWarning</a>&gt;</td>
+        <td><span class="parametername">warnings</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Phlank.ApiModeling.IApiResultBuilder.html">IApiResultBuilder</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Phlank/ApiModeling/new/b71a24f69a7a0540025074e54812494ce8ce0188/apiSpec/new?filename=Phlank_ApiModeling_IApiResultBuilder.md&amp;value=---%0Auid%3A%20Phlank.ApiModeling.IApiResultBuilder%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/Phlank/ApiModeling/blob/b71a24f69a7a0540025074e54812494ce8ce0188/src/ApiModeling/Interfaces/IApiResultBuilder.cs/#L10" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
