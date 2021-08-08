@@ -25,11 +25,6 @@ jobs:
         with:
           dotnet-version: 5.0.x
 
-      - name: Install DocFX
-        uses: crazy-max/ghaction-chocolatey@v1
-        with:
-          args: install docfx
-
       - name: Build
         run: |
           dotnet restore
@@ -37,15 +32,3 @@ jobs:
       
       - name: Test
         run: dotnet test --no-build --verbosity normal
-
-      - name: Build Documentation
-        run: docfx docfx.json
-        working-directory: docs
-        continue-on-error: false
-        
-      - name: Deploy Documentation
-        uses: peaceiris/actions-gh-pages@v3.8.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: docs/_site
-          force_orphan: true
