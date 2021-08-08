@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
@@ -25,11 +25,6 @@ jobs:
         with:
           dotnet-version: 5.0.x
 
-      - name: Install DocFX
-        uses: crazy-max/ghaction-chocolatey@v1
-        with:
-          args: install docfx
-
       - name: Build
         run: |
           dotnet restore
@@ -39,9 +34,9 @@ jobs:
         run: dotnet test --no-build --verbosity normal
 
       - name: Build Documentation
-        run: docfx docfx.json
-        working-directory: docs
-        continue-on-error: false
+        uses: nikeee/docfx-action@v1.0.0
+        with:
+          args: docs/docfx.json
         
       - name: Deploy Documentation
         uses: peaceiris/actions-gh-pages@v3.8.0
