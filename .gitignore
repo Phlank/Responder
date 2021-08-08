@@ -449,5 +449,4 @@ $RECYCLE.BIN/
 !.vscode/extensions.json
 
 src/ApiModeling/Phlank.ApiModeling.xml
-docs/**.yml
 docs/**.html
