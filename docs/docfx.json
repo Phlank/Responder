@@ -53,6 +53,10 @@
             }
         ],
         "dest": "_site",
+        "globalMetadata": {
+            "_appTitle": "Phlank.ApiModeling Documentation",
+            "_appLogoPath": "images/logo.svg"
+        },
         "globalMetadataFiles": [],
         "fileMetadataFiles": [],
         "template": [
