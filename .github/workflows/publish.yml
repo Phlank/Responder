@@ -1,4 +1,4 @@
-name: Build, Test, and Publish .NET
+name: Build, Test, and Publish
 
 on:
   push:
@@ -10,19 +10,46 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 5.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
-    - name: Publish
-      uses: brandedoutcast/publish-nuget@v2.5.5
-      with:
-        PROJECT_FILE_PATH: src/ApiModeling/Phlank.ApiModeling.csproj
-        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup .NET Core 3.1
+        uses: actions/setup-dotnet@v1.7.2
+        with:
+          dotnet-version: 3.1.x
+
+      - name: Setup .NET 5.0
+        uses: actions/setup-dotnet@v1.7.2
+        with:
+          dotnet-version: 5.0.x
+
+      - name: Install DocFX
+        uses: crazy-max/ghaction-chocolatey@v1
+        with:
+          args: install docfx
+
+      - name: Build
+        run: |
+          dotnet restore
+          dotnet build --no-restore
+      
+      - name: Test
+        run: dotnet test --no-build --verbosity normal
+
+      - name: Build Documentation
+        working-directory: docs
+        run: docfx docfx.json
+        continue-on-error: false
+      
+      - name: Deploy Documentation
+        uses: peaceiris/actions-gh-pages@v3.8.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/_site
+          force_orphan: true
+
+      - name: Publish NuGet Package
+        uses: brandedoutcast/publish-nuget@v2.5.5
+        with:
+          PROJECT_FILE_PATH: src/ApiModeling/Phlank.ApiModeling.csproj
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
