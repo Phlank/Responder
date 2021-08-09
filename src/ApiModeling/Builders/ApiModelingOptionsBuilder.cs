@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text.Json;
 
 namespace Phlank.ApiModeling
@@ -54,25 +55,27 @@ namespace Phlank.ApiModeling
         }
 
         private static readonly Func<ActionContext, IActionResult> InvalidModelStateResponseFactory = actionContext =>
-            new ContentResult
-            {
-                Content = JsonSerializer.Serialize(ConvertModelStateDictionaryToApiResponse(actionContext.ModelState)),
-                ContentType = "application/json"
-            };
-
-        private static ApiResult ConvertModelStateDictionaryToApiResponse(ModelStateDictionary dictionary)
         {
-            var invalidKeys = dictionary.Keys.Where(key =>
-                dictionary.GetValueOrDefault(key) != default
-                && dictionary.GetValueOrDefault(key).ValidationState == ModelValidationState.Invalid);
+            return ConvertActionContextToApiResponse(actionContext);
+        };
 
-            var apiErrors = invalidKeys.SelectMany(key => dictionary.GetValueOrDefault(key).Errors.Select(error => new ApiError()
+        private static ApiResult ConvertActionContextToApiResponse(ActionContext context)
+        {
+            var modelState = context.ModelState;
+
+            var invalidKeys = modelState.Keys.Where(key =>
+                modelState.GetValueOrDefault(key)?.ValidationState == ModelValidationState.Invalid);
+
+            var apiErrors = invalidKeys.SelectMany(key => modelState.GetValueOrDefault(key).Errors.Select(error => new ApiError()
             {
                 Detail = error.ErrorMessage,
-
-                //Code = error.Exception?.GetType().Name ?? "InvalidField",
-                //Fields = new List<string> { key },
-                //Message = error.ErrorMessage
+                Title = "The content provided did not match the pattern expected",
+                Status = HttpStatusCode.BadRequest,
+                Extensions = new Dictionary<string, object>
+                {
+                    { "field", key },
+                    { "trace", context.HttpContext.TraceIdentifier }
+                }
             }));
 
             return new ApiResultBuilder()
