@@ -5,7 +5,9 @@ using System.Text.Json.Serialization;
 namespace Phlank.ApiModeling
 {
     /// <summary>
-    /// Information to reflect back to the user regarding any dangerous or problematic events during operation or issues with the result of the operation.
+    /// Information to reflect back to the user regarding any dangerous or
+    /// problematic events during operation or issues with the result of the
+    /// operation.
     /// </summary>
     public class ApiWarning
     {
@@ -18,7 +20,9 @@ namespace Phlank.ApiModeling
         /// </summary>
         public string Code { get; set; }
         /// <summary>
-        /// Further information regarding the operation warning. This should include some type of corrective measure that will prevent warnings by the same means.
+        /// Further information regarding the operation warning. This should
+        /// include some type of corrective measure that will prevent warnings
+        /// by the same means.
         /// </summary>
         public string Message { get; set; }
         /// <summary>
@@ -28,6 +32,9 @@ namespace Phlank.ApiModeling
         [Newtonsoft.Json.JsonConverter(typeof(StringEnumConverter))]
         public Severity Severity { get; set; }
 
+        /// <summary>
+        /// Creates an ApiWarning.
+        /// </summary>
         public ApiWarning()
         {
         }

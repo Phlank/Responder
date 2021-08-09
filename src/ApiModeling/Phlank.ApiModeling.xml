@@ -4,6 +4,28 @@
         <name>Phlank.ApiModeling</name>
     </assembly>
     <members>
+        <member name="T:Phlank.ApiModeling.ApiResult">
+            <summary>
+            An action result produced by the <see cref="T:Phlank.ApiModeling.IApiResultBuilder"/>. This
+            object should be returned by any client-facing controller methods in
+            your project. This result can hold any one of three forms of content:
+            <list type="bullet">
+                <item>
+                    No content with successful status code.
+                </item>
+                <item>
+                    JSON content (<c>application/json</c>) with a successful status
+                    code.
+                </item>
+                <item>
+                    JSON content (<c>application/problem+json</c>) with an
+                    unsuccessful status cude.
+                </item>
+            </list>
+            Each of these items will contain at the very least an HTTP status code
+            and a response type header.
+            </summary>
+        </member>
         <member name="T:Phlank.ApiModeling.ApiModelingOptionsBuilder">
             <summary>
             </summary>
@@ -14,14 +36,39 @@
             <see cref="T:Phlank.ApiModeling.ApiResponse"/>.
             </summary>
         </member>
+        <member name="T:Phlank.ApiModeling.Extensions.ApiModelingServiceCollectionExtensions">
+            <summary>
+            Extensions to the <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> interface for
+            configuring the <see cref="T:Phlank.ApiModeling.IApiResultBuilder"/> as a part of the service
+            collection.
+            <para>
+            Simple usage:
+            </para>
+            <code>
+            public void ConfigureServices(IServiceCollection services)
+            {
+                ...
+                
+                services.ConfigureApiResponseBuilder();
+                
+                ...
+            }
+            </code>
+            <para>
+            This will add the IApiResponseBuilder as a transient service to the
+            service collection.
+            </para>
+            </summary>
+        </member>
         <member name="M:Phlank.ApiModeling.Extensions.ApiModelingServiceCollectionExtensions.ConfigureApiResponseBuilder(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Phlank.ApiModeling.ApiModelingOptionsBuilder})">
             <summary>
-            Adds ApiResponse services to the specified <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" />.
+            Adds ApiResponse services to the specified
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/>.
             </summary>
         </member>
         <member name="T:Phlank.ApiModeling.IApiResultBuilder">
             <summary>
-            
+            An instance of IApiResultBuilder is used to build an <see cref="T:Phlank.ApiModeling.ApiResult"/>.
             </summary>
         </member>
         <member name="M:Phlank.ApiModeling.IApiResultBuilder.WithError(Phlank.ApiModeling.ApiError)">
@@ -133,7 +180,9 @@
         </member>
         <member name="T:Phlank.ApiModeling.ApiWarning">
             <summary>
-            Information to reflect back to the user regarding any dangerous or problematic events during operation or issues with the result of the operation.
+            Information to reflect back to the user regarding any dangerous or
+            problematic events during operation or issues with the result of the
+            operation.
             </summary>
         </member>
         <member name="P:Phlank.ApiModeling.ApiWarning.Fields">
@@ -148,12 +197,19 @@
         </member>
         <member name="P:Phlank.ApiModeling.ApiWarning.Message">
             <summary>
-            Further information regarding the operation warning. This should include some type of corrective measure that will prevent warnings by the same means.
+            Further information regarding the operation warning. This should
+            include some type of corrective measure that will prevent warnings
+            by the same means.
             </summary>
         </member>
         <member name="P:Phlank.ApiModeling.ApiWarning.Severity">
             <summary>
             The severity of the warning.
+            </summary>
+        </member>
+        <member name="M:Phlank.ApiModeling.ApiWarning.#ctor">
+            <summary>
+            Creates an ApiWarning.
             </summary>
         </member>
         <member name="T:Phlank.ApiModeling.Severity">
