@@ -54,14 +54,13 @@
         ],
         "dest": "_site",
         "globalMetadata": {
-            "_appTitle": "Phlank.ApiModeling Documentation",
-            "_appLogoPath": "images/logo.svg"
+            "_appTitle": "Phlank.ApiModeling Documentation"
         },
         "globalMetadataFiles": [],
         "fileMetadataFiles": [],
         "template": [
             "default",
-            "darkfx"
+            "templates/darkfx"
         ],
         "postProcessors": [],
         "markdownEngineName": "markdig",
