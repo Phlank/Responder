@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text.Json;
 
 namespace Phlank.ApiModeling
@@ -34,50 +35,39 @@ namespace Phlank.ApiModeling
 
         internal void Build()
         {
-            var provider = _services.BuildServiceProvider();
-            if (_isUsingApiResponseForModelStateErrors) ConfigureApiBehaviorOptions(provider);
+            if (_isUsingApiResponseForModelStateErrors) ConfigureApiBehaviorOptions();
         }
 
-        private void ConfigureApiBehaviorOptions(ServiceProvider provider)
+        private void ConfigureApiBehaviorOptions()
         {
-            var apiBehaviorOptions = provider.GetService<IOptions<ApiBehaviorOptions>>();
-            if (apiBehaviorOptions == null)
+            _services.PostConfigure<ApiBehaviorOptions>(options =>
             {
-                _services.Configure<ApiBehaviorOptions>(options => { options.InvalidModelStateResponseFactory = InvalidModelStateResponseFactory; });
-            }
-            else
-            {
-                var newOptions = apiBehaviorOptions.Value;
-                newOptions.InvalidModelStateResponseFactory = InvalidModelStateResponseFactory;
-                _services.Configure<ApiBehaviorOptions>(options => { options = newOptions; });
-            }
+                options.InvalidModelStateResponseFactory = InvalidModelStateResponseFactory;
+            });
         }
 
         private static readonly Func<ActionContext, IActionResult> InvalidModelStateResponseFactory = actionContext =>
-            new ContentResult
-            {
-                Content = JsonSerializer.Serialize(ConvertModelStateDictionaryToApiResponse(actionContext.ModelState)),
-                ContentType = "application/json"
-            };
-
-        private static ApiResult ConvertModelStateDictionaryToApiResponse(ModelStateDictionary dictionary)
         {
-            var invalidKeys = dictionary.Keys.Where(key =>
-                dictionary.GetValueOrDefault(key) != default
-                && dictionary.GetValueOrDefault(key).ValidationState == ModelValidationState.Invalid);
+            var modelState = actionContext.ModelState;
 
-            var apiErrors = invalidKeys.SelectMany(key => dictionary.GetValueOrDefault(key).Errors.Select(error => new ApiError()
+            var invalidKeys = modelState.Keys.Where(key =>
+                modelState.GetValueOrDefault(key)?.ValidationState == ModelValidationState.Invalid);
+
+            var apiErrors = invalidKeys.SelectMany(key => modelState.GetValueOrDefault(key).Errors.Select(error => new ApiError()
             {
                 Detail = error.ErrorMessage,
-
-                //Code = error.Exception?.GetType().Name ?? "InvalidField",
-                //Fields = new List<string> { key },
-                //Message = error.ErrorMessage
+                Title = "The content provided did not match the pattern expected",
+                Status = HttpStatusCode.BadRequest,
+                Extensions = new Dictionary<string, object>
+                {
+                    { "field", key },
+                    { "trace", actionContext.HttpContext.TraceIdentifier }
+                }
             }));
 
             return new ApiResultBuilder()
                 .WithErrors(apiErrors)
                 .Build();
-        }
+        };
     }
 }

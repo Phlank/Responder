@@ -1,8 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using Phlank.ApiModeling.Extensions;
+using Phlank.ApiModeling.Tests.Helpers;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Phlank.ApiModeling.Tests
 {
@@ -60,9 +67,28 @@ namespace Phlank.ApiModeling.Tests
             var apiBehaviorOptions = provider.GetService<IOptions<ApiBehaviorOptions>>().Value;
 
             Assert.IsNotNull(apiBehaviorOptions);
-            Assert.IsNotNull(apiBehaviorOptions.InvalidModelStateResponseFactory);
+            Assert.IsNotNull(apiBehaviorOptions.InvalidModelStateResponseFactory(new ActionContext()));
             Assert.IsTrue(apiBehaviorOptions.SuppressMapClientErrors);
             Assert.IsTrue(apiBehaviorOptions.SuppressModelStateInvalidFilter);
+        }
+
+        [TestMethod]
+        public async Task TestInvalidModelStateResponseFactoryAsync()
+        {
+            var server = new TestServer(new WebHostBuilder().UseStartup<TestStartup>());
+            var client = server.CreateClient();
+            var model = new TestModel
+            {
+                Between1And2 = 3.0
+            };
+            var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+            var result = await client.PostAsync("/api/TestMethod", content);
+            var resultContentBody = await result.Content.ReadAsStringAsync();
+            var error = JsonConvert.DeserializeObject<ApiError>(resultContentBody);
+
+            Assert.AreEqual("application/problem+json", result.Content.Headers.ContentType.MediaType);
+            Assert.IsTrue(error.Extensions.ContainsKey("trace"));
+            Assert.IsTrue(error.Extensions.ContainsKey("otherErrors"));
         }
     }
 }
