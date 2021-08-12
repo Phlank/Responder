@@ -35,33 +35,20 @@ namespace Phlank.ApiModeling
 
         internal void Build()
         {
-            var provider = _services.BuildServiceProvider();
-            if (_isUsingApiResponseForModelStateErrors) ConfigureApiBehaviorOptions(provider);
+            if (_isUsingApiResponseForModelStateErrors) ConfigureApiBehaviorOptions();
         }
 
-        private void ConfigureApiBehaviorOptions(ServiceProvider provider)
+        private void ConfigureApiBehaviorOptions()
         {
-            var apiBehaviorOptions = provider.GetService<IOptions<ApiBehaviorOptions>>();
-            if (apiBehaviorOptions == null)
+            _services.PostConfigure<ApiBehaviorOptions>(options =>
             {
-                _services.Configure<ApiBehaviorOptions>(options => { options.InvalidModelStateResponseFactory = InvalidModelStateResponseFactory; });
-            }
-            else
-            {
-                var newOptions = apiBehaviorOptions.Value;
-                newOptions.InvalidModelStateResponseFactory = InvalidModelStateResponseFactory;
-                _services.Configure<ApiBehaviorOptions>(options => { options = newOptions; });
-            }
+                options.InvalidModelStateResponseFactory = InvalidModelStateResponseFactory;
+            });
         }
 
         private static readonly Func<ActionContext, IActionResult> InvalidModelStateResponseFactory = actionContext =>
         {
-            return ConvertActionContextToApiResponse(actionContext);
-        };
-
-        private static ApiResult ConvertActionContextToApiResponse(ActionContext context)
-        {
-            var modelState = context.ModelState;
+            var modelState = actionContext.ModelState;
 
             var invalidKeys = modelState.Keys.Where(key =>
                 modelState.GetValueOrDefault(key)?.ValidationState == ModelValidationState.Invalid);
@@ -74,13 +61,13 @@ namespace Phlank.ApiModeling
                 Extensions = new Dictionary<string, object>
                 {
                     { "field", key },
-                    { "trace", context.HttpContext.TraceIdentifier }
+                    { "trace", actionContext.HttpContext.TraceIdentifier }
                 }
             }));
 
             return new ApiResultBuilder()
                 .WithErrors(apiErrors)
                 .Build();
-        }
+        };
     }
 }

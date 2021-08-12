@@ -60,7 +60,7 @@ namespace Phlank.ApiModeling.Tests
             var apiBehaviorOptions = provider.GetService<IOptions<ApiBehaviorOptions>>().Value;
 
             Assert.IsNotNull(apiBehaviorOptions);
-            Assert.IsNotNull(apiBehaviorOptions.InvalidModelStateResponseFactory);
+            Assert.IsNotNull(apiBehaviorOptions.InvalidModelStateResponseFactory(new ActionContext()));
             Assert.IsTrue(apiBehaviorOptions.SuppressMapClientErrors);
             Assert.IsTrue(apiBehaviorOptions.SuppressModelStateInvalidFilter);
         }
