@@ -1,6 +1,6 @@
 using System;
 
-namespace Phlank.ApiModeling.WeatherExample.Models
+namespace Phlank.Responder.WeatherExample.Models
 {
     public class WeatherForecast
     {

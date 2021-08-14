@@ -5,15 +5,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using Phlank.ApiModeling.Extensions;
-using Phlank.ApiModeling.Tests.Helpers;
+using Phlank.Responder.Extensions;
+using Phlank.Responder.Tests.Helpers;
 using System;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Phlank.ApiModeling.Tests
+namespace Phlank.Responder.Tests
 {
     [TestClass]
     public class ServiceCollectionExtensionsTests
@@ -29,16 +29,16 @@ namespace Phlank.ApiModeling.Tests
         [TestMethod]
         public void TestConfigureApiResponseBuilderAddsService()
         {
-            _services.ConfigureApiResultBuilder();
+            _services.ConfigureResponder();
             var provider = _services.BuildServiceProvider();
 
-            Assert.IsNotNull(provider.GetService<IApiResultBuilder>());
+            Assert.IsNotNull(provider.GetService<IResponder>());
         }
 
         [TestMethod]
         public void TestUseApiMethodForModelStateErrorsCreatesNewOptions()
         {
-            _services.ConfigureApiResultBuilder(options =>
+            _services.ConfigureResponder(options =>
             {
                 options.UseResponderInvalidModelStateResponseFactory = true;
             });
@@ -60,7 +60,7 @@ namespace Phlank.ApiModeling.Tests
                 options.SuppressModelStateInvalidFilter = true;
             });
 
-            _services.ConfigureApiResultBuilder(options =>
+            _services.ConfigureResponder(options =>
             {
                 options.UseResponderInvalidModelStateResponseFactory = true;
             });

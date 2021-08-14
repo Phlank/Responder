@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Phlank.ApiModeling
+namespace Phlank.Responder
 {
     /// <summary>
-    /// An action result produced by the <see cref="IApiResultBuilder"/>. This
+    /// An action result produced by the <see cref="IResponder"/>. This
     /// object should be returned by any client-facing controller methods in
     /// your project. This result can hold any one of three forms of content:
     /// <list type="bullet">

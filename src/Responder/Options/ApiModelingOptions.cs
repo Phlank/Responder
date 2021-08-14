@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Phlank.ApiModeling
+namespace Phlank.Responder
 {
     /// <summary>
     /// Options for ApiModeling dependency injection.
     /// </summary>
-    public class ApiModelingOptions
+    public class ResponderOptions
     {
         /// <summary>
         /// The configuration string for Responder's options.

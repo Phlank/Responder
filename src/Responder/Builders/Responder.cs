@@ -1,22 +1,22 @@
 ﻿using Microsoft.Extensions.Options;
-using Phlank.ApiModeling.Extensions;
+using Phlank.Responder.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
-namespace Phlank.ApiModeling
+namespace Phlank.Responder
 {
-    internal class ApiResultBuilder : IApiResultBuilder
+    internal class Responder : IResponder
     {
-        private readonly ApiModelingOptions _options;
+        private readonly ResponderOptions _options;
 
         private readonly List<ApiError> _errors = new List<ApiError>();
         private List<ApiWarning> _warnings = new List<ApiWarning>();
         private object _content;
         private HttpStatusCode _successStatusCode = HttpStatusCode.OK;
 
-        public ApiResultBuilder(IOptions<ApiModelingOptions> options)
+        public Responder(IOptions<ResponderOptions> options)
         {
             _options = options.Value;
         }
@@ -73,39 +73,39 @@ namespace Phlank.ApiModeling
             };
         }
 
-        public IApiResultBuilder WithError(ApiError error)
+        public IResponder WithError(ApiError error)
         {
             _errors.Add(error);
             return this;
         }
 
-        public IApiResultBuilder WithErrors(IEnumerable<ApiError> errors)
+        public IResponder WithErrors(IEnumerable<ApiError> errors)
         {
             _errors.AddRange(errors);
             return this;
         }
 
-        public IApiResultBuilder WithWarning(ApiWarning warning)
+        public IResponder WithWarning(ApiWarning warning)
         {
             if (_warnings == null) _warnings = new List<ApiWarning>();
             _warnings.Add(warning);
             return this;
         }
 
-        public IApiResultBuilder WithWarnings(IEnumerable<ApiWarning> warnings)
+        public IResponder WithWarnings(IEnumerable<ApiWarning> warnings)
         {
             if (_warnings == null) _warnings = new List<ApiWarning>();
             _warnings.AddRange(warnings);
             return this;
         }
 
-        public IApiResultBuilder WithException<TException>(TException exception) where TException : Exception
+        public IResponder WithException<TException>(TException exception) where TException : Exception
         {
             _errors.Add(exception.ToApiError());
             return this;
         }
 
-        public IApiResultBuilder WithExceptions<TException>(IEnumerable<TException> exceptions) where TException : Exception
+        public IResponder WithExceptions<TException>(IEnumerable<TException> exceptions) where TException : Exception
         {
             foreach (var exception in exceptions)
             {
@@ -114,13 +114,13 @@ namespace Phlank.ApiModeling
             return this;
         }
 
-        public IApiResultBuilder WithContent(object content)
+        public IResponder WithContent(object content)
         {
             _content = content;
             return this;
         }
 
-        public IApiResultBuilder WithStatusCodeOnSuccess(HttpStatusCode successfulStatusCode)
+        public IResponder WithStatusCodeOnSuccess(HttpStatusCode successfulStatusCode)
         {
             if (!successfulStatusCode.IsSuccessful())
             {

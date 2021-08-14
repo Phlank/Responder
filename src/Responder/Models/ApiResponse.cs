@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Phlank.ApiModeling
+namespace Phlank.Responder
 {
     /// <summary>
     /// A response to send to a client.

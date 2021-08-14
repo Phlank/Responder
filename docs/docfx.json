@@ -4,7 +4,7 @@
             "src": [
                 {
                     "files": [
-                        "src/ApiModeling/**.csproj"
+                        "src/Responder/**.csproj"
                     ],
                     "cwd": ".."
                 }
@@ -54,7 +54,7 @@
         ],
         "dest": "_site",
         "globalMetadata": {
-            "_appTitle": "Phlank.ApiModeling Documentation"
+            "_appTitle": "Phlank.Responder Documentation"
         },
         "globalMetadataFiles": [],
         "fileMetadataFiles": [],

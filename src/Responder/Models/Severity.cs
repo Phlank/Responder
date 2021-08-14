@@ -1,4 +1,4 @@
-﻿namespace Phlank.ApiModeling
+﻿namespace Phlank.Responder
 {
     /// <summary>
     /// Represents the level of criticality regarding a warning.

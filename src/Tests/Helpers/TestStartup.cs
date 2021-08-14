@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Phlank.ApiModeling.Extensions;
+using Phlank.Responder.Extensions;
 
-namespace Phlank.ApiModeling.Tests.Helpers
+namespace Phlank.Responder.Tests.Helpers
 {
     public class TestStartup
     {
@@ -19,7 +19,7 @@ namespace Phlank.ApiModeling.Tests.Helpers
         {
             services.AddControllers();
 
-            services.ConfigureApiResultBuilder(options =>
+            services.ConfigureResponder(options =>
             {
                 options.UseResponderInvalidModelStateResponseFactory = true;
             });

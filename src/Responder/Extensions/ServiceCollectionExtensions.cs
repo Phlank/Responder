@@ -7,11 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
-namespace Phlank.ApiModeling.Extensions
+namespace Phlank.Responder.Extensions
 {
     /// <summary>
     /// Extensions to the <see cref="IServiceCollection"/> interface for
-    /// configuring the <see cref="IApiResultBuilder"/> as a part of the service
+    /// configuring the <see cref="IResponder"/> as a part of the service
     /// collection.
     /// <para>
     /// Simple usage:
@@ -20,7 +20,7 @@ namespace Phlank.ApiModeling.Extensions
     /// public void ConfigureServices(IServiceCollection services)
     /// {
     ///     ...
-    ///     services.ConfigureApiResultBuilder;
+    ///     services.ConfigureResponder;
     ///     ...
     /// }
     /// </code>
@@ -29,22 +29,22 @@ namespace Phlank.ApiModeling.Extensions
     /// service collection.
     /// </para>
     /// </summary>
-    public static class ApiModelingServiceCollectionExtensions
+    public static class ServiceCollectionExtensions
     {
-        private static ApiModelingOptions _options = new ApiModelingOptions();
+        private static ResponderOptions _options = new ResponderOptions();
 
         /// <summary>
         /// Adds ApiResponse services to the specified
         /// <see cref="IServiceCollection"/>.
         /// </summary>
-        public static void ConfigureApiResultBuilder(this IServiceCollection services, Action<ApiModelingOptions> configureOptions = null)
+        public static void ConfigureResponder(this IServiceCollection services, Action<ResponderOptions> configureOptions = null)
         {
             var config = configureOptions ?? DefaultConfigureOptions;
             services.Configure(config);
 
             config(_options);
 
-            services.AddTransient<IApiResultBuilder, ApiResultBuilder>();
+            services.AddTransient<IResponder, Responder>();
 
             if (_options.UseResponderInvalidModelStateResponseFactory)
             {
@@ -55,7 +55,7 @@ namespace Phlank.ApiModeling.Extensions
             }
         }
 
-        private static readonly Action<ApiModelingOptions> DefaultConfigureOptions = (options) =>
+        private static readonly Action<ResponderOptions> DefaultConfigureOptions = (options) =>
         {
             options.UseResponderInvalidModelStateResponseFactory = false;
             options.CharSet = "utf-8";
@@ -80,9 +80,9 @@ namespace Phlank.ApiModeling.Extensions
                 }
             }));
 
-            var options = actionContext.HttpContext.RequestServices.GetRequiredService<IOptions<ApiModelingOptions>>();
+            var options = actionContext.HttpContext.RequestServices.GetRequiredService<IOptions<ResponderOptions>>();
 
-            return new ApiResultBuilder(options)
+            return new Responder(options)
                 .WithErrors(apiErrors)
                 .Build();
         };

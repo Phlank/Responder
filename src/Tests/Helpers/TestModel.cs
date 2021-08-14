@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Phlank.ApiModeling.Tests.Helpers
+namespace Phlank.Responder.Tests.Helpers
 {
     public class TestModel
     {

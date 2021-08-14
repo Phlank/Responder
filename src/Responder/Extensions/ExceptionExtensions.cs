@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace Phlank.ApiModeling.Extensions
+namespace Phlank.Responder.Extensions
 {
     internal static class ExceptionExtensions
     {
