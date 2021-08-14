@@ -27,7 +27,7 @@ namespace Phlank.ApiModeling.Tests
         [TestMethod]
         public void TestConfigureApiResponseBuilderAddsService()
         {
-            _services.ConfigureApiResponseBuilder();
+            _services.ConfigureApiResultBuilder();
             var provider = _services.BuildServiceProvider();
 
             Assert.IsNotNull(provider.GetService<IApiResultBuilder>());
@@ -36,9 +36,9 @@ namespace Phlank.ApiModeling.Tests
         [TestMethod]
         public void TestUseApiMethodForModelStateErrorsCreatesNewOptions()
         {
-            _services.ConfigureApiResponseBuilder(options =>
+            _services.ConfigureApiResultBuilder(options =>
             {
-                options.UseApiResponseForModelStateErrors();
+                options.UseResponderInvalidModelStateResponseFactory = true;
             });
 
             var provider = _services.BuildServiceProvider();
@@ -58,9 +58,9 @@ namespace Phlank.ApiModeling.Tests
                 options.SuppressModelStateInvalidFilter = true;
             });
 
-            _services.ConfigureApiResponseBuilder(options =>
+            _services.ConfigureApiResultBuilder(options =>
             {
-                options.UseApiResponseForModelStateErrors();
+                options.UseResponderInvalidModelStateResponseFactory = true;
             });
 
             var provider = _services.BuildServiceProvider();

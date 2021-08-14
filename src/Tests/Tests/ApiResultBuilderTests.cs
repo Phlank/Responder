@@ -21,7 +21,7 @@ namespace Phlank.ApiModeling.Tests
         public void Setup()
         {
             IServiceCollection services = new ServiceCollection();
-            services.ConfigureApiResponseBuilder();
+            services.ConfigureApiResultBuilder();
             var provider = services.BuildServiceProvider();
             _resultBuilder = provider.GetRequiredService<IApiResultBuilder>();
             _warning = TestData.Warning;

@@ -26,16 +26,6 @@
             and a response type header.
             </summary>
         </member>
-        <member name="T:Phlank.ApiModeling.ApiModelingOptionsBuilder">
-            <summary>
-            </summary>
-        </member>
-        <member name="M:Phlank.ApiModeling.ApiModelingOptionsBuilder.UseApiResponseForModelStateErrors">
-            <summary>
-            Overrides the configured InvalidModelStateResponseFactory to use the
-            <see cref="T:Phlank.ApiModeling.ApiResponse"/>.
-            </summary>
-        </member>
         <member name="T:Phlank.ApiModeling.Extensions.ApiModelingServiceCollectionExtensions">
             <summary>
             Extensions to the <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> interface for
@@ -48,7 +38,7 @@
             public void ConfigureServices(IServiceCollection services)
             {
                 ...
-                services.ConfigureApiResponseBuilder();
+                services.ConfigureApiResultBuilder;
                 ...
             }
             </code>
@@ -58,7 +48,7 @@
             </para>
             </summary>
         </member>
-        <member name="M:Phlank.ApiModeling.Extensions.ApiModelingServiceCollectionExtensions.ConfigureApiResponseBuilder(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Phlank.ApiModeling.ApiModelingOptionsBuilder})">
+        <member name="M:Phlank.ApiModeling.Extensions.ApiModelingServiceCollectionExtensions.ConfigureApiResultBuilder(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Phlank.ApiModeling.ApiModelingOptions})">
             <summary>
             Adds ApiResponse services to the specified
             <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/>.
@@ -228,6 +218,26 @@
         <member name="F:Phlank.ApiModeling.Severity.Low">
             <summary>
             A low level of concern either regarding the operation or its result.
+            </summary>
+        </member>
+        <member name="T:Phlank.ApiModeling.ApiModelingOptions">
+            <summary>
+            Options for the ApiModeling dependency injection.
+            </summary>
+        </member>
+        <member name="F:Phlank.ApiModeling.ApiModelingOptions.ApiModeling">
+            <summary>
+            The configuration string for Responder's options.
+            </summary>
+        </member>
+        <member name="P:Phlank.ApiModeling.ApiModelingOptions.UseResponderInvalidModelStateResponseFactory">
+            <summary>
+            Property that determines whether the default
+            InvalidModelStateResponseFactory is used or if Responder's
+            InvalidModelStateResponseFactory is used.
+            <para>
+            Default is false.
+            </para>
             </summary>
         </member>
     </members>
