@@ -27,6 +27,10 @@ namespace Phlank.ApiModeling.Tests.Helpers
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseHsts();
+
+            app.UseCors();
+
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
