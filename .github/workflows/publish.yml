@@ -34,7 +34,7 @@ jobs:
           dotnet build --no-restore
       
       - name: Test
-        run: dotnet test --no-build --verbosity detailed
+        run: dotnet test --no-build --verbosity normal
 
       - name: Build Documentation
         working-directory: docs
