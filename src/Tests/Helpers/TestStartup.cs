@@ -19,9 +19,9 @@ namespace Phlank.ApiModeling.Tests.Helpers
         {
             services.AddControllers();
 
-            services.ConfigureApiResponseBuilder(options =>
+            services.ConfigureApiResultBuilder(options =>
             {
-                options.UseApiResponseForModelStateErrors();
+                options.UseResponderInvalidModelStateResponseFactory = true;
             });
         }
 

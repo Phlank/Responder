@@ -23,9 +23,9 @@ namespace Phlank.ApiModeling.WeatherExample
         {
             services.AddControllers();
 
-            services.ConfigureApiResponseBuilder(options =>
+            services.ConfigureApiResultBuilder(options =>
             {
-                options.UseApiResponseForModelStateErrors();
+                options.UseResponderInvalidModelStateResponseFactory = true;
             });
 
             services.AddTransient<IWeatherService, WeatherService>();
