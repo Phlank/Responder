@@ -33,7 +33,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\ApiModeling\Phlank.ApiModeling.csproj" />
+        <ProjectReference Include="..\Responder\Phlank.Responder.csproj" />
     </ItemGroup>
 
 </Project>

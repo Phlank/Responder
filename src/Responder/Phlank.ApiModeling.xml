@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>Phlank.ApiModeling</name>
+        <name>Phlank.Responder</name>
     </assembly>
     <members>
-        <member name="T:Phlank.ApiModeling.ApiResult">
+        <member name="T:Phlank.Responder.ApiResult">
             <summary>
-            An action result produced by the <see cref="T:Phlank.ApiModeling.IApiResultBuilder"/>. This
+            An action result produced by the <see cref="T:Phlank.Responder.IResponder"/>. This
             object should be returned by any client-facing controller methods in
             your project. This result can hold any one of three forms of content:
             <list type="bullet">
@@ -26,10 +26,10 @@
             and a response type header.
             </summary>
         </member>
-        <member name="T:Phlank.ApiModeling.Extensions.ApiModelingServiceCollectionExtensions">
+        <member name="T:Phlank.Responder.Extensions.ServiceCollectionExtensions">
             <summary>
             Extensions to the <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> interface for
-            configuring the <see cref="T:Phlank.ApiModeling.IApiResultBuilder"/> as a part of the service
+            configuring the <see cref="T:Phlank.Responder.IResponder"/> as a part of the service
             collection.
             <para>
             Simple usage:
@@ -38,7 +38,7 @@
             public void ConfigureServices(IServiceCollection services)
             {
                 ...
-                services.ConfigureApiResultBuilder;
+                services.ConfigureResponder;
                 ...
             }
             </code>
@@ -48,63 +48,63 @@
             </para>
             </summary>
         </member>
-        <member name="M:Phlank.ApiModeling.Extensions.ApiModelingServiceCollectionExtensions.ConfigureApiResultBuilder(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Phlank.ApiModeling.ApiModelingOptions})">
+        <member name="M:Phlank.Responder.Extensions.ServiceCollectionExtensions.ConfigureResponder(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Phlank.Responder.ResponderOptions})">
             <summary>
             Adds ApiResponse services to the specified
             <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/>.
             </summary>
         </member>
-        <member name="T:Phlank.ApiModeling.IApiResultBuilder">
+        <member name="T:Phlank.Responder.IResponder">
             <summary>
-            An instance of IApiResultBuilder is used to build an <see cref="T:Phlank.ApiModeling.ApiResult"/>.
+            An instance of IResponder is used to build an <see cref="T:Phlank.Responder.ApiResult"/>.
             </summary>
         </member>
-        <member name="M:Phlank.ApiModeling.IApiResultBuilder.WithError(Phlank.ApiModeling.ApiError)">
+        <member name="M:Phlank.Responder.IResponder.WithError(Phlank.Responder.ApiError)">
             <summary>
-            Adds an error to the <see cref="T:Phlank.ApiModeling.IApiResultBuilder"/>.
+            Adds an error to the <see cref="T:Phlank.Responder.IResponder"/>.
             </summary>
         </member>
-        <member name="M:Phlank.ApiModeling.IApiResultBuilder.WithErrors(System.Collections.Generic.IEnumerable{Phlank.ApiModeling.ApiError})">
+        <member name="M:Phlank.Responder.IResponder.WithErrors(System.Collections.Generic.IEnumerable{Phlank.Responder.ApiError})">
             <summary>
-            Adds errors to the <see cref="T:Phlank.ApiModeling.IApiResultBuilder"/>.
+            Adds errors to the <see cref="T:Phlank.Responder.IResponder"/>.
             </summary>
         </member>
-        <member name="M:Phlank.ApiModeling.IApiResultBuilder.WithWarning(Phlank.ApiModeling.ApiWarning)">
+        <member name="M:Phlank.Responder.IResponder.WithWarning(Phlank.Responder.ApiWarning)">
             <summary>
-            Adds a warning to the <see cref="T:Phlank.ApiModeling.IApiResultBuilder"/>.
+            Adds a warning to the <see cref="T:Phlank.Responder.IResponder"/>.
             </summary>
         </member>
-        <member name="M:Phlank.ApiModeling.IApiResultBuilder.WithWarnings(System.Collections.Generic.IEnumerable{Phlank.ApiModeling.ApiWarning})">
+        <member name="M:Phlank.Responder.IResponder.WithWarnings(System.Collections.Generic.IEnumerable{Phlank.Responder.ApiWarning})">
             <summary>
-            Adds warnings to the <see cref="T:Phlank.ApiModeling.IApiResultBuilder"/>.
+            Adds warnings to the <see cref="T:Phlank.Responder.IResponder"/>.
             </summary>
         </member>
-        <member name="M:Phlank.ApiModeling.IApiResultBuilder.WithException``1(``0)">
+        <member name="M:Phlank.Responder.IResponder.WithException``1(``0)">
             <summary>
-            Adds an exception to the <see cref="T:Phlank.ApiModeling.IApiResultBuilder"/> as an error.
+            Adds an exception to the <see cref="T:Phlank.Responder.IResponder"/> as an error.
             </summary>
         </member>
-        <member name="M:Phlank.ApiModeling.IApiResultBuilder.WithExceptions``1(System.Collections.Generic.IEnumerable{``0})">
+        <member name="M:Phlank.Responder.IResponder.WithExceptions``1(System.Collections.Generic.IEnumerable{``0})">
             <summary>
-            Adds exceptions to the <see cref="T:Phlank.ApiModeling.IApiResultBuilder"/> as errors.
+            Adds exceptions to the <see cref="T:Phlank.Responder.IResponder"/> as errors.
             </summary>
         </member>
-        <member name="M:Phlank.ApiModeling.IApiResultBuilder.WithContent(System.Object)">
+        <member name="M:Phlank.Responder.IResponder.WithContent(System.Object)">
             <summary>
-            Adds content to the <see cref="T:Phlank.ApiModeling.IApiResultBuilder"/>
+            Adds content to the <see cref="T:Phlank.Responder.IResponder"/>
             </summary>
         </member>
-        <member name="M:Phlank.ApiModeling.IApiResultBuilder.WithStatusCodeOnSuccess(System.Net.HttpStatusCode)">
+        <member name="M:Phlank.Responder.IResponder.WithStatusCodeOnSuccess(System.Net.HttpStatusCode)">
             <summary>
-            Adds a status code to return to the <see cref="T:Phlank.ApiModeling.IApiResultBuilder"/> if the operation is successful.
+            Adds a status code to return to the <see cref="T:Phlank.Responder.IResponder"/> if the operation is successful.
             </summary>
         </member>
-        <member name="M:Phlank.ApiModeling.IApiResultBuilder.Build">
+        <member name="M:Phlank.Responder.IResponder.Build">
             <summary>
-            Creates an <see cref="T:Phlank.ApiModeling.ApiResponse"/> from the provided errors and warnings.
+            Creates an <see cref="T:Phlank.Responder.ApiResponse"/> from the provided errors and warnings.
             </summary>
         </member>
-        <member name="T:Phlank.ApiModeling.ApiError">
+        <member name="T:Phlank.Responder.ApiError">
             <summary>
             An error to be reflected by the API. This class follows the
             specification in
@@ -112,125 +112,125 @@
             At minimum, a user should provide values for Status, Title, and Details.
             </summary>
         </member>
-        <member name="P:Phlank.ApiModeling.ApiError.Status">
+        <member name="P:Phlank.Responder.ApiError.Status">
             <summary>
             The HTTP status code generated by the origin server for this
             occurence of the problem.
             </summary>
         </member>
-        <member name="P:Phlank.ApiModeling.ApiError.Type">
+        <member name="P:Phlank.Responder.ApiError.Type">
             <summary>
             A URI reference that identifies the problem type. When this member
             is not specified, it will use a default <see cref="T:System.Uri"/> pointing
             to the RFC documentation of this error's Status.
             </summary>
         </member>
-        <member name="P:Phlank.ApiModeling.ApiError.Title">
+        <member name="P:Phlank.Responder.ApiError.Title">
             <summary>
             A short, human-readable summary of the problem type. It SHOULD NOT
             change from occurrence to occurrence of the problem, except for
             purposes of localization.
             </summary>
         </member>
-        <member name="P:Phlank.ApiModeling.ApiError.Detail">
+        <member name="P:Phlank.Responder.ApiError.Detail">
             <summary>
             A human-readable explanation specific to this occurrence of the
             problem.
             </summary>
         </member>
-        <member name="P:Phlank.ApiModeling.ApiError.Instance">
+        <member name="P:Phlank.Responder.ApiError.Instance">
             <summary>
             A URI reference that identifies the specific occurrence of the
             problem. It may or may not yield further information if
             dereferenced.
             </summary>
         </member>
-        <member name="P:Phlank.ApiModeling.ApiError.Extensions">
+        <member name="P:Phlank.Responder.ApiError.Extensions">
             <summary>
             Additional information to reflect back to the client. These items
             will be surfaced in the top level of the serialized response.
             </summary>
         </member>
-        <member name="T:Phlank.ApiModeling.ApiResponse">
+        <member name="T:Phlank.Responder.ApiResponse">
             <summary>
             A response to send to a client.
             </summary>
         </member>
-        <member name="P:Phlank.ApiModeling.ApiResponse.Warnings">
+        <member name="P:Phlank.Responder.ApiResponse.Warnings">
             <summary>
             Warnings regarding the attempted operation.
             </summary>
         </member>
-        <member name="P:Phlank.ApiModeling.ApiResponse.Content">
+        <member name="P:Phlank.Responder.ApiResponse.Content">
             <summary>
             The content to return back to the user as a result of the operation.
             </summary>
         </member>
-        <member name="T:Phlank.ApiModeling.ApiWarning">
+        <member name="T:Phlank.Responder.ApiWarning">
             <summary>
             Information to reflect back to the user regarding any dangerous or
             problematic events during operation or issues with the result of the
             operation.
             </summary>
         </member>
-        <member name="P:Phlank.ApiModeling.ApiWarning.Fields">
+        <member name="P:Phlank.Responder.ApiWarning.Fields">
             <summary>
             The names of the fields involved with the operation warning.
             </summary>
         </member>
-        <member name="P:Phlank.ApiModeling.ApiWarning.Code">
+        <member name="P:Phlank.Responder.ApiWarning.Code">
             <summary>
             The warning code involved in the operation warning.
             </summary>
         </member>
-        <member name="P:Phlank.ApiModeling.ApiWarning.Message">
+        <member name="P:Phlank.Responder.ApiWarning.Message">
             <summary>
             Further information regarding the operation warning. This should
             include some type of corrective measure that will prevent warnings
             by the same means.
             </summary>
         </member>
-        <member name="P:Phlank.ApiModeling.ApiWarning.Severity">
+        <member name="P:Phlank.Responder.ApiWarning.Severity">
             <summary>
             The severity of the warning.
             </summary>
         </member>
-        <member name="M:Phlank.ApiModeling.ApiWarning.#ctor">
+        <member name="M:Phlank.Responder.ApiWarning.#ctor">
             <summary>
             Creates an ApiWarning.
             </summary>
         </member>
-        <member name="T:Phlank.ApiModeling.Severity">
+        <member name="T:Phlank.Responder.Severity">
             <summary>
             Represents the level of criticality regarding a warning.
             </summary>
         </member>
-        <member name="F:Phlank.ApiModeling.Severity.Critical">
+        <member name="F:Phlank.Responder.Severity.Critical">
             <summary>
             Imminent failure of the operation.
             </summary>
         </member>
-        <member name="F:Phlank.ApiModeling.Severity.High">
+        <member name="F:Phlank.Responder.Severity.High">
             <summary>
             A high level of concern either regarding the operation or its result.
             </summary>
         </member>
-        <member name="F:Phlank.ApiModeling.Severity.Low">
+        <member name="F:Phlank.Responder.Severity.Low">
             <summary>
             A low level of concern either regarding the operation or its result.
             </summary>
         </member>
-        <member name="T:Phlank.ApiModeling.ApiModelingOptions">
+        <member name="T:Phlank.Responder.ResponderOptions">
             <summary>
             Options for ApiModeling dependency injection.
             </summary>
         </member>
-        <member name="F:Phlank.ApiModeling.ApiModelingOptions.ApiModeling">
+        <member name="F:Phlank.Responder.ResponderOptions.ApiModeling">
             <summary>
             The configuration string for Responder's options.
             </summary>
         </member>
-        <member name="P:Phlank.ApiModeling.ApiModelingOptions.UseResponderInvalidModelStateResponseFactory">
+        <member name="P:Phlank.Responder.ResponderOptions.UseResponderInvalidModelStateResponseFactory">
             <summary>
             Property that determines whether the default
             InvalidModelStateResponseFactory is used or if Responder's
@@ -240,10 +240,10 @@
             </para>
             </summary>
         </member>
-        <member name="P:Phlank.ApiModeling.ApiModelingOptions.Charset">
+        <member name="P:Phlank.Responder.ResponderOptions.CharSet">
             <summary>
             The character set used when writing a response using the
-            <see cref="T:Phlank.ApiModeling.ApiResult"/>.
+            <see cref="T:Phlank.Responder.ApiResult"/>.
             <para>
             Default is "utf-8".
             </para>

@@ -3,22 +3,22 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Phlank.ApiModeling.Tests.Helpers
+namespace Phlank.Responder.Tests.Helpers
 {
     [ApiController]
     public class TestController
     {
-        private readonly IApiResultBuilder _resultBuilder;
+        private readonly IResponder _responder;
 
-        public TestController(IApiResultBuilder resultBuilder) 
+        public TestController(IResponder responder) 
         {
-            _resultBuilder = resultBuilder;
+            _responder = responder;
         }
 
         [Route("api/TestMethod")]
         public ApiResult TestMethod(TestModel model)
         {
-            return _resultBuilder.Build();
+            return _responder.Build();
         }
     }
 }

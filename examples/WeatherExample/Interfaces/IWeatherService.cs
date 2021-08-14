@@ -1,6 +1,6 @@
-﻿using Phlank.ApiModeling.WeatherExample.Models;
+﻿using Phlank.Responder.WeatherExample.Models;
 
-namespace Phlank.ApiModeling.WeatherExample.Interfaces
+namespace Phlank.Responder.WeatherExample.Interfaces
 {
     public interface IWeatherService
     {

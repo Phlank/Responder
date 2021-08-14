@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Phlank.ApiModeling.WeatherExample.Extensions
+namespace Phlank.Responder.WeatherExample.Extensions
 {
     public static class IEnumerableExtensions
     {

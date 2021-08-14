@@ -1,18 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Phlank.ApiModeling.WeatherExample.Interfaces;
-using Phlank.ApiModeling.WeatherExample.Models;
+using Phlank.Responder.WeatherExample.Interfaces;
+using Phlank.Responder.WeatherExample.Models;
 using System.Collections.Generic;
 
-namespace Phlank.ApiModeling.WeatherExample.Controllers
+namespace Phlank.Responder.WeatherExample.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private readonly IApiResultBuilder _resultBuilder;
+        private readonly IResponder _resultBuilder;
         private readonly IWeatherService _weatherService;
 
-        public WeatherForecastController(IApiResultBuilder responseBuilder, IWeatherService weatherService)
+        public WeatherForecastController(IResponder responseBuilder, IWeatherService weatherService)
         {
             _resultBuilder = responseBuilder;
             _weatherService = weatherService;

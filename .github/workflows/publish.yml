@@ -34,7 +34,7 @@ jobs:
           dotnet build --no-restore
       
       - name: Test
-        run: dotnet test --no-build --verbosity normal
+        run: dotnet test --no-build --verbosity detailed
 
       - name: Build Documentation
         working-directory: docs
@@ -51,5 +51,5 @@ jobs:
       - name: Publish NuGet Package
         uses: brandedoutcast/publish-nuget@v2.5.5
         with:
-          PROJECT_FILE_PATH: src/ApiModeling/Phlank.ApiModeling.csproj
+          PROJECT_FILE_PATH: src/Responder/Phlank.Responder.csproj
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}

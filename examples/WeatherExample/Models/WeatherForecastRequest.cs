@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Phlank.ApiModeling.WeatherExample.Models
+namespace Phlank.Responder.WeatherExample.Models
 {
     public class WeatherForecastRequest
     {

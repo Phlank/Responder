@@ -2,7 +2,7 @@
 using System;
 using System.Net;
 
-namespace Phlank.ApiModeling.Tests
+namespace Phlank.Responder.Tests
 {
     [TestClass]
     public class ApiErrorTests

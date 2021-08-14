@@ -1,19 +1,19 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Phlank.ApiModeling.Extensions;
-using Phlank.ApiModeling.Tests.Data;
+using Phlank.Responder.Extensions;
+using Phlank.Responder.Tests.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text.Json;
 
-namespace Phlank.ApiModeling.Tests
+namespace Phlank.Responder.Tests
 {
     [TestClass]
-    public class ApiResultBuilderTests
+    public class ResponderTests
     {
-        private IApiResultBuilder _resultBuilder;
+        private IResponder _resultBuilder;
         private ApiWarning _warning;
         private ApiError _error;
 
@@ -21,9 +21,9 @@ namespace Phlank.ApiModeling.Tests
         public void Setup()
         {
             IServiceCollection services = new ServiceCollection();
-            services.ConfigureApiResultBuilder();
+            services.ConfigureResponder();
             var provider = services.BuildServiceProvider();
-            _resultBuilder = provider.GetRequiredService<IApiResultBuilder>();
+            _resultBuilder = provider.GetRequiredService<IResponder>();
             _warning = TestData.Warning;
             _error = TestData.Error;
         }

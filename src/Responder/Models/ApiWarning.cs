@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Phlank.ApiModeling
+namespace Phlank.Responder
 {
     /// <summary>
     /// Information to reflect back to the user regarding any dangerous or

@@ -1,11 +1,11 @@
 ﻿using Newtonsoft.Json;
-using Phlank.ApiModeling.Extensions;
+using Phlank.Responder.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text.Json.Serialization;
 
-namespace Phlank.ApiModeling
+namespace Phlank.Responder
 {
     /// <summary>
     /// An error to be reflected by the API. This class follows the

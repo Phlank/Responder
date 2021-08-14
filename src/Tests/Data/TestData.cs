@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 
-namespace Phlank.ApiModeling.Tests.Data
+namespace Phlank.Responder.Tests.Data
 {
     public static class TestData
     {
