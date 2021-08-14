@@ -222,7 +222,7 @@
         </member>
         <member name="T:Phlank.ApiModeling.ApiModelingOptions">
             <summary>
-            Options for the ApiModeling dependency injection.
+            Options for ApiModeling dependency injection.
             </summary>
         </member>
         <member name="F:Phlank.ApiModeling.ApiModelingOptions.ApiModeling">
@@ -237,6 +237,15 @@
             InvalidModelStateResponseFactory is used.
             <para>
             Default is false.
+            </para>
+            </summary>
+        </member>
+        <member name="P:Phlank.ApiModeling.ApiModelingOptions.Charset">
+            <summary>
+            The character set used when writing a response using the
+            <see cref="T:Phlank.ApiModeling.ApiResult"/>.
+            <para>
+            Default is "utf-8".
             </para>
             </summary>
         </member>

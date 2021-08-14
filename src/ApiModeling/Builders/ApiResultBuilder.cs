@@ -1,4 +1,5 @@
-﻿using Phlank.ApiModeling.Extensions;
+﻿using Microsoft.Extensions.Options;
+using Phlank.ApiModeling.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +9,17 @@ namespace Phlank.ApiModeling
 {
     internal class ApiResultBuilder : IApiResultBuilder
     {
+        private readonly ApiModelingOptions _options;
+
         private readonly List<ApiError> _errors = new List<ApiError>();
         private List<ApiWarning> _warnings = new List<ApiWarning>();
         private object _content;
         private HttpStatusCode _successStatusCode = HttpStatusCode.OK;
 
-        public ApiResultBuilder() { }
+        public ApiResultBuilder(IOptions<ApiModelingOptions> options)
+        {
+            _options = options.Value;
+        }
 
         public ApiResult Build()
         {
@@ -22,7 +28,7 @@ namespace Phlank.ApiModeling
                 return new ApiResult(CreateErrorValue())
                 {
                     StatusCode = (int)_errors.First().Status,
-                    ContentType = "application/problem+json"
+                    ContentType = $"application/problem+json; charset={_options.CharSet}"
                 };
             }
             else
@@ -30,7 +36,7 @@ namespace Phlank.ApiModeling
                 return new ApiResult(CreateSuccessValue())
                 {
                     StatusCode = (int)_successStatusCode,
-                    ContentType = "application/json"
+                    ContentType = $"application/json; charset={_options.CharSet}"
                 };
             }
         }

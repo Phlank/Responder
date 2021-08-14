@@ -7,6 +7,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Phlank.ApiModeling.Extensions;
 using Phlank.ApiModeling.Tests.Helpers;
+using System;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,7 +69,7 @@ namespace Phlank.ApiModeling.Tests
             var apiBehaviorOptions = provider.GetService<IOptions<ApiBehaviorOptions>>().Value;
 
             Assert.IsNotNull(apiBehaviorOptions);
-            Assert.IsNotNull(apiBehaviorOptions.InvalidModelStateResponseFactory(new ActionContext()));
+            Assert.ThrowsException<NullReferenceException>(() => apiBehaviorOptions.InvalidModelStateResponseFactory(new ActionContext()));
             Assert.IsTrue(apiBehaviorOptions.SuppressMapClientErrors);
             Assert.IsTrue(apiBehaviorOptions.SuppressModelStateInvalidFilter);
         }
@@ -75,7 +77,10 @@ namespace Phlank.ApiModeling.Tests
         [TestMethod]
         public async Task TestInvalidModelStateResponseFactoryAsync()
         {
-            var server = new TestServer(new WebHostBuilder().UseStartup<TestStartup>());
+            var server = new TestServer(new WebHostBuilder().UseStartup<TestStartup>())
+            {
+                PreserveExecutionContext = true
+            };
             var client = server.CreateClient();
             var model = new TestModel
             {
@@ -87,6 +92,7 @@ namespace Phlank.ApiModeling.Tests
             var error = JsonConvert.DeserializeObject<ApiError>(resultContentBody);
 
             Assert.AreEqual("application/problem+json", result.Content.Headers.ContentType.MediaType);
+            Assert.AreEqual("utf-8", result.Content.Headers.ContentType.CharSet);
             Assert.IsTrue(error.Extensions.ContainsKey("trace"));
             Assert.IsTrue(error.Extensions.ContainsKey("otherErrors"));
         }

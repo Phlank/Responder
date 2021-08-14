@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,19 +31,22 @@ namespace Phlank.ApiModeling.Extensions
     /// </summary>
     public static class ApiModelingServiceCollectionExtensions
     {
+        private static ApiModelingOptions _options = new ApiModelingOptions();
+
         /// <summary>
         /// Adds ApiResponse services to the specified
         /// <see cref="IServiceCollection"/>.
         /// </summary>
         public static void ConfigureApiResultBuilder(this IServiceCollection services, Action<ApiModelingOptions> configureOptions = null)
         {
-            services.AddTransient<IApiResultBuilder, ApiResultBuilder>();
-            var options = new ApiModelingOptions();
-            if (configureOptions != null) configureOptions(options);
+            var config = configureOptions ?? DefaultConfigureOptions;
+            services.Configure(config);
+
+            config(_options);
 
             services.AddTransient<IApiResultBuilder, ApiResultBuilder>();
 
-            if (options.UseResponderInvalidModelStateResponseFactory)
+            if (_options.UseResponderInvalidModelStateResponseFactory)
             {
                 services.PostConfigure<ApiBehaviorOptions>(options =>
                 {
@@ -50,6 +54,12 @@ namespace Phlank.ApiModeling.Extensions
                 });
             }
         }
+
+        private static readonly Action<ApiModelingOptions> DefaultConfigureOptions = (options) =>
+        {
+            options.UseResponderInvalidModelStateResponseFactory = false;
+            options.CharSet = "utf-8";
+        };
 
         private static readonly Func<ActionContext, IActionResult> InvalidModelStateResponseFactory = actionContext =>
         {
@@ -70,7 +80,9 @@ namespace Phlank.ApiModeling.Extensions
                 }
             }));
 
-            return new ApiResultBuilder()
+            var options = actionContext.HttpContext.RequestServices.GetRequiredService<IOptions<ApiModelingOptions>>();
+
+            return new ApiResultBuilder(options)
                 .WithErrors(apiErrors)
                 .Build();
         };
