@@ -41,7 +41,7 @@ namespace Phlank.Responder.Tests
         [TestMethod]
         public void TestResponseFromSingleWarning()
         {
-            _resultBuilder.WithWarning(_warning);
+            _resultBuilder.AddWarning(_warning);
             var result = _resultBuilder.Build();
             var response = (ApiResponse)result.Value;
             var responseWarning = response.Warnings.First();
@@ -55,7 +55,7 @@ namespace Phlank.Responder.Tests
         [TestMethod]
         public void TestResponseFromWarningList()
         {
-            _resultBuilder.WithWarnings(new List<ApiWarning> { _warning });
+            _resultBuilder.AddWarnings(new List<ApiWarning> { _warning });
             var result = _resultBuilder.Build();
             var response = (ApiResponse)result.Value;
             var responseWarning = response.Warnings.First();
@@ -69,7 +69,7 @@ namespace Phlank.Responder.Tests
         [TestMethod]
         public void TestResponseFromSingleError()
         {
-            _resultBuilder.WithError(_error);
+            _resultBuilder.AddError(_error);
             var result = _resultBuilder.Build();
             var response = (ApiError)result.Value;
 
@@ -83,7 +83,7 @@ namespace Phlank.Responder.Tests
         [TestMethod]
         public void TestResponseFromErrorList()
         {
-            _resultBuilder.WithErrors(new List<ApiError> { _error });
+            _resultBuilder.AddErrors(new List<ApiError> { _error });
             var result = _resultBuilder.Build();
             var response = (ApiError)result.Value;
 
@@ -104,18 +104,18 @@ namespace Phlank.Responder.Tests
         [TestMethod]
         public void TestExceptionWithUnsuccessfulCode()
         {
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _resultBuilder.WithStatusCodeOnSuccess(HttpStatusCode.Continue));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _resultBuilder.WithStatusCodeOnSuccess(HttpStatusCode.Redirect));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _resultBuilder.WithStatusCodeOnSuccess(HttpStatusCode.BadRequest));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _resultBuilder.WithStatusCodeOnSuccess(HttpStatusCode.InternalServerError));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _resultBuilder.AddStatusCodeOnSuccess(HttpStatusCode.Continue));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _resultBuilder.AddStatusCodeOnSuccess(HttpStatusCode.Redirect));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _resultBuilder.AddStatusCodeOnSuccess(HttpStatusCode.BadRequest));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _resultBuilder.AddStatusCodeOnSuccess(HttpStatusCode.InternalServerError));
         }
 
         [TestMethod]
         public void TestResultWithMultipleErrors()
         {
-            _resultBuilder.WithError(TestData.Error);
-            _resultBuilder.WithError(TestData.Error2);
-            _resultBuilder.WithError(TestData.Error3);
+            _resultBuilder.AddError(TestData.Error);
+            _resultBuilder.AddError(TestData.Error2);
+            _resultBuilder.AddError(TestData.Error3);
             var result = _resultBuilder.Build();
             var json = JsonSerializer.Serialize(result.Value);
             var deserialized = JsonSerializer.Deserialize<ApiError>(json);
@@ -132,7 +132,7 @@ namespace Phlank.Responder.Tests
         [TestMethod]
         public void TestResultWithBasicException()
         {
-            _resultBuilder.WithException(TestData.BasicException);
+            _resultBuilder.AddException(TestData.BasicException);
             var result = _resultBuilder.Build();
             var json = JsonSerializer.Serialize(result.Value);
             var deserialized = JsonSerializer.Deserialize<ApiError>(json);
@@ -147,7 +147,7 @@ namespace Phlank.Responder.Tests
         [TestMethod]
         public void TestResultWithNotImplementedException()
         {
-            _resultBuilder.WithException(TestData.NotImplementedException);
+            _resultBuilder.AddException(TestData.NotImplementedException);
             var result = _resultBuilder.Build();
             var json = JsonSerializer.Serialize(result.Value);
             var deserialized = JsonSerializer.Deserialize<ApiError>(json);
@@ -162,7 +162,7 @@ namespace Phlank.Responder.Tests
         [TestMethod]
         public void TestResultWithExceptionList()
         {
-            _resultBuilder.WithExceptions(new List<Exception> { TestData.BasicException });
+            _resultBuilder.AddExceptions(new List<Exception> { TestData.BasicException });
             var result = _resultBuilder.Build();
             var json = JsonSerializer.Serialize(result.Value);
             var deserialized = JsonSerializer.Deserialize<ApiError>(json);

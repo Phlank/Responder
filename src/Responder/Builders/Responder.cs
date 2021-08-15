@@ -11,9 +11,9 @@ namespace Phlank.Responder
     {
         private readonly ResponderOptions _options;
 
-        private readonly List<ApiError> _errors = new List<ApiError>();
+        private List<ApiError> _errors = new List<ApiError>();
         private List<ApiWarning> _warnings = new List<ApiWarning>();
-        private object _content;
+        private List<object> _content = new List<object>();
         private HttpStatusCode _successStatusCode = HttpStatusCode.OK;
 
         public Responder(IOptions<ResponderOptions> options)
@@ -66,46 +66,54 @@ namespace Phlank.Responder
 
         private ApiResponse CreateSuccessValue()
         {
+            object content = null;
+            if (_content.Count() == 1)
+            {
+                content = _content.First();
+            }
+            else if (_content.Count() > 1)
+            {
+                content = _content;
+            }
+
             return new ApiResponse
             {
-                Content = _content,
+                Content = content,
                 Warnings = _warnings
             };
         }
 
-        public IResponder WithError(ApiError error)
+        public IResponder AddError(ApiError error)
         {
             _errors.Add(error);
             return this;
         }
 
-        public IResponder WithErrors(IEnumerable<ApiError> errors)
+        public IResponder AddErrors(IEnumerable<ApiError> errors)
         {
             _errors.AddRange(errors);
             return this;
         }
 
-        public IResponder WithWarning(ApiWarning warning)
+        public IResponder AddWarning(ApiWarning warning)
         {
-            if (_warnings == null) _warnings = new List<ApiWarning>();
             _warnings.Add(warning);
             return this;
         }
 
-        public IResponder WithWarnings(IEnumerable<ApiWarning> warnings)
+        public IResponder AddWarnings(IEnumerable<ApiWarning> warnings)
         {
-            if (_warnings == null) _warnings = new List<ApiWarning>();
             _warnings.AddRange(warnings);
             return this;
         }
 
-        public IResponder WithException<TException>(TException exception) where TException : Exception
+        public IResponder AddException<TException>(TException exception) where TException : Exception
         {
             _errors.Add(exception.ToApiError());
             return this;
         }
 
-        public IResponder WithExceptions<TException>(IEnumerable<TException> exceptions) where TException : Exception
+        public IResponder AddExceptions<TException>(IEnumerable<TException> exceptions) where TException : Exception
         {
             foreach (var exception in exceptions)
             {
@@ -114,13 +122,13 @@ namespace Phlank.Responder
             return this;
         }
 
-        public IResponder WithContent(object content)
+        public IResponder AddContent(object content)
         {
-            _content = content;
+            _content.Add(content);
             return this;
         }
 
-        public IResponder WithStatusCodeOnSuccess(HttpStatusCode successfulStatusCode)
+        public IResponder AddStatusCodeOnSuccess(HttpStatusCode successfulStatusCode)
         {
             if (!successfulStatusCode.IsSuccessful())
             {

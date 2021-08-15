@@ -59,42 +59,42 @@
             An instance of IResponder is used to build an <see cref="T:Phlank.Responder.ApiResult"/>.
             </summary>
         </member>
-        <member name="M:Phlank.Responder.IResponder.WithError(Phlank.Responder.ApiError)">
+        <member name="M:Phlank.Responder.IResponder.AddError(Phlank.Responder.ApiError)">
             <summary>
             Adds an error to the <see cref="T:Phlank.Responder.IResponder"/>.
             </summary>
         </member>
-        <member name="M:Phlank.Responder.IResponder.WithErrors(System.Collections.Generic.IEnumerable{Phlank.Responder.ApiError})">
+        <member name="M:Phlank.Responder.IResponder.AddErrors(System.Collections.Generic.IEnumerable{Phlank.Responder.ApiError})">
             <summary>
             Adds errors to the <see cref="T:Phlank.Responder.IResponder"/>.
             </summary>
         </member>
-        <member name="M:Phlank.Responder.IResponder.WithWarning(Phlank.Responder.ApiWarning)">
+        <member name="M:Phlank.Responder.IResponder.AddWarning(Phlank.Responder.ApiWarning)">
             <summary>
             Adds a warning to the <see cref="T:Phlank.Responder.IResponder"/>.
             </summary>
         </member>
-        <member name="M:Phlank.Responder.IResponder.WithWarnings(System.Collections.Generic.IEnumerable{Phlank.Responder.ApiWarning})">
+        <member name="M:Phlank.Responder.IResponder.AddWarnings(System.Collections.Generic.IEnumerable{Phlank.Responder.ApiWarning})">
             <summary>
             Adds warnings to the <see cref="T:Phlank.Responder.IResponder"/>.
             </summary>
         </member>
-        <member name="M:Phlank.Responder.IResponder.WithException``1(``0)">
+        <member name="M:Phlank.Responder.IResponder.AddException``1(``0)">
             <summary>
             Adds an exception to the <see cref="T:Phlank.Responder.IResponder"/> as an error.
             </summary>
         </member>
-        <member name="M:Phlank.Responder.IResponder.WithExceptions``1(System.Collections.Generic.IEnumerable{``0})">
+        <member name="M:Phlank.Responder.IResponder.AddExceptions``1(System.Collections.Generic.IEnumerable{``0})">
             <summary>
             Adds exceptions to the <see cref="T:Phlank.Responder.IResponder"/> as errors.
             </summary>
         </member>
-        <member name="M:Phlank.Responder.IResponder.WithContent(System.Object)">
+        <member name="M:Phlank.Responder.IResponder.AddContent(System.Object)">
             <summary>
             Adds content to the <see cref="T:Phlank.Responder.IResponder"/>
             </summary>
         </member>
-        <member name="M:Phlank.Responder.IResponder.WithStatusCodeOnSuccess(System.Net.HttpStatusCode)">
+        <member name="M:Phlank.Responder.IResponder.AddStatusCodeOnSuccess(System.Net.HttpStatusCode)">
             <summary>
             Adds a status code to return to the <see cref="T:Phlank.Responder.IResponder"/> if the operation is successful.
             </summary>
