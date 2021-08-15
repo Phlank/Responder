@@ -37,11 +37,11 @@ namespace Phlank.Responder.WeatherExample.Controllers
         [HttpGet]
         public ApiResult GetForecast(WeatherForecastRequest request)
         {
-            if (request.DaysAhead > 10) _resultBuilder.WithWarning(NoConfidenceForecastWarning);
-            else if (request.DaysAhead > 7) _resultBuilder.WithWarning(LowConfidenceForecastWarning);
+            if (request.DaysAhead > 10) _resultBuilder.AddWarning(NoConfidenceForecastWarning);
+            else if (request.DaysAhead > 7) _resultBuilder.AddWarning(LowConfidenceForecastWarning);
 
             var content = _weatherService.GetRandomWeatherForecast(request.DaysAhead, request.TemperatureUnits);
-            _resultBuilder.WithContent(content);
+            _resultBuilder.AddContent(content);
             return _resultBuilder.Build();
         }
     }

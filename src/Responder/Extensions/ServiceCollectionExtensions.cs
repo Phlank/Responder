@@ -83,7 +83,7 @@ namespace Phlank.Responder.Extensions
             var options = actionContext.HttpContext.RequestServices.GetRequiredService<IOptions<ResponderOptions>>();
 
             return new Responder(options)
-                .WithErrors(apiErrors)
+                .AddErrors(apiErrors)
                 .Build();
         };
     }
