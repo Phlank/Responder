@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Phlank.Responder.Extensions;
 using System;
 using System.Collections.Generic;
@@ -92,6 +93,18 @@ namespace Phlank.Responder
         public IResponder AddErrors(IEnumerable<ApiError> errors)
         {
             _errors.AddRange(errors);
+            return this;
+        }
+
+        public IResponder AddProblem(ProblemDetails problem)
+        {
+            _errors.Add(problem.ToApiError());
+            return this;
+        }
+
+        public IResponder AddProblems(IEnumerable<ProblemDetails> problems)
+        {
+            _errors.AddRange(problems.Select(e => e.ToApiError()));
             return this;
         }
 

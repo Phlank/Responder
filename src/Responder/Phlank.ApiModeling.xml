@@ -69,6 +69,16 @@
             Adds errors to the <see cref="T:Phlank.Responder.IResponder"/>.
             </summary>
         </member>
+        <member name="M:Phlank.Responder.IResponder.AddProblem(Microsoft.AspNetCore.Mvc.ProblemDetails)">
+            <summary>
+            Adds a <see cref="T:Microsoft.AspNetCore.Mvc.ProblemDetails">ProblemDetail</see> to the <see cref="T:Phlank.Responder.IResponder"/>
+            </summary>
+        </member>
+        <member name="M:Phlank.Responder.IResponder.AddProblems(System.Collections.Generic.IEnumerable{Microsoft.AspNetCore.Mvc.ProblemDetails})">
+            <summary>
+            Adds <see cref="T:Microsoft.AspNetCore.Mvc.ProblemDetails"/> to the <see cref="T:Phlank.Responder.IResponder"/>
+            </summary>
+        </member>
         <member name="M:Phlank.Responder.IResponder.AddWarning(Phlank.Responder.ApiWarning)">
             <summary>
             Adds a warning to the <see cref="T:Phlank.Responder.IResponder"/>.
@@ -96,12 +106,15 @@
         </member>
         <member name="M:Phlank.Responder.IResponder.AddStatusCodeOnSuccess(System.Net.HttpStatusCode)">
             <summary>
-            Adds a status code to return to the <see cref="T:Phlank.Responder.IResponder"/> if the operation is successful.
+            Adds a status code to return to the <see cref="T:Phlank.Responder.IResponder"/> if the
+            operation is successful. Using this method multiple times will
+            replace previously added status codes.
             </summary>
         </member>
         <member name="M:Phlank.Responder.IResponder.Build">
             <summary>
-            Creates an <see cref="T:Phlank.Responder.ApiResponse"/> from the provided errors and warnings.
+            Creates an <see cref="T:Phlank.Responder.ApiResponse"/> from the provided errors and
+            warnings.
             </summary>
         </member>
         <member name="T:Phlank.Responder.ApiError">
