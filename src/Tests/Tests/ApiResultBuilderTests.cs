@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Phlank.Responder.Extensions;
 using Phlank.Responder.Tests.Data;
@@ -172,6 +173,36 @@ namespace Phlank.Responder.Tests
             Assert.AreEqual((int)HttpStatusCode.InternalServerError, result.StatusCode);
             Assert.AreEqual("https://datatracker.ietf.org/doc/html/rfc7231#section-6.6.1", deserialized.Type.OriginalString);
             Assert.IsNull(deserialized.Instance);
+        }
+
+        [TestMethod]
+        public void TestAddProblem()
+        {
+            _resultBuilder.AddProblem(TestData.ProblemDetails);
+            var result = _resultBuilder.Build();
+            var json = JsonSerializer.Serialize(result.Value);
+            var deserialized = JsonSerializer.Deserialize<ApiError>(json);
+
+            Assert.AreEqual(TestData.ProblemDetails.Detail, deserialized.Detail);
+            Assert.AreEqual(TestData.ProblemDetails.Instance, deserialized.Instance.OriginalString);
+            Assert.AreEqual(TestData.ProblemDetails.Status.Value, (int)result.StatusCode);
+            Assert.AreEqual(TestData.ProblemDetails.Title, deserialized.Title);
+            Assert.AreEqual(TestData.ProblemDetails.Type, deserialized.Type.OriginalString);
+        }
+
+        [TestMethod]
+        public void TestAddProblems()
+        {
+            _resultBuilder.AddProblems(new List<ProblemDetails>() { TestData.ProblemDetails });
+            var result = _resultBuilder.Build();
+            var json = JsonSerializer.Serialize(result.Value);
+            var deserialized = JsonSerializer.Deserialize<ApiError>(json);
+
+            Assert.AreEqual(TestData.ProblemDetails.Detail, deserialized.Detail);
+            Assert.AreEqual(TestData.ProblemDetails.Instance, deserialized.Instance.OriginalString);
+            Assert.AreEqual(TestData.ProblemDetails.Status.Value, (int)result.StatusCode);
+            Assert.AreEqual(TestData.ProblemDetails.Title, deserialized.Title);
+            Assert.AreEqual(TestData.ProblemDetails.Type, deserialized.Type.OriginalString);
         }
     }
 }

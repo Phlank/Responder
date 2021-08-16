@@ -56,5 +56,13 @@ namespace Phlank.Responder.Tests.Data
 
         public static NotImplementedException NotImplementedException = new NotImplementedException("Not implemented exception description.");
 
+        public static ProblemDetails ProblemDetails = new ProblemDetails()
+        {
+            Detail = "detail",
+            Instance = "about:blank",
+            Status = 400,
+            Title = "title",
+            Type = "about:blank"
+        };
     }
 }
