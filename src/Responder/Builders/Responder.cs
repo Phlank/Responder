@@ -8,7 +8,7 @@ using System.Net;
 
 namespace Phlank.Responder
 {
-    internal class Responder : IResponder
+    public class Responder : IResponder
     {
         private readonly ResponderOptions _options;
 
@@ -17,16 +17,20 @@ namespace Phlank.Responder
         private List<object> _content = new List<object>();
         private HttpStatusCode _successStatusCode = HttpStatusCode.OK;
 
+        /// <summary>
+        /// Creates an instance of a <see cref="Responder"/>.
+        /// </summary>
+        /// <param name="options"></param>
         public Responder(IOptions<ResponderOptions> options)
         {
             _options = options.Value;
         }
 
-        public ApiResult Build()
+        public ResponderResult Build()
         {
             if (_errors.Count > 0)
             {
-                return new ApiResult(CreateErrorValue())
+                return new ResponderResult(CreateErrorValue())
                 {
                     StatusCode = (int)_errors.First().Status,
                     ContentType = $"application/problem+json; charset={_options.CharSet}"
@@ -34,7 +38,7 @@ namespace Phlank.Responder
             }
             else
             {
-                return new ApiResult(CreateSuccessValue())
+                return new ResponderResult(CreateSuccessValue())
                 {
                     StatusCode = (int)_successStatusCode,
                     ContentType = $"application/json; charset={_options.CharSet}"

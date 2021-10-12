@@ -22,10 +22,11 @@ namespace Phlank.Responder
     /// Each of these items will contain at the very least an HTTP status code
     /// and a response type header.
     /// </summary>
-    public class ApiResult : JsonResult
+    public class ResponderResult
+        : JsonResult
     {
-        internal ApiResult() : base(null) { }
+        internal ResponderResult() : base(null) { }
 
-        internal ApiResult(object response) : base(response) { }
+        internal ResponderResult(object response) : base(response) { }
     }
 }

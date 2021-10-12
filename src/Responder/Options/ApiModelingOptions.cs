@@ -19,7 +19,7 @@ namespace Phlank.Responder
         /// InvalidModelStateResponseFactory is used or if Responder's
         /// InvalidModelStateResponseFactory is used.
         /// <para>
-        /// Default is false.
+        /// Default is <c>false</c>.
         /// </para>
         /// </summary>
         public bool UseResponderInvalidModelStateResponseFactory { get; set; } = false;
@@ -28,7 +28,7 @@ namespace Phlank.Responder
         /// The character set used when writing a response using the
         /// <see cref="ApiResult"/>.
         /// <para>
-        /// Default is "utf-8".
+        /// Default is <c>"utf-8"</c>.
         /// </para>
         /// </summary>
         public string CharSet { get; set; } = "utf-8";

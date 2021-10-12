@@ -35,7 +35,7 @@ namespace Phlank.Responder.WeatherExample.Controllers
         };
 
         [HttpGet]
-        public ApiResult GetForecast(WeatherForecastRequest request)
+        public ResponderResult GetForecast(WeatherForecastRequest request)
         {
             if (request.DaysAhead > 10) _resultBuilder.AddWarning(NoConfidenceForecastWarning);
             else if (request.DaysAhead > 7) _resultBuilder.AddWarning(LowConfidenceForecastWarning);
