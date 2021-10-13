@@ -1,6 +1,7 @@
 ﻿using Phlank.Responder.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Net;
 using System.Text;
 
@@ -278,23 +279,25 @@ namespace Phlank.Responder
             }
         };
 
-        private static Dictionary<HttpStatusCode, ApiError> StatusCodeToBaseApiErrorDictionary;
+        private static IReadOnlyDictionary<HttpStatusCode, ApiError> StatusCodeToBaseApiErrorDictionary;
 
-        internal static void SetupBaseApiErrors(List<ApiError> supplementalErrors = null)
+        public static void Setup(List<ApiError> supplementalErrors = null)
         {
-            StatusCodeToBaseApiErrorDictionary = new Dictionary<HttpStatusCode, ApiError>();
+            var dictionary = new Dictionary<HttpStatusCode, ApiError>();
 
             foreach (var error in DefaultErrors)
             {
-                StatusCodeToBaseApiErrorDictionary[error.Status] = error;
+                dictionary[error.Status] = error;
             }
             foreach (var error in supplementalErrors)
             {
-                StatusCodeToBaseApiErrorDictionary[error.Status] = error;
+                dictionary[error.Status] = error;
             }
+
+            StatusCodeToBaseApiErrorDictionary = new ReadOnlyDictionary<HttpStatusCode, ApiError>(dictionary);
         }
 
-        internal static ApiError FromStatusCode(HttpStatusCode statusCode)
+        public static ApiError FromStatusCode(HttpStatusCode statusCode)
         {
             if (!statusCode.IsError()) throw new ArgumentOutOfRangeException(nameof(statusCode));
             if (!StatusCodeToBaseApiErrorDictionary.ContainsKey(statusCode)) return null;

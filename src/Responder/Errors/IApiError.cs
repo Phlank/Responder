@@ -46,6 +46,6 @@ namespace Phlank.Responder
         /// <summary>
         /// Additional fields to send to the client.
         /// </summary>
-        public IDictionary<string, object> Extensions { get; }
+        public IReadOnlyDictionary<string, object> Extensions { get; }
     }
 }

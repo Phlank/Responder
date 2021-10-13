@@ -12,7 +12,7 @@ namespace Phlank.Responder.Extensions
         public static ApiError ToApiError(this ProblemDetails problemDetails)
         {
             return new ApiError(
-                (HttpStatusCode)problemDetails.Status,
+                problemDetails.Status.Value,
                 title: problemDetails.Title,
                 detail: problemDetails.Detail,
                 type: new Uri(problemDetails.Type),
