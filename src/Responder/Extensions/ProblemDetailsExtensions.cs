@@ -11,15 +11,12 @@ namespace Phlank.Responder.Extensions
     {
         public static ApiError ToApiError(this ProblemDetails problemDetails)
         {
-            return new ApiError
-            {
-                Detail = problemDetails.Detail,
-                Extensions = new Dictionary<string, object>(problemDetails.Extensions),
-                Instance = new Uri(problemDetails.Instance),
-                Status = (HttpStatusCode)problemDetails.Status.Value,
-                Title = problemDetails.Title,
-                Type = new Uri(problemDetails.Type)
-            };
+            return new ApiError(
+                (HttpStatusCode)problemDetails.Status,
+                title: problemDetails.Title,
+                detail: problemDetails.Detail,
+                type: new Uri(problemDetails.Type),
+                instance: new Uri(problemDetails.Instance));
         }
     }
 }

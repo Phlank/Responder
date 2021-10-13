@@ -44,8 +44,7 @@ namespace Phlank.Responder
         public Uri Type { get; }
 
         /// <summary>
-        /// Problem type definitions MAY extend the problem details object with 
-        /// additional members.
+        /// Additional fields to send to the client.
         /// </summary>
         public IDictionary<string, object> Extensions { get; }
     }

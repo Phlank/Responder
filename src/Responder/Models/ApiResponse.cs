@@ -11,6 +11,7 @@ namespace Phlank.Responder
         /// Warnings regarding the attempted operation.
         /// </summary>
         public IEnumerable<ApiWarning> Warnings { get; internal set; }
+
         /// <summary>
         /// The content to return back to the user as a result of the operation.
         /// </summary>

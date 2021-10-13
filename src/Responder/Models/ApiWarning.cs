@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json.Converters;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -11,32 +13,45 @@ namespace Phlank.Responder
     /// </summary>
     public class ApiWarning
     {
+        private string _message;
+        private IDictionary<string, object> _extensions;
+
         /// <summary>
-        /// The names of the fields involved with the operation warning.
+        /// The message of the <see cref="ApiWarning"/>.
         /// </summary>
-        public IEnumerable<string> Fields { get; set; }
+        [JsonPropertyName("message")]
+        [JsonProperty(PropertyName = "message")]
+        public string Message
+        {
+            get => _message;
+            set => _message = value ?? throw new ArgumentNullException(nameof(value));
+        }
+
         /// <summary>
-        /// The warning code involved in the operation warning.
+        /// The severity of the <see cref="ApiWarning"/>.
         /// </summary>
-        public string Code { get; set; }
-        /// <summary>
-        /// Further information regarding the operation warning. This should
-        /// include some type of corrective measure that will prevent warnings
-        /// by the same means.
-        /// </summary>
-        public string Message { get; set; }
-        /// <summary>
-        /// The severity of the warning.
-        /// </summary>
-        [JsonConverter(typeof(JsonStringEnumConverter))]
+        [System.Text.Json.Serialization.JsonConverter(typeof(JsonStringEnumConverter))]
         [Newtonsoft.Json.JsonConverter(typeof(StringEnumConverter))]
+        [JsonPropertyName("severity")]
+        [JsonProperty(PropertyName = "severity")]
         public Severity Severity { get; set; }
 
         /// <summary>
-        /// Creates an ApiWarning.
+        /// Extension data for the <see cref="ApiWarning"/>.
         /// </summary>
-        public ApiWarning()
+        [System.Text.Json.Serialization.JsonExtensionData]
+        [Newtonsoft.Json.JsonExtensionData]
+        public IDictionary<string, object> Extensions
         {
+            get => _extensions;
+            set => _extensions = value ?? throw new ArgumentNullException(nameof(value));
+        }
+
+        public ApiWarning(string message, Severity severity, IDictionary<string, object> extensions = null)
+        {
+            Message = message;
+            Severity = severity;
+            Extensions = extensions ?? new Dictionary<string, object>();
         }
     }
 }

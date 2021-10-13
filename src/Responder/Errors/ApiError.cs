@@ -20,6 +20,16 @@ namespace Phlank.Responder
         private Uri _type, _instance;
         private IDictionary<string, object> _extensions;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="status">The <see cref="HttpStatusCode"/> relating to the error.</param>
+        /// <param name="title"></param>
+        /// <param name="detail"></param>
+        /// <param name="type"></param>
+        /// <param name="instance"></param>
+        /// <param name="extensions"></param>
+        /// <exception cref="ArgumentNullException"></exception>
         public ApiError(
             HttpStatusCode status,
             string title = null,
