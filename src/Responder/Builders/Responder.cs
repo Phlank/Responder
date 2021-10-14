@@ -13,7 +13,7 @@ namespace Phlank.Responder
         private readonly ResponderOptions _options;
 
         private List<ApiError> _errors = new List<ApiError>();
-        private List<ApiWarning> _warnings = new List<ApiWarning>();
+        private List<Warning> _warnings = new List<Warning>();
         private List<object> _content = new List<object>();
         private HttpStatusCode _successStatusCode = HttpStatusCode.OK;
 
@@ -69,7 +69,7 @@ namespace Phlank.Responder
             };
         }
 
-        private ApiResponse CreateSuccessValue()
+        private ApiModel CreateSuccessValue()
         {
             object content = null;
             if (_content.Count() == 1)
@@ -81,7 +81,7 @@ namespace Phlank.Responder
                 content = _content;
             }
 
-            return new ApiResponse
+            return new ApiModel
             {
                 Content = content,
                 Warnings = _warnings
@@ -112,13 +112,13 @@ namespace Phlank.Responder
             return this;
         }
 
-        public IResponder AddWarning(ApiWarning warning)
+        public IResponder AddWarning(Warning warning)
         {
             _warnings.Add(warning);
             return this;
         }
 
-        public IResponder AddWarnings(IEnumerable<ApiWarning> warnings)
+        public IResponder AddWarnings(IEnumerable<Warning> warnings)
         {
             _warnings.AddRange(warnings);
             return this;

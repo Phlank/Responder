@@ -6,7 +6,7 @@ using System.Net;
 namespace Phlank.Responder
 {
     /// <summary>
-    /// An instance of IResponder is used to build an <see cref="ApiResult"/>.
+    /// An instance of IResponder is used to build an <see cref="ResponderResult"/>.
     /// </summary>
     public interface IResponder
     {
@@ -33,12 +33,12 @@ namespace Phlank.Responder
         /// <summary>
         /// Adds a warning to the <see cref="IResponder"/>.
         /// </summary>
-        IResponder AddWarning(ApiWarning warning);
+        IResponder AddWarning(Warning warning);
 
         /// <summary>
         /// Adds warnings to the <see cref="IResponder"/>.
         /// </summary>
-        IResponder AddWarnings(IEnumerable<ApiWarning> warnings);
+        IResponder AddWarnings(IEnumerable<Warning> warnings);
 
         /// <summary>
         /// Adds an exception to the <see cref="IResponder"/> as an error.
@@ -58,14 +58,15 @@ namespace Phlank.Responder
         /// <summary>
         /// Adds a status code to return to the <see cref="IResponder"/> if the
         /// operation is successful. Using this method multiple times will
-        /// replace previously added status codes.
+        /// replace previously added status codes. The default successful
+        /// status code is <see cref="HttpStatusCode.OK"/>.
         /// </summary>
         IResponder AddStatusCodeOnSuccess(HttpStatusCode statusCode);
 
         /// <summary>
-        /// Creates an <see cref="ApiResponse"/> from the provided errors and
+        /// Creates an <see cref="Response"/> from the provided errors and
         /// warnings.
         /// </summary>
-        ApiResult Build();
+        ResponderResult Build();
     }
 }

@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
 
 namespace Phlank.Responder
@@ -11,13 +12,13 @@ namespace Phlank.Responder
     /// problematic events during operation or issues with the result of the
     /// operation.
     /// </summary>
-    public class ApiWarning
+    public class Warning
     {
         private string _message;
-        private IDictionary<string, object> _extensions;
+        private IReadOnlyDictionary<string, object> _extensions;
 
         /// <summary>
-        /// The message of the <see cref="ApiWarning"/>.
+        /// The message of the <see cref="Warning"/>.
         /// </summary>
         [JsonPropertyName("message")]
         [JsonProperty(PropertyName = "message")]
@@ -28,7 +29,7 @@ namespace Phlank.Responder
         }
 
         /// <summary>
-        /// The severity of the <see cref="ApiWarning"/>.
+        /// The severity of the <see cref="Warning"/>.
         /// </summary>
         [System.Text.Json.Serialization.JsonConverter(typeof(JsonStringEnumConverter))]
         [Newtonsoft.Json.JsonConverter(typeof(StringEnumConverter))]
@@ -37,19 +38,20 @@ namespace Phlank.Responder
         public Severity Severity { get; set; }
 
         /// <summary>
-        /// Extension data for the <see cref="ApiWarning"/>.
+        /// Extension data for the <see cref="Warning"/>.
         /// </summary>
         [System.Text.Json.Serialization.JsonExtensionData]
         [Newtonsoft.Json.JsonExtensionData]
-        public IDictionary<string, object> Extensions
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public IReadOnlyDictionary<string, object> Extensions
         {
             get => _extensions;
-            set => _extensions = value ?? throw new ArgumentNullException(nameof(value));
+            set => _extensions = value ?? new Dictionary<string, object>();
         }
 
-        public ApiWarning(string message, Severity severity, IDictionary<string, object> extensions = null)
+        public Warning(string message, Severity severity, IReadOnlyDictionary<string, object> extensions = null)
         {
-            Message = message;
+            Message = message ?? throw new ArgumentNullException(nameof(message));
             Severity = severity;
             Extensions = extensions ?? new Dictionary<string, object>();
         }
