@@ -18,22 +18,22 @@ namespace Phlank.Responder.WeatherExample.Controllers
             _weatherService = weatherService;
         }
 
-        private static readonly ApiWarning LowConfidenceForecastWarning = new ApiWarning
-        {
-            Code = "LowConfidenceForecast",
-            Fields = new List<string> { "DaysAhead" },
-            Message = "Forecasts seven days or more into the future may not be accurate and are subject to change.",
-            Severity = Severity.Low
-        };
+        private static readonly Warning LowConfidenceForecastWarning = new Warning(
+            Severity.Low,
+            "Forecasts seven days or more into the future may not be accurate and are subject to change.",
+            new Dictionary<string, object>()
+            {
+                { "Fields", new List<string>() { "DaysAhead" } }
+            });
 
-        private static readonly ApiWarning NoConfidenceForecastWarning = new ApiWarning
-        {
-            Code = "NoConfidenceForecast",
-            Fields = new List<string> { "DaysAhead" },
-            Message = "Forecasts ten or more days into the future are extremely volatile and should not be relied upon for any circumstance.",
-            Severity = Severity.High
-        };
-
+        private static readonly Warning NoConfidenceForecastWarning = new Warning(
+            Severity.High,
+            "Forecasts ten or more days into the future are extremely volatile and should not be relied upon for any circumstance.",
+            new Dictionary<string, object>()
+            {
+                { "Fields", new List<string>() { "DaysAhead" } }
+            });
+        
         [HttpGet]
         public ResponderResult GetForecast(WeatherForecastRequest request)
         {
@@ -42,7 +42,7 @@ namespace Phlank.Responder.WeatherExample.Controllers
 
             var content = _weatherService.GetRandomWeatherForecast(request.DaysAhead, request.TemperatureUnits);
             _resultBuilder.AddContent(content);
-            return _resultBuilder.Build();
+            return _resultBuilder.Build(this);
         }
     }
 }

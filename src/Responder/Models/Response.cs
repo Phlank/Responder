@@ -14,6 +14,9 @@ namespace Phlank.Responder
         /// </summary>
         [JsonProperty(PropertyName = "warnings", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [JsonPropertyName("warnings")]
+#if NET5_0_OR_GREATER
+        [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+#endif
         public IEnumerable<Warning> Warnings { get; set; }
 
         /// <summary>
@@ -21,6 +24,9 @@ namespace Phlank.Responder
         /// </summary>
         [JsonProperty(PropertyName = "data", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [JsonPropertyName("data")]
+#if NET5_0_OR_GREATER
+        [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+#endif
         public object Data { get; set; }
 
         /// <summary>
@@ -28,7 +34,14 @@ namespace Phlank.Responder
         /// </summary>
         [JsonProperty(PropertyName = "error", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [JsonPropertyName("error")]
+#if NET5_0_OR_GREATER
+        [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+#endif
         public ApiError Error { get; set; }
+
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public bool IsSuccessful { get => Error == null; }
     }
 
     /// <summary>
@@ -41,6 +54,9 @@ namespace Phlank.Responder
         /// </summary>
         [JsonProperty(PropertyName = "warnings", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [JsonPropertyName("warnings")]
+#if NET5_0_OR_GREATER
+        [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+#endif
         public IEnumerable<Warning> Warnings { get; set; }
 
         /// <summary>
@@ -48,6 +64,9 @@ namespace Phlank.Responder
         /// </summary>
         [JsonProperty(PropertyName = "data", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [JsonPropertyName("data")]
+#if NET5_0_OR_GREATER
+        [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+#endif
         public T Data { get; set; }
 
         /// <summary>
@@ -55,6 +74,11 @@ namespace Phlank.Responder
         /// </summary>
         [JsonProperty(PropertyName = "error", DefaultValueHandling = DefaultValueHandling.Ignore)]
         [JsonPropertyName("error")]
+#if NET5_0_OR_GREATER
+        [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+#endif
         public ApiError Error { get; set; }
+
+        public bool IsSuccessful { get => Error == null; }
     }
 }

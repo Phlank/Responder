@@ -4,7 +4,7 @@
         <name>Phlank.Responder</name>
     </assembly>
     <members>
-        <member name="T:Phlank.Responder.ApiResult">
+        <member name="T:Phlank.Responder.ResponderResult">
             <summary>
             An action result produced by the <see cref="T:Phlank.Responder.IResponder"/>. This
             object should be returned by any client-facing controller methods in
@@ -26,37 +26,31 @@
             and a response type header.
             </summary>
         </member>
-        <member name="T:Phlank.Responder.Extensions.ServiceCollectionExtensions">
+        <member name="T:Phlank.Responder.ResponderResult`1">
             <summary>
-            Extensions to the <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> interface for
-            configuring the <see cref="T:Phlank.Responder.IResponder"/> as a part of the service
-            collection.
-            <para>
-            Simple usage:
-            </para>
-            <code>
-            public void ConfigureServices(IServiceCollection services)
-            {
-                ...
-                services.ConfigureResponder;
-                ...
-            }
-            </code>
-            <para>
-            This will add the IApiResponseBuilder as a transient service to the
-            service collection.
-            </para>
-            </summary>
-        </member>
-        <member name="M:Phlank.Responder.Extensions.ServiceCollectionExtensions.ConfigureResponder(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Phlank.Responder.ResponderOptions})">
-            <summary>
-            Adds ApiResponse services to the specified
-            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/>.
+            An action result produced by the <see cref="T:Phlank.Responder.IResponder"/>. This
+            object should be returned by any client-facing controller methods in
+            your project. This result can hold any one of three forms of content:
+            <list type="bullet">
+                <item>
+                    No content with successful status code.
+                </item>
+                <item>
+                    JSON content (<c>application/json</c>) with a successful status
+                    code.
+                </item>
+                <item>
+                    JSON content (<c>application/problem+json</c>) with an
+                    unsuccessful status cude.
+                </item>
+            </list>
+            Each of these items will contain at the very least an HTTP status code
+            and a response type header.
             </summary>
         </member>
         <member name="T:Phlank.Responder.IResponder">
             <summary>
-            An instance of IResponder is used to build an <see cref="T:Phlank.Responder.ApiResult"/>.
+            An instance of IResponder is used to build an <see cref="T:Phlank.Responder.ResponderResult"/>.
             </summary>
         </member>
         <member name="M:Phlank.Responder.IResponder.AddError(Phlank.Responder.ApiError)">
@@ -79,12 +73,12 @@
             Adds <see cref="T:Microsoft.AspNetCore.Mvc.ProblemDetails"/> to the <see cref="T:Phlank.Responder.IResponder"/>
             </summary>
         </member>
-        <member name="M:Phlank.Responder.IResponder.AddWarning(Phlank.Responder.ApiWarning)">
+        <member name="M:Phlank.Responder.IResponder.AddWarning(Phlank.Responder.Warning)">
             <summary>
             Adds a warning to the <see cref="T:Phlank.Responder.IResponder"/>.
             </summary>
         </member>
-        <member name="M:Phlank.Responder.IResponder.AddWarnings(System.Collections.Generic.IEnumerable{Phlank.Responder.ApiWarning})">
+        <member name="M:Phlank.Responder.IResponder.AddWarnings(System.Collections.Generic.IEnumerable{Phlank.Responder.Warning})">
             <summary>
             Adds warnings to the <see cref="T:Phlank.Responder.IResponder"/>.
             </summary>
@@ -108,14 +102,28 @@
             <summary>
             Adds a status code to return to the <see cref="T:Phlank.Responder.IResponder"/> if the
             operation is successful. Using this method multiple times will
-            replace previously added status codes.
+            replace previously added status codes. The default successful
+            status code is <see cref="F:System.Net.HttpStatusCode.OK"/>.
             </summary>
         </member>
-        <member name="M:Phlank.Responder.IResponder.Build">
+        <member name="M:Phlank.Responder.IResponder.Build(Microsoft.AspNetCore.Mvc.ControllerBase)">
             <summary>
-            Creates an <see cref="T:Phlank.Responder.ApiResponse"/> from the provided errors and
+            Creates a <see cref="T:Phlank.Responder.Response"/> from the provided errors and
             warnings.
             </summary>
+        </member>
+        <member name="M:Phlank.Responder.IResponder.Build``1(Microsoft.AspNetCore.Mvc.ControllerBase)">
+            <summary>
+            Creates a <see cref="T:Phlank.Responder.ResponderResult`1"/> from the provided errors
+            and warnings.
+            </summary>
+            <typeparam name="T">The type of the data to return.</typeparam>
+        </member>
+        <member name="M:Phlank.Responder.Responder.#ctor(Microsoft.Extensions.Options.IOptions{Phlank.Responder.ResponderOptions})">
+            <summary>
+            Creates an instance of a <see cref="T:Phlank.Responder.Responder"/>.
+            </summary>
+            <param name="options">The options injected at startup to control the behavior of the <see cref="T:Phlank.Responder.Responder"/></param>
         </member>
         <member name="T:Phlank.Responder.ApiError">
             <summary>
@@ -125,92 +133,119 @@
             At minimum, a user should provide values for Status, Title, and Details.
             </summary>
         </member>
-        <member name="P:Phlank.Responder.ApiError.Status">
+        <member name="M:Phlank.Responder.ApiError.#ctor(System.Net.HttpStatusCode,System.String,System.String,System.Uri,System.Uri,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Creates an <see cref="T:Phlank.Responder.ApiError"/> from the given arguments. 
+            <paramref name="status" /> is the only required parameter in most 
+            circumstances. If a field is not provided, then the default value
+            from a base list of <see cref="T:Phlank.Responder.ApiError">ApiErrors</see> will be 
+            used.
+            </summary>
+            <param name="status">The <see cref="T:System.Net.HttpStatusCode"/> relating to the error.</param>
+            <param name="title">The title of the error. If none is provided, a default value will be used.</param>
+            <param name="detail">The detail text of the error. If none is provided, a default value will be used.</param>
+            <param name="type">The URI type reference of the error. If none is provided, a default value will be used.</param>
+            <param name="instance">The instance of the specific context relating to the ApiError. If left blank, this will be provided for by the <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> belonging to the <see cref="T:Microsoft.AspNetCore.Mvc.ControllerContext"/>.</param>
+            <param name="extensions">Additional information relating to the error that has occured.</param>
+            <exception cref="T:System.ArgumentNullException">If no default <see cref="T:Phlank.Responder.ApiError"/> is found matching the provided <paramref name="status"/>, and either <paramref name="title"/> or <paramref name="detail"/> are null, an <see cref="T:System.ArgumentNullException"/> will be thrown.</exception>
+        </member>
+        <member name="M:Phlank.Responder.ApiError.#ctor(System.Int32,System.String,System.String,System.Uri,System.Uri,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Creates an <see cref="T:Phlank.Responder.ApiError"/> from the given arguments. 
+            <paramref name="status" /> is the only required parameter in most 
+            circumstances. If a field is not provided, then the default value
+            from a base list of <see cref="T:Phlank.Responder.ApiError">ApiErrors</see> will be 
+            used.
+            </summary>
+            <param name="status">The status code relating to the error.</param>
+            <param name="title">The title of the error. If none is provided, a default value will be used.</param>
+            <param name="detail">The detail text of the error. If none is provided, a default value will be used.</param>
+            <param name="type">The URI type reference of the error. If none is provided, a default value will be used.</param>
+            <param name="instance">The instance of the specific context relating to the ApiError. If left blank, this will be provided for by the <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> belonging to the <see cref="T:Microsoft.AspNetCore.Mvc.ControllerContext"/>.</param>
+            <param name="extensions">Additional information relating to the error that has occured.</param>
+            <exception cref="T:System.ArgumentNullException">If no default <see cref="T:Phlank.Responder.ApiError"/> is found matching the provided <paramref name="status"/>, and either <paramref name="title"/> or <paramref name="detail"/> are null, an <see cref="T:System.ArgumentNullException"/> will be thrown.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">An <see cref="T:System.ArgumentOutOfRangeException"/> may be thrown under two circumstances; first, if the provided <paramref name="status"/> has no corresponding <see cref="T:System.Net.HttpStatusCode"/>, and second, if the provided <paramref name="status"/> has a matching <see cref="T:System.Net.HttpStatusCode"/> but it is not a valid erroring status code.</exception>
+        </member>
+        <member name="P:Phlank.Responder.IApiError.Detail">
+            <summary>
+            A short, human-readable summary of the problem type.It SHOULD NOT
+            change from occurrence to occurrence of the problem, except for 
+            purposes of localization (e.g., using proactive content 
+            negotiation).
+            </summary>
+        </member>
+        <member name="P:Phlank.Responder.IApiError.Instance">
+            <summary>
+            A URI reference that identifies the specific occurrence of the 
+            problem. It may or may not yield further information if 
+            dereferenced.
+            </summary>
+        </member>
+        <member name="P:Phlank.Responder.IApiError.Status">
             <summary>
             The HTTP status code generated by the origin server for this
             occurence of the problem.
             </summary>
         </member>
-        <member name="P:Phlank.Responder.ApiError.Type">
-            <summary>
-            A URI reference that identifies the problem type. When this member
-            is not specified, it will use a default <see cref="T:System.Uri"/> pointing
-            to the RFC documentation of this error's Status.
-            </summary>
-        </member>
-        <member name="P:Phlank.Responder.ApiError.Title">
-            <summary>
-            A short, human-readable summary of the problem type. It SHOULD NOT
-            change from occurrence to occurrence of the problem, except for
-            purposes of localization.
-            </summary>
-        </member>
-        <member name="P:Phlank.Responder.ApiError.Detail">
+        <member name="P:Phlank.Responder.IApiError.Title">
             <summary>
             A human-readable explanation specific to this occurrence of the
             problem.
             </summary>
         </member>
-        <member name="P:Phlank.Responder.ApiError.Instance">
+        <member name="P:Phlank.Responder.IApiError.Type">
             <summary>
-            A URI reference that identifies the specific occurrence of the
-            problem. It may or may not yield further information if
-            dereferenced.
+            A URI reference 
+            [<see href="https://www.rfc-editor.org/rfc/rfc3986">RFC3986</see>]
+            that identifies the problem type. RFC7807 encourages that, when 
+            dereferenced, it provide human-readable documentation for the 
+            problem type. When this member is not present, its value is assumed
+            to be "about:blank".
             </summary>
         </member>
-        <member name="P:Phlank.Responder.ApiError.Extensions">
+        <member name="P:Phlank.Responder.IApiError.Extensions">
             <summary>
-            Additional information to reflect back to the client. These items
-            will be surfaced in the top level of the serialized response.
+            Additional fields to send to the client.
             </summary>
         </member>
-        <member name="T:Phlank.Responder.ApiResponse">
+        <member name="T:Phlank.Responder.Response">
             <summary>
-            A response to send to a client.
+            Content model for deserializing responses generated by the <see cref="T:Phlank.Responder.IResponder"/>.
             </summary>
         </member>
-        <member name="P:Phlank.Responder.ApiResponse.Warnings">
+        <member name="P:Phlank.Responder.Response.Warnings">
             <summary>
             Warnings regarding the attempted operation.
             </summary>
         </member>
-        <member name="P:Phlank.Responder.ApiResponse.Content">
+        <member name="P:Phlank.Responder.Response.Data">
             <summary>
             The content to return back to the user as a result of the operation.
             </summary>
         </member>
-        <member name="T:Phlank.Responder.ApiWarning">
+        <member name="P:Phlank.Responder.Response.Error">
             <summary>
-            Information to reflect back to the user regarding any dangerous or
-            problematic events during operation or issues with the result of the
-            operation.
+            An error which occured while trying to fulfill the request of the client.
             </summary>
         </member>
-        <member name="P:Phlank.Responder.ApiWarning.Fields">
+        <member name="T:Phlank.Responder.Response`1">
             <summary>
-            The names of the fields involved with the operation warning.
+            Content model for deserializing responses generated by the <see cref="T:Phlank.Responder.IResponder"/>.
             </summary>
         </member>
-        <member name="P:Phlank.Responder.ApiWarning.Code">
+        <member name="P:Phlank.Responder.Response`1.Warnings">
             <summary>
-            The warning code involved in the operation warning.
+            Warnings regarding the attempted operation.
             </summary>
         </member>
-        <member name="P:Phlank.Responder.ApiWarning.Message">
+        <member name="P:Phlank.Responder.Response`1.Data">
             <summary>
-            Further information regarding the operation warning. This should
-            include some type of corrective measure that will prevent warnings
-            by the same means.
+            The content to return back to the user as a result of the operation.
             </summary>
         </member>
-        <member name="P:Phlank.Responder.ApiWarning.Severity">
+        <member name="P:Phlank.Responder.Response`1.Error">
             <summary>
-            The severity of the warning.
-            </summary>
-        </member>
-        <member name="M:Phlank.Responder.ApiWarning.#ctor">
-            <summary>
-            Creates an ApiWarning.
+            An error which occured while trying to fulfill the request of the client.
             </summary>
         </member>
         <member name="T:Phlank.Responder.Severity">
@@ -233,33 +268,36 @@
             A low level of concern either regarding the operation or its result.
             </summary>
         </member>
+        <member name="T:Phlank.Responder.Warning">
+            <summary>
+            Information to reflect back to the user regarding any dangerous or
+            problematic events during operation or issues with the result of the
+            operation.
+            </summary>
+        </member>
+        <member name="P:Phlank.Responder.Warning.Severity">
+            <summary>
+            The severity of the <see cref="T:Phlank.Responder.Warning"/>.
+            </summary>
+        </member>
+        <member name="P:Phlank.Responder.Warning.Message">
+            <summary>
+            The message of the <see cref="T:Phlank.Responder.Warning"/>.
+            </summary>
+        </member>
+        <member name="P:Phlank.Responder.Warning.Extensions">
+            <summary>
+            Extension data for the <see cref="T:Phlank.Responder.Warning"/>.
+            </summary>
+        </member>
         <member name="T:Phlank.Responder.ResponderOptions">
             <summary>
-            Options for ApiModeling dependency injection.
+            Options for the behavior of the Responder library..
             </summary>
         </member>
-        <member name="F:Phlank.Responder.ResponderOptions.ApiModeling">
+        <member name="F:Phlank.Responder.ResponderOptions.Responder">
             <summary>
-            The configuration string for Responder's options.
-            </summary>
-        </member>
-        <member name="P:Phlank.Responder.ResponderOptions.UseResponderInvalidModelStateResponseFactory">
-            <summary>
-            Property that determines whether the default
-            InvalidModelStateResponseFactory is used or if Responder's
-            InvalidModelStateResponseFactory is used.
-            <para>
-            Default is false.
-            </para>
-            </summary>
-        </member>
-        <member name="P:Phlank.Responder.ResponderOptions.CharSet">
-            <summary>
-            The character set used when writing a response using the
-            <see cref="T:Phlank.Responder.ApiResult"/>.
-            <para>
-            Default is "utf-8".
-            </para>
+            The configuration string for the Responder library.
             </summary>
         </member>
     </members>

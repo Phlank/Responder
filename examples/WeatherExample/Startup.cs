@@ -23,10 +23,7 @@ namespace Phlank.Responder.WeatherExample
         {
             services.AddControllers();
 
-            services.ConfigureResponder(options =>
-            {
-                options.UseResponderInvalidModelStateResponseFactory = true;
-            });
+            services.AddScoped<IResponder, Responder>();
 
             services.AddTransient<IWeatherService, WeatherService>();
         }

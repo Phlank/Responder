@@ -5,17 +5,19 @@ using System.Net;
 namespace Phlank.Responder.Tests
 {
     [TestClass]
-    public class ApiErrorTests
+    public class ErrorTests
     {
         [TestMethod]
         public void TestExceptionOnInitStatusCodeOutOfRange()
         {
             Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
             {
-                var error = new ApiError
-                {
-                    Status = HttpStatusCode.OK,
-                };
+                new ApiError(HttpStatusCode.OK);
+            });
+
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+            {
+                new ApiError(200);
             });
         }
     }

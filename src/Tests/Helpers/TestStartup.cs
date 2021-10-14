@@ -19,10 +19,7 @@ namespace Phlank.Responder.Tests.Helpers
         {
             services.AddControllers();
 
-            services.ConfigureResponder(options =>
-            {
-                options.UseResponderInvalidModelStateResponseFactory = true;
-            });
+            services.AddScoped<IResponder, Responder>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

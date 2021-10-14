@@ -64,9 +64,16 @@ namespace Phlank.Responder
         IResponder AddStatusCodeOnSuccess(HttpStatusCode statusCode);
 
         /// <summary>
-        /// Creates an <see cref="Response"/> from the provided errors and
+        /// Creates a <see cref="Response"/> from the provided errors and
         /// warnings.
         /// </summary>
-        ResponderResult Build();
+        ResponderResult Build(ControllerBase controller);
+
+        /// <summary>
+        /// Creates a <see cref="ResponderResult{T}"/> from the provided errors
+        /// and warnings.
+        /// </summary>
+        /// <typeparam name="T">The type of the data to return.</typeparam>
+        ResponderResult<T> Build<T>(ControllerBase controller) where T : class;
     }
 }

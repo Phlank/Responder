@@ -6,7 +6,7 @@ using System.Text;
 namespace Phlank.Responder.Tests.Helpers
 {
     [ApiController]
-    public class TestController
+    public class TestController : Controller
     {
         private readonly IResponder _responder;
 
@@ -16,9 +16,9 @@ namespace Phlank.Responder.Tests.Helpers
         }
 
         [Route("api/TestMethod")]
-        public ApiResult TestMethod(TestModel model)
+        public ResponderResult TestMethod(TestModel model)
         {
-            return _responder.Build();
+            return _responder.Build(this);
         }
     }
 }

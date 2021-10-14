@@ -82,7 +82,7 @@ namespace Phlank.Responder
 
         private void EvaluatePropertiesForArguments(string title, string detail, Uri type, Uri instance, IDictionary<string, object> extensions)
         {
-            extensions = extensions ?? new Dictionary<string, object>();
+            extensions ??= new Dictionary<string, object>();
 
             var baseError = BaseErrors.FromStatusCode(_status);
             if (baseError != null)
@@ -133,6 +133,9 @@ namespace Phlank.Responder
 
         [JsonPropertyName("type")]
         [JsonProperty(PropertyName = "type", DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if NET5_0_OR_GREATER
+        [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+#endif
         public Uri Type
         {
             get => _type;
@@ -141,6 +144,9 @@ namespace Phlank.Responder
 
         [JsonPropertyName("instance")]
         [JsonProperty(PropertyName = "instance", DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if NET5_0_OR_GREATER
+        [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+#endif
         public Uri Instance
         {
             get => _instance;
@@ -149,6 +155,10 @@ namespace Phlank.Responder
 
         [System.Text.Json.Serialization.JsonExtensionData]
         [Newtonsoft.Json.JsonExtensionData]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if NET5_0_OR_GREATER
+        [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+#endif
         public IReadOnlyDictionary<string, object> Extensions
         {
             get => _extensions;

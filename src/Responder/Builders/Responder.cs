@@ -20,72 +20,93 @@ namespace Phlank.Responder
         /// <summary>
         /// Creates an instance of a <see cref="Responder"/>.
         /// </summary>
-        /// <param name="options"></param>
-        public Responder(IOptions<ResponderOptions> options)
+        /// <param name="options">The options injected at startup to control the behavior of the <see cref="Responder"/></param>
+        public Responder(IOptions<ResponderOptions> options = null)
         {
-            _options = options.Value;
+            _options = options?.Value ?? new ResponderOptions();
         }
 
-        public ResponderResult Build()
+        public ResponderResult Build(ControllerBase controller)
         {
+            var response = CreateResponse(controller);
+            return new ResponderResult(response, _successStatusCode);
+        }
+
+        private Response CreateResponse(ControllerBase controller)
+        {
+            var output = new Response();
             if (_errors.Count > 0)
             {
-                return new ResponderResult(CreateErrorValue())
-                {
-                    StatusCode = (int)_errors.First().Status,
-                    ContentType = $"application/problem+json; charset={_options.CharSet}"
-                };
+                var firstError = _errors.First();
+                var remainingErrors = _errors.Skip(1);
+
+                var combinedExtensions = new Dictionary<string, object>(firstError.Extensions);
+                combinedExtensions.Add("additionalErrors", remainingErrors);
+
+                if (_options.IncludeTraceIdOnErrors) combinedExtensions["traceId"] = controller.ControllerContext.HttpContext.TraceIdentifier;
+
+                var combinedError = new ApiError(
+                    firstError.Status,
+                    title: firstError.Title,
+                    detail: firstError.Detail,
+                    type: firstError.Type,
+                    instance: firstError.Instance,
+                    combinedExtensions);
+
+                output.Error = combinedError;
             }
             else
             {
-                return new ResponderResult(CreateSuccessValue())
+                output.Warnings = _warnings;
+                if (_content.Count == 0) output.Data = null;
+                else if (_content.Count == 1) output.Data = _content.First();
+                else output.Data = _content;
+            }
+
+            return output;
+        }
+
+        public ResponderResult<T> Build<T>(ControllerBase controller) where T : class
+        {
+            var response = CreateResponse<T>(controller);
+            return new ResponderResult<T>(response, _successStatusCode);
+        }
+
+        private Response<T> CreateResponse<T>(ControllerBase controller) where T : class
+        {
+            var output = new Response<T>();
+            if (_errors.Count > 0)
+            {
+                var firstError = _errors.First();
+                var remainingErrors = _errors.Skip(1);
+
+                var combinedExtensions = new Dictionary<string, object>(firstError.Extensions);
+                combinedExtensions.Add("additionalErrors", remainingErrors);
+
+                if (_options.IncludeTraceIdOnErrors) combinedExtensions["traceId"] = controller.ControllerContext.HttpContext.TraceIdentifier;
+
+                var combinedError = new ApiError(
+                    firstError.Status,
+                    title: firstError.Title,
+                    detail: firstError.Detail,
+                    type: firstError.Type,
+                    instance: firstError.Instance,
+                    combinedExtensions);
+
+                output.Error = combinedError;
+            }
+            else
+            {
+                output.Warnings = _warnings;
+                if (_content.Count == 0) output.Data = null;
+                else if (_content.Count == 1) output.Data = _content.First() as T;
+                else
                 {
-                    StatusCode = (int)_successStatusCode,
-                    ContentType = $"application/json; charset={_options.CharSet}"
-                };
-            }
-        }
-
-        private ApiError CreateErrorValue()
-        {
-            var firstError = _errors.First();
-            var remainingErrors = _errors.GetRange(1, _errors.Count - 1);
-
-            var extensions = firstError.Extensions ?? new Dictionary<string, object>();
-
-            if (remainingErrors.Count() > 0)
-            {
-                extensions.Add("otherErrors", remainingErrors);
+                    throw new Exception($"Multiple pieces of data have been added to the Responder, and they cannot all be cast together into a single instance of {typeof(T).Name}");
+                }
             }
 
-            return new ApiError
-            {
-                Detail = firstError.Detail,
-                Instance = firstError.Instance,
-                Status = firstError.Status,
-                Title = firstError.Title,
-                Type = firstError.Type,
-                Extensions = extensions
-            };
-        }
-
-        private ApiModel CreateSuccessValue()
-        {
-            object content = null;
-            if (_content.Count() == 1)
-            {
-                content = _content.First();
-            }
-            else if (_content.Count() > 1)
-            {
-                content = _content;
-            }
-
-            return new ApiModel
-            {
-                Content = content,
-                Warnings = _warnings
-            };
+            return output;
         }
 
         public IResponder AddError(ApiError error)

@@ -18,6 +18,15 @@ namespace Phlank.Responder
         private IReadOnlyDictionary<string, object> _extensions;
 
         /// <summary>
+        /// The severity of the <see cref="Warning"/>.
+        /// </summary>
+        [System.Text.Json.Serialization.JsonConverter(typeof(JsonStringEnumConverter))]
+        [Newtonsoft.Json.JsonConverter(typeof(StringEnumConverter))]
+        [JsonPropertyName("severity")]
+        [JsonProperty(PropertyName = "severity")]
+        public Severity Severity { get; set; }
+
+        /// <summary>
         /// The message of the <see cref="Warning"/>.
         /// </summary>
         [JsonPropertyName("message")]
@@ -29,27 +38,21 @@ namespace Phlank.Responder
         }
 
         /// <summary>
-        /// The severity of the <see cref="Warning"/>.
-        /// </summary>
-        [System.Text.Json.Serialization.JsonConverter(typeof(JsonStringEnumConverter))]
-        [Newtonsoft.Json.JsonConverter(typeof(StringEnumConverter))]
-        [JsonPropertyName("severity")]
-        [JsonProperty(PropertyName = "severity")]
-        public Severity Severity { get; set; }
-
-        /// <summary>
         /// Extension data for the <see cref="Warning"/>.
         /// </summary>
         [System.Text.Json.Serialization.JsonExtensionData]
         [Newtonsoft.Json.JsonExtensionData]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if NET5_0_OR_GREATER
+        [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+#endif
         public IReadOnlyDictionary<string, object> Extensions
         {
             get => _extensions;
             set => _extensions = value ?? new Dictionary<string, object>();
         }
 
-        public Warning(string message, Severity severity, IReadOnlyDictionary<string, object> extensions = null)
+        public Warning(Severity severity, string message, IReadOnlyDictionary<string, object> extensions = null)
         {
             Message = message ?? throw new ArgumentNullException(nameof(message));
             Severity = severity;
