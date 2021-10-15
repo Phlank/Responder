@@ -7,7 +7,7 @@ namespace Phlank.Responder
     public interface IApiError
     {
         /// <summary>
-        /// A short, human-readable summary of the problem type.It SHOULD NOT
+        /// A short, human-readable summary of the problem type. It SHOULD NOT
         /// change from occurrence to occurrence of the problem, except for 
         /// purposes of localization (e.g., using proactive content 
         /// negotiation).
@@ -46,6 +46,6 @@ namespace Phlank.Responder
         /// <summary>
         /// Additional fields to send to the client.
         /// </summary>
-        public IReadOnlyDictionary<string, object> Extensions { get; }
+        public IDictionary<string, object> Extensions { get; }
     }
 }

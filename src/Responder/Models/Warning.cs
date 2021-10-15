@@ -15,7 +15,7 @@ namespace Phlank.Responder
     public class Warning
     {
         private string _message;
-        private IReadOnlyDictionary<string, object> _extensions;
+        private IDictionary<string, object> _extensions = new Dictionary<string, object>();
 
         /// <summary>
         /// The severity of the <see cref="Warning"/>.
@@ -46,13 +46,18 @@ namespace Phlank.Responder
 #if NET5_0_OR_GREATER
         [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
 #endif
-        public IReadOnlyDictionary<string, object> Extensions
+        public IDictionary<string, object> Extensions
         {
             get => _extensions;
             set => _extensions = value ?? new Dictionary<string, object>();
         }
 
-        public Warning(Severity severity, string message, IReadOnlyDictionary<string, object> extensions = null)
+
+        [System.Text.Json.Serialization.JsonConstructor]
+        [Newtonsoft.Json.JsonConstructor]
+        public Warning() { }
+
+        public Warning(Severity severity, string message, Dictionary<string, object> extensions = null)
         {
             Message = message ?? throw new ArgumentNullException(nameof(message));
             Severity = severity;

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net;
 using System.Text;
 
@@ -279,7 +280,7 @@ namespace Phlank.Responder
             }
         };
 
-        private static IReadOnlyDictionary<HttpStatusCode, ApiError> StatusCodeToBaseApiErrorDictionary;
+        private static IDictionary<HttpStatusCode, ApiError> StatusCodeToBaseApiErrorDictionary = DefaultErrors.ToDictionary(keySelector: e => e.Status, elementSelector: e => e);
 
         public static void Setup(List<ApiError> supplementalErrors = null)
         {
@@ -294,7 +295,7 @@ namespace Phlank.Responder
                 dictionary[error.Status] = error;
             }
 
-            StatusCodeToBaseApiErrorDictionary = new ReadOnlyDictionary<HttpStatusCode, ApiError>(dictionary);
+            StatusCodeToBaseApiErrorDictionary = new Dictionary<HttpStatusCode, ApiError>(dictionary);
         }
 
         public static ApiError FromStatusCode(HttpStatusCode statusCode)

@@ -18,5 +18,7 @@ namespace Phlank.Responder.Tests.Data
         public static Warning Warning = new Warning(
             Severity.High,
             "WarningMessage");
+
+        public static ApiError ApiError400 = new ApiError(HttpStatusCode.BadRequest);
     }
 }

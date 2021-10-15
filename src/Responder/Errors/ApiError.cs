@@ -22,7 +22,7 @@ namespace Phlank.Responder
         private HttpStatusCode _status;
         private string _title, _detail;
         private Uri _type, _instance;
-        private IReadOnlyDictionary<string, object> _extensions;
+        private IDictionary<string, object> _extensions;
 
         /// <summary>
         /// Creates an <see cref="ApiError"/> from the given arguments. 
@@ -91,7 +91,7 @@ namespace Phlank.Responder
                 Detail = detail ?? baseError._detail;
                 Type = type ?? baseError._type;
                 Instance = instance ?? baseError._instance;
-                _extensions = new ReadOnlyDictionary<string, object>(extensions);
+                _extensions = extensions ?? new Dictionary<string, object>();
             }
             else
             {
@@ -99,7 +99,7 @@ namespace Phlank.Responder
                 _detail = detail ?? throw new ArgumentNullException(nameof(detail), "Must provide details when no base ApiError is specified for a given HttpStatusCode");
                 Type = type;
                 Instance = instance;
-                _extensions = new ReadOnlyDictionary<string, object>(extensions);
+                _extensions = new Dictionary<string, object>(extensions);
             }
         }
 
@@ -159,7 +159,7 @@ namespace Phlank.Responder
 #if NET5_0_OR_GREATER
         [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
 #endif
-        public IReadOnlyDictionary<string, object> Extensions
+        public IDictionary<string, object> Extensions
         {
             get => _extensions;
             set => _extensions = value ?? new Dictionary<string, object>();

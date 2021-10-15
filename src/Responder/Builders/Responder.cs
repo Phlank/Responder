@@ -115,6 +115,32 @@ namespace Phlank.Responder
             return this;
         }
 
+        public IResponder AddError(
+            HttpStatusCode status,
+            string title = null,
+            string detail = null,
+            Uri type = null,
+            Uri instance = null,
+            IDictionary<string, object> extensions = null)
+        {
+            var error = new ApiError(status, title, detail, type, instance, extensions);
+            AddError(error);
+            return this;
+        }
+
+        public IResponder AddError(
+            int status,
+            string title = null,
+            string detail = null,
+            Uri type = null,
+            Uri instance = null,
+            IDictionary<string, object> extensions = null)
+        {
+            var error = new ApiError(status, title, detail, type, instance, extensions);
+            AddError(error);
+            return this;
+        }
+
         public IResponder AddErrors(IEnumerable<ApiError> errors)
         {
             _errors.AddRange(errors);
@@ -168,12 +194,23 @@ namespace Phlank.Responder
 
         public IResponder AddStatusCodeOnSuccess(HttpStatusCode successfulStatusCode)
         {
-            if (!successfulStatusCode.IsSuccessful())
+            if (successfulStatusCode.IsError())
             {
-                throw new ArgumentOutOfRangeException("The provided status code must have a value between 200 and 299.");
+                throw new ArgumentOutOfRangeException("The provided status code must have a value less than 400.");
             }
             _successStatusCode = successfulStatusCode;
             return this;
+        }
+
+        public IResponder AddStatusCodeOnSuccess(int successfulStatusCode)
+        {
+            if (!Enum.IsDefined(typeof(HttpStatusCode), successfulStatusCode))
+            {
+                throw new ArgumentOutOfRangeException(nameof(successfulStatusCode), "The given status must have a corresponding HttpStatusCode value.");
+            }
+
+            var status = (HttpStatusCode)successfulStatusCode;
+            return AddStatusCodeOnSuccess(status);
         }
     }
 }
