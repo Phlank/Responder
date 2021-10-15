@@ -49,7 +49,7 @@ namespace Phlank.Responder
         public IDictionary<string, object> Extensions
         {
             get => _extensions;
-            set => _extensions = value ?? new Dictionary<string, object>();
+            set => _extensions = value != default ? new Dictionary<string, object>(value) : new Dictionary<string, object>();
         }
 
 
@@ -61,7 +61,7 @@ namespace Phlank.Responder
         {
             Message = message ?? throw new ArgumentNullException(nameof(message));
             Severity = severity;
-            Extensions = extensions ?? new Dictionary<string, object>();
+            Extensions = extensions;
         }
     }
 }
