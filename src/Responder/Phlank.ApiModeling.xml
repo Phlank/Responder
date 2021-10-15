@@ -58,6 +58,18 @@
             Adds an error to the <see cref="T:Phlank.Responder.IResponder"/>.
             </summary>
         </member>
+        <member name="M:Phlank.Responder.IResponder.AddError(System.Net.HttpStatusCode,System.String,System.String,System.Uri,System.Uri,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Creates an error from the arguments and adds it to the 
+            <see cref="T:Phlank.Responder.IResponder"/>.
+            </summary>
+        </member>
+        <member name="M:Phlank.Responder.IResponder.AddError(System.Int32,System.String,System.String,System.Uri,System.Uri,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Creates an error from the arguments and adds it to the 
+            <see cref="T:Phlank.Responder.IResponder"/>.
+            </summary>
+        </member>
         <member name="M:Phlank.Responder.IResponder.AddErrors(System.Collections.Generic.IEnumerable{Phlank.Responder.ApiError})">
             <summary>
             Adds errors to the <see cref="T:Phlank.Responder.IResponder"/>.
@@ -105,6 +117,15 @@
             replace previously added status codes. The default successful
             status code is <see cref="F:System.Net.HttpStatusCode.OK"/>.
             </summary>
+        </member>
+        <member name="M:Phlank.Responder.IResponder.AddStatusCodeOnSuccess(System.Int32)">
+            <summary>
+            Adds a status code to return to the <see cref="T:Phlank.Responder.IResponder"/> if the
+            operation is successful. Using this method multiple times will
+            replace previously added status codes. The default successful 
+            status code is 200.
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">An <see cref="T:System.ArgumentOutOfRangeException"/> may be thrown under two circumstances; first, if the provided <paramref name="statusCode"/> has no corresponding <see cref="T:System.Net.HttpStatusCode"/>, and second, if the provided <paramref name="statusCode"/> has a matching <see cref="T:System.Net.HttpStatusCode"/> but it is an erroring status code.</exception>
         </member>
         <member name="M:Phlank.Responder.IResponder.Build(Microsoft.AspNetCore.Mvc.ControllerBase)">
             <summary>

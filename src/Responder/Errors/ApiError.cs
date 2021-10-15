@@ -91,7 +91,7 @@ namespace Phlank.Responder
                 Detail = detail ?? baseError._detail;
                 Type = type ?? baseError._type;
                 Instance = instance ?? baseError._instance;
-                _extensions = extensions ?? new Dictionary<string, object>();
+                Extensions = extensions != default ? new Dictionary<string, object>(extensions) : new Dictionary<string, object>();
             }
             else
             {
@@ -99,7 +99,7 @@ namespace Phlank.Responder
                 _detail = detail ?? throw new ArgumentNullException(nameof(detail), "Must provide details when no base ApiError is specified for a given HttpStatusCode");
                 Type = type;
                 Instance = instance;
-                _extensions = new Dictionary<string, object>(extensions);
+                Extensions = extensions != default ? new Dictionary<string, object>(extensions) : new Dictionary<string, object>();
             }
         }
 
