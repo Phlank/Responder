@@ -51,11 +51,11 @@ public ResponderResult<AccountApiModel> GetAccount(int id) {
 }
 ```
 
-The `Build<T>` method takes a ControllerBase instance as an argument. This is used for accessing the HttpContext of the controller.
+The `Build<T>` method takes a ControllerBase instance as an argument. This is used for accessing the HttpContext of the controller. The `Build` method is similar, though the ResponderResult that is returned here does not contain data but still may contain extensions.
 
-## Errors
+## Problems
 
-Dealing with errors is very simple with Responder, and the builder pattern does an excellent job at making code smells more obvious and easier to deodorize. Use the `AddProblem` method to add a Problem item to the IResponder.
+Dealing with problems is very simple with Responder, and the builder pattern does an excellent job at making code smells more obvious and easier to deodorize. Use the `AddProblem` method to add a Problem item to the IResponder. You can add a Problem, ProblemDetail, Exception, or provide arguments to construct a Problem instance. Multiple problems can be added to the IResponder, and it will combine them when the result is built.
 
 ```csharp
 private Problem UnsuccessfulSignIn = new Problem(...);
@@ -75,9 +75,31 @@ public async Task<ResponderResult<LoginSuccessModel>> Login(string email, string
         else if (!signInResult.Succeeded) _responder.AddProblem(UnsuccessfulSignIn);
     }
 
-    // The ASP NET Core sign in manager will add the authentication tokens to the HTTP response headers
-
-    // No type needed if no body content needs to be sent
+    // No type parameter needed if no body content needs to be sent
     return _responder.Build(this);
 }
 ```
+
+## Consuming responses
+
+Responder is not just for the server, but also for the client! Digestion of responses created using Responder is simple. If there may be content, deserialize the content into Response<T>, and if there won't be content, use Response.
+
+```csharp
+var client = new HttpClient();
+var result = await client.GetAsync("https://someurl/withcontent");
+Response<Model> response = JsonConvert.DeserializeObject<Response<Model>>(await result.Content.ReadAsStringAsync());
+if (response.IsSuccessful)
+{
+    // Do stuff
+}
+else
+{
+    // Do other stuff
+}
+```
+
+The `IsSuccessful` property is calculated simply by checking to see if the `Problem` property is null.
+
+## The JSON itself
+
+When using the Responder, response content will look considerably different depending on whether there was a problem. This is because, when serializing, problem responses must follow the appropriate standards laid out in RFC7807. However, this is not an issue when deserializing; the Response object will neatly fold all of those top-level fields into its `Problem` property. Responses may also contain extension data, but if there was a problem, all extension data will deserialize into the `Problem` property's `Extensions` rather than those belonging to the Response.

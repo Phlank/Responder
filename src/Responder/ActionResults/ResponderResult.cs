@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Newtonsoft.Json;
 using Phlank.Responder.ActionResults;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Phlank.Responder
@@ -77,7 +79,7 @@ namespace Phlank.Responder
             _successfulStatusCode = successfulStatusCode;
         }
 
-        public IActionResult Convert()
+        public IActionResult ConvertAsync()
         {
             return ResultConverter.Convert(this, _successfulStatusCode);
         }
