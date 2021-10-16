@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Phlank.Responder.ActionResults;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -7,6 +8,33 @@ using System.Threading.Tasks;
 
 namespace Phlank.Responder
 {
+    public class ResponderResult : ISuccessResponse, IConvertToActionResult
+    {
+        protected readonly ResponderOptions _options;
+        protected readonly HttpStatusCode _successfulStatusCode;
+        private readonly Response _response;
+
+        public ResponderResult(Response response, HttpStatusCode successfulStatusCode)
+        {
+            _response = response;
+            _successfulStatusCode = successfulStatusCode;
+        }
+
+        [System.Text.Json.Serialization.JsonExtensionData]
+        [Newtonsoft.Json.JsonExtensionData]
+        public IDictionary<string, object> Extensions => throw new System.NotImplementedException();
+        public bool IsSuccessful => throw new System.NotImplementedException();
+
+        [System.Text.Json.Serialization.JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
+        public Problem Problem => _response.Problem;
+
+        public IActionResult Convert()
+        {
+            return ResultConverter.Convert(this, _successfulStatusCode);
+        }
+    }
+
     /// <summary>
     /// An action result produced by the <see cref="IResponder"/>. This
     /// object should be returned by any client-facing controller methods in
@@ -51,29 +79,7 @@ namespace Phlank.Responder
 
         public IActionResult Convert()
         {
-            if (_response.IsSuccessful)
-            {
-                if (_response.Data == null && (_response.Extensions == null || _response.Extensions.Count() == 0))
-                {
-                    return new StatusCodeResult((int)_successfulStatusCode);
-                }
-                else
-                {
-                    return new JsonResult(_response)
-                    {
-                        ContentType = "application/json",
-                        StatusCode = (int)_successfulStatusCode,
-                    };
-                }
-            }
-            else
-            {
-                return new JsonResult(_response.Problem)
-                {
-                    ContentType = "application/problem+json",
-                    StatusCode = (int)_response.Problem.Status
-                };
-            }
+            return ResultConverter.Convert(this, _successfulStatusCode);
         }
     }
 }

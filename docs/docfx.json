@@ -13,7 +13,7 @@
             "disableGitFeatures": false,
             "disableDefaultFilter": false,
             "properties": {
-                "TargetFramework": "net5.0"
+                "TargetFramework": "net6.0"
             }
         }
     ],

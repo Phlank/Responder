@@ -2,10 +2,14 @@
 
 namespace Phlank.Responder
 {
-    internal interface ISuccessResponse<T> where T : class
+    internal interface ISuccessResponse
     {
-        T Data { get; }
         bool IsSuccessful { get; }
         IDictionary<string, object> Extensions { get; }
+    }
+
+    internal interface ISuccessResponse<T> : ISuccessResponse where T : class
+    {
+        T Data { get; }
     }
 }

@@ -39,7 +39,7 @@ namespace Phlank.Responder
             return new ResponderResult<T>(response, _successStatusCode);
         }
 
-        private Response<T> CreateResponse<T>(HttpContext context) where T : class
+        private Response<T> CreateResponse<T>(HttpContext httpContext) where T : class
         {
             var output = new Response<T>();
             if (_problems.Count > 0)
@@ -53,7 +53,7 @@ namespace Phlank.Responder
                     combinedExtensions.Add("additionalErrors", remainingErrors);
                 }
 
-                if (_options.IncludeTraceIdOnErrors) combinedExtensions["traceId"] = context.TraceIdentifier;
+                if (_options.IncludeTraceIdOnErrors) combinedExtensions["traceId"] = httpContext.TraceIdentifier;
 
                 var combinedError = new Problem(
                     firstError.Status,
@@ -69,6 +69,51 @@ namespace Phlank.Responder
             {
                 output.Extensions = _extensions;
                 if (_content != null) output.Data = (T)_content;
+            }
+
+            return output;
+        }
+
+        public ResponderResult Build(ControllerBase controller)
+        {
+            return Build(controller.HttpContext);
+        }
+
+        public ResponderResult Build(HttpContext httpContext)
+        {
+            var response = CreateResponse(httpContext);
+            return new ResponderResult(response, _successStatusCode);
+        }
+
+        private Response CreateResponse(HttpContext httpContext)
+        {
+            var output = new Response();
+            if (_problems.Count > 0)
+            {
+                var firstError = _problems.First();
+                var remainingErrors = _problems.Skip(1);
+
+                var combinedExtensions = new Dictionary<string, object>(firstError.Extensions);
+                if (remainingErrors.Count() > 0)
+                {
+                    combinedExtensions.Add("additionalErrors", remainingErrors);
+                }
+
+                if (_options.IncludeTraceIdOnErrors) combinedExtensions["traceId"] = httpContext.TraceIdentifier;
+
+                var combinedError = new Problem(
+                    firstError.Status,
+                    title: firstError.Title,
+                    detail: firstError.Detail,
+                    type: firstError.Type,
+                    instance: firstError.Instance,
+                    combinedExtensions);
+
+                output.Problem = combinedError;
+            }
+            else
+            {
+                output.Extensions = _extensions;
             }
 
             return output;

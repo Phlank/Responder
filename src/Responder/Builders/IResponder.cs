@@ -103,5 +103,9 @@ namespace Phlank.Responder
         ResponderResult<T> Build<T>(ControllerBase controller) where T : class;
 
         ResponderResult<T> Build<T>(HttpContext httpContext) where T : class;
+
+        ResponderResult Build(ControllerBase controller);
+
+        ResponderResult Build(HttpContext httpContext);
     }
 }
