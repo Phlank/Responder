@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -100,5 +101,7 @@ namespace Phlank.Responder
         /// </summary>
         /// <typeparam name="T">The type of the data to return.</typeparam>
         ResponderResult<T> Build<T>(ControllerBase controller) where T : class;
+
+        ResponderResult<T> Build<T>(HttpContext httpContext) where T : class;
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -8,17 +9,28 @@ namespace Phlank.Responder.Tests.Data
 {
     public static class Mocks
     {
-        public static IMock<Controller> Controller()
+        public static IMock<ControllerBase> Controller()
         {
             var mock = new Mock<MockableController>();
-            mock.SetupGet(e => e.ControllerContext).Returns(ControllerContext().Object);
+            var controllerContext = ControllerContext().Object;
+            var httpContext = HttpContext().Object;
+            mock.Setup(e => e.ControllerContext).Returns(controllerContext);
+            mock.Setup(e => e.HttpContext).Returns(httpContext);
             return mock;
         }
 
         public static IMock<ControllerContext> ControllerContext()
         {
             var mock = new Mock<MockableControllerContext>();
-            mock.SetupGet(e => e.HttpContext.TraceIdentifier).Returns("TestTrace");
+            var httpContext = HttpContext().Object;
+            mock.Setup(e => e.HttpContext).Returns(httpContext);
+            return mock;
+        }
+
+        public static IMock<HttpContext> HttpContext()
+        {
+            var mock = new Mock<HttpContext>();
+            mock.Setup(e => e.TraceIdentifier).Returns("TestTrace");
             return mock;
         }
     }

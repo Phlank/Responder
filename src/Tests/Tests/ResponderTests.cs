@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -10,7 +11,7 @@ namespace Phlank.Responder.Tests.Tests
     [TestClass]
     public class ResponderTests
     {
-        private Controller _controller;
+        private HttpContext _context;
         private IResponder _responder;
         private Problem _badRequest;
         private Problem _unauthorized;
@@ -19,7 +20,7 @@ namespace Phlank.Responder.Tests.Tests
         public void Initialize()
         {
             _responder = new Responder();
-            _controller = Data.Mocks.Controller().Object;
+            _context = Data.Mocks.HttpContext().Object;
             _badRequest = Data.Samples.BadRequestProblem;
             _unauthorized = Data.Samples.UnauthorizedProblem;
         }
@@ -27,40 +28,26 @@ namespace Phlank.Responder.Tests.Tests
         [TestMethod]
         public void TestBasicBuild()
         {
-            var responderResult = _responder.Build(_controller);
-            Assert.IsNull(responderResult.Response.Error);
-            Assert.IsNull(responderResult.Response.Data);
-            Assert.IsTrue(responderResult.Response.Warnings.Count() == 0);
-
-            var responderResultT = _responder.Build<string>(_controller);
-            Assert.IsNull(responderResultT.Response.Error);
-            Assert.IsNull(responderResultT.Response.Data);
-            Assert.IsTrue(responderResultT.Response.Warnings.Count() == 0);
+            var responderResultT = _responder.Build<string>(_context);
+            Assert.IsTrue(responderResultT.Extensions.Count() == 0);
+            Assert.IsNull(responderResultT.Data);
+            Assert.IsTrue(responderResultT.IsSuccessful);
         }
 
+        [TestMethod]
         public void TestProblemBuild()
         {
             _responder.AddProblem(_badRequest);
 
-            var responderResult = _responder.Build(_controller);
-            Assert.AreEqual("TestProblem", responderResult.Response.Error.Title);
-            Assert.AreEqual("TestDetail", responderResult.Response.Error.Detail);
-            Assert.AreEqual("https://testtype", responderResult.Response.Error.Type.OriginalString);
-            Assert.AreEqual("https://testinstance", responderResult.Response.Error.Instance.OriginalString);
-            Assert.AreEqual("ExtensionValue", responderResult.Response.Error.Extensions["extensionName"]);
-            Assert.AreEqual("TestTrace", responderResult.Response.Error.Extensions["traceId"]);
-            Assert.IsNull(responderResult.Response.Data);
-            Assert.IsNull(responderResult.Response.Warnings);
-
-            var responderResultT = _responder.Build<string>(_controller);
-            Assert.AreEqual("TestProblem", responderResultT.Response.Error.Title);
-            Assert.AreEqual("TestDetail", responderResultT.Response.Error.Detail);
-            Assert.AreEqual("https://testtype", responderResultT.Response.Error.Type.OriginalString);
-            Assert.AreEqual("https://testinstance", responderResultT.Response.Error.Instance.OriginalString);
-            Assert.AreEqual("ExtensionValue", responderResultT.Response.Error.Extensions["extensionName"]);
-            Assert.AreEqual("TestTrace", responderResultT.Response.Error.Extensions["traceId"]);
-            Assert.IsNull(responderResultT.Response.Data);
-            Assert.IsNull(responderResultT.Response.Warnings);
+            var responderResult = _responder.Build<string>(_context);
+            Assert.AreEqual("BadRequest", responderResult.Problem.Title);
+            Assert.AreEqual("The request could not be understood by the server.", responderResult.Problem.Detail);
+            Assert.AreEqual("https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1", responderResult.Problem.Type.OriginalString);
+            Assert.IsNull(responderResult.Problem.Instance);
+            Assert.AreEqual("TestTrace", responderResult.Problem.Extensions["traceId"]);
+            Assert.IsNull(responderResult.Extensions);
+            Assert.IsNull(responderResult.Data);
+            Assert.IsFalse(responderResult.IsSuccessful);
         }
     }
 }

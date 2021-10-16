@@ -27,16 +27,21 @@ namespace Phlank.Responder
     /// Each of these items will contain at the very least an HTTP status code
     /// and a response type header.
     /// </summary>
-    [ProducesErrorResponseType(typeof(Problem))]
     public class ResponderResult<T> : ISuccessResponse<T>, IConvertToActionResult where T : class
     {
         protected readonly ResponderOptions _options;
         protected readonly HttpStatusCode _successfulStatusCode;
         private readonly Response<T> _response;
 
+        [System.Text.Json.Serialization.JsonExtensionData]
+        [Newtonsoft.Json.JsonExtensionData]
         public IDictionary<string, object> Extensions => _response.Extensions;
         public T Data => _response.Data;
         public bool IsSuccessful => _response.IsSuccessful;
+
+        [System.Text.Json.Serialization.JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
+        public Problem Problem => _response.Problem;
 
         internal ResponderResult(Response<T> response, HttpStatusCode successfulStatusCode)
         {

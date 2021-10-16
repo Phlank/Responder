@@ -11,14 +11,9 @@ namespace Phlank.Responder.Tests
         [TestMethod]
         public void TestResponseProperties()
         {
-            var response = new Response();
-            Assert.IsTrue(response.IsSuccessful);
-            response.Error = new Problem(400);
-            Assert.IsFalse(response.IsSuccessful);
-
             var responseT = new Response<string>();
             Assert.IsTrue(responseT.IsSuccessful);
-            responseT.Error = new Problem(400);
+            responseT.Problem = new Problem(400);
             Assert.IsFalse(responseT.IsSuccessful);
         }
     }

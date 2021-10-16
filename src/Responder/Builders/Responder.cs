@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Phlank.Responder.Extensions;
 using System;
@@ -28,11 +29,17 @@ namespace Phlank.Responder
 
         public ResponderResult<T> Build<T>(ControllerBase controller) where T : class
         {
-            var response = CreateResponse<T>(controller);
+            var response = CreateResponse<T>(controller.HttpContext);
             return new ResponderResult<T>(response, _successStatusCode);
         }
 
-        private Response<T> CreateResponse<T>(ControllerBase controller) where T : class
+        public ResponderResult<T> Build<T>(HttpContext httpContext) where T : class
+        {
+            var response = CreateResponse<T>(httpContext);
+            return new ResponderResult<T>(response, _successStatusCode);
+        }
+
+        private Response<T> CreateResponse<T>(HttpContext context) where T : class
         {
             var output = new Response<T>();
             if (_problems.Count > 0)
@@ -41,9 +48,12 @@ namespace Phlank.Responder
                 var remainingErrors = _problems.Skip(1);
 
                 var combinedExtensions = new Dictionary<string, object>(firstError.Extensions);
-                combinedExtensions.Add("additionalErrors", remainingErrors);
+                if (remainingErrors.Count() > 0)
+                {
+                    combinedExtensions.Add("additionalErrors", remainingErrors);
+                }
 
-                if (_options.IncludeTraceIdOnErrors) combinedExtensions["traceId"] = controller.ControllerContext.HttpContext.TraceIdentifier;
+                if (_options.IncludeTraceIdOnErrors) combinedExtensions["traceId"] = context.TraceIdentifier;
 
                 var combinedError = new Problem(
                     firstError.Status,

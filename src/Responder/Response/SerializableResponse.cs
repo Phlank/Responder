@@ -51,6 +51,8 @@ namespace Phlank.Responder
         [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 #endif
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [System.Text.Json.Serialization.JsonExtensionData]
+        [Newtonsoft.Json.JsonExtensionData]
         public IDictionary<string, object> Extensions { get; set; }
     }
 }
