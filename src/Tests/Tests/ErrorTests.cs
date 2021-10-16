@@ -12,7 +12,7 @@ namespace Phlank.Responder.Tests
         [TestMethod]
         public void TestConstructor()
         {
-            var errorWithAllValuesDefined = new ApiError(
+            var problemWithAllValuesDefined = new Problem(
                 HttpStatusCode.BadRequest,
                 "TestTitle",
                 "TestDetail",
@@ -22,41 +22,41 @@ namespace Phlank.Responder.Tests
                 {
                     { "testExtension", "TestExtensionValue" }
                 });
-            Assert.AreEqual(HttpStatusCode.BadRequest, errorWithAllValuesDefined.Status);
-            Assert.AreEqual("TestTitle", errorWithAllValuesDefined.Title);
-            Assert.AreEqual("TestDetail", errorWithAllValuesDefined.Detail);
-            Assert.AreEqual("https://localhost/testtype", errorWithAllValuesDefined.Type.OriginalString);
-            Assert.AreEqual("https://localhost/testinstance", errorWithAllValuesDefined.Instance.OriginalString);
-            Assert.AreEqual("TestExtensionValue", errorWithAllValuesDefined.Extensions["testExtension"]);
+            Assert.AreEqual(HttpStatusCode.BadRequest, problemWithAllValuesDefined.Status);
+            Assert.AreEqual("TestTitle", problemWithAllValuesDefined.Title);
+            Assert.AreEqual("TestDetail", problemWithAllValuesDefined.Detail);
+            Assert.AreEqual("https://localhost/testtype", problemWithAllValuesDefined.Type.OriginalString);
+            Assert.AreEqual("https://localhost/testinstance", problemWithAllValuesDefined.Instance.OriginalString);
+            Assert.AreEqual("TestExtensionValue", problemWithAllValuesDefined.Extensions["testExtension"]);
 
-            var errorWithOnlyStatusDefined = new ApiError(HttpStatusCode.BadRequest);
-            Assert.AreEqual(HttpStatusCode.BadRequest, errorWithOnlyStatusDefined.Status);
-            Assert.AreEqual("BadRequest", errorWithOnlyStatusDefined.Title);
-            Assert.AreEqual("The request could not be understood by the server.", errorWithOnlyStatusDefined.Detail);
-            Assert.AreEqual("https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1", errorWithOnlyStatusDefined.Type.OriginalString);
-            Assert.IsNull(errorWithOnlyStatusDefined.Instance);
-            Assert.IsTrue(errorWithOnlyStatusDefined.Extensions.Count() == 0);
+            var problemWithOnlyStatusDefined = new Problem(HttpStatusCode.BadRequest);
+            Assert.AreEqual(HttpStatusCode.BadRequest, problemWithOnlyStatusDefined.Status);
+            Assert.AreEqual("BadRequest", problemWithOnlyStatusDefined.Title);
+            Assert.AreEqual("The request could not be understood by the server.", problemWithOnlyStatusDefined.Detail);
+            Assert.AreEqual("https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1", problemWithOnlyStatusDefined.Type.OriginalString);
+            Assert.IsNull(problemWithOnlyStatusDefined.Instance);
+            Assert.IsTrue(problemWithOnlyStatusDefined.Extensions.Count() == 0);
 
             Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
             {
-                new ApiError(HttpStatusCode.OK);
+                new Problem(HttpStatusCode.OK);
             });
 
             Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
             {
-                new ApiError(200);
+                new Problem(200);
             });
 
             Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
             {
-                new ApiError(700);
+                new Problem(700);
             });
         }
 
         [TestMethod]
         public void TestProperties()
         {
-            var error = new ApiError(HttpStatusCode.BadRequest);
+            var error = new Problem(HttpStatusCode.BadRequest);
             error.Type = null;
             error.Instance = null;
             error.Extensions = null;

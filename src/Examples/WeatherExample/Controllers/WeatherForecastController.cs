@@ -1,20 +1,21 @@
 using Microsoft.AspNetCore.Mvc;
 using Phlank.Responder.WeatherExample.Models;
 using Phlank.Responder.WeatherExample.Services;
+using Phlank.Responder;
 using System.Collections.Generic;
 
 namespace Phlank.Responder.WeatherExample.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private readonly IResponder _resultBuilder;
+        private readonly IResponder _responder;
         private readonly IWeatherService _weatherService;
 
-        public WeatherForecastController(IResponder responseBuilder, IWeatherService weatherService)
+        public WeatherForecastController(IResponder responder, IWeatherService weatherService)
         {
-            _resultBuilder = responseBuilder;
+            _responder = responder;
             _weatherService = weatherService;
         }
 
@@ -34,18 +35,19 @@ namespace Phlank.Responder.WeatherExample.Controllers
                 { "Fields", new List<string>() { "DaysAhead" } }
             });
 
-        [ProducesErrorResponseType(typeof(ApiError))]
-        [ProducesResponseType(typeof(WeatherForecast), 200)]
-        [HttpPost]
-        public ResponderResult<WeatherForecast> GetForecast([FromBody] WeatherForecastRequest request)
+        [HttpGet]
+        public ResponderResult<WeatherForecast> GetForecast([FromRoute] WeatherForecastRequest request)
         {
-            if (request.DaysAhead > 15) _resultBuilder.AddError(new ApiError(System.Net.HttpStatusCode.NotAcceptable));
-            if (request.DaysAhead > 10) _resultBuilder.AddWarning(NoConfidenceForecastWarning);
-            else if (request.DaysAhead > 7) _resultBuilder.AddWarning(LowConfidenceForecastWarning);
+            if (request.DaysAhead > 15) _responder.AddProblem(new Problem(System.Net.HttpStatusCode.NotAcceptable));
+            else
+            {
+                if (request.DaysAhead > 10) _responder.AddWarning(NoConfidenceForecastWarning);
+                else if (request.DaysAhead > 7) _responder.AddWarning(LowConfidenceForecastWarning);
 
-            var content = _weatherService.GetRandomWeatherForecast(request.DaysAhead, request.TemperatureUnits);
-            _resultBuilder.AddContent(content);
-            return _resultBuilder.Build<WeatherForecast>(this);
+                var content = _weatherService.GetRandomWeatherForecast(request.DaysAhead, request.TemperatureUnits);
+                _responder.AddContent(content);
+            }
+            return _responder.Build<WeatherForecast>(this);
         }
     }
 }

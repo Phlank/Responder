@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -24,108 +27,47 @@ namespace Phlank.Responder
     /// Each of these items will contain at the very least an HTTP status code
     /// and a response type header.
     /// </summary>
-    public class ResponderResult : ActionResult, IActionResult
+    [ProducesErrorResponseType(typeof(Problem))]
+    public class ResponderResult<T> : ISuccessResponse<T>, IConvertToActionResult where T : class
     {
-        private readonly ResponderOptions _options;
-        private readonly HttpStatusCode _successfulStatusCode;
+        protected readonly ResponderOptions _options;
+        protected readonly HttpStatusCode _successfulStatusCode;
+        private readonly Response<T> _response;
 
-        [System.Text.Json.Serialization.JsonExtensionData]
-        [Newtonsoft.Json.JsonExtensionData]
-        public readonly Response Response;
-
-        internal ResponderResult(Response response, HttpStatusCode successfulStatusCode)
-        {
-            Response = response;
-            _successfulStatusCode = successfulStatusCode;
-        }
-
-        public override Task ExecuteResultAsync(ActionContext context)
-        {
-            if (Response.IsSuccessful)
-            {
-                if (Response.Data == null && Response.Warnings == null)
-                {
-                    return new StatusCodeResult((int)_successfulStatusCode).ExecuteResultAsync(context);
-                }
-                else
-                {
-                    return new JsonResult(Response)
-                    {
-                        ContentType = "application/json",
-                        StatusCode = (int)_successfulStatusCode,
-                    }.ExecuteResultAsync(context);
-                }
-            }
-            else
-            {
-                return new JsonResult(Response)
-                {
-                    ContentType = "application/problem+json",
-                    StatusCode = (int)Response.Error.Status
-                }.ExecuteResultAsync(context);
-            }
-        }
-    }
-
-    /// <summary>
-    /// An action result produced by the <see cref="IResponder"/>. This
-    /// object should be returned by any client-facing controller methods in
-    /// your project. This result can hold any one of three forms of content:
-    /// <list type="bullet">
-    ///     <item>
-    ///         No content with successful status code.
-    ///     </item>
-    ///     <item>
-    ///         JSON content (<c>application/json</c>) with a successful status
-    ///         code.
-    ///     </item>
-    ///     <item>
-    ///         JSON content (<c>application/problem+json</c>) with an
-    ///         unsuccessful status cude.
-    ///     </item>
-    /// </list>
-    /// Each of these items will contain at the very least an HTTP status code
-    /// and a response type header.
-    /// </summary>
-    public class ResponderResult<T> : ActionResult, IActionResult where T : class
-    {
-        private readonly ResponderOptions _options;
-        private readonly HttpStatusCode _successfulStatusCode;
-
-        [System.Text.Json.Serialization.JsonExtensionData]
-        [Newtonsoft.Json.JsonExtensionData]
-        public readonly Response<T> Response;
+        public IDictionary<string, object> Extensions => _response.Extensions;
+        public T Data => _response.Data;
+        public bool IsSuccessful => _response.IsSuccessful;
 
         internal ResponderResult(Response<T> response, HttpStatusCode successfulStatusCode)
         {
-            Response = response;
+            _response = response;
             _successfulStatusCode = successfulStatusCode;
         }
 
-        public override Task ExecuteResultAsync(ActionContext context)
+        public IActionResult Convert()
         {
-            if (Response.IsSuccessful)
+            if (_response.IsSuccessful)
             {
-                if (Response.Data == null && Response.Warnings == null)
+                if (_response.Data == null && (_response.Extensions == null || _response.Extensions.Count() == 0))
                 {
-                    return new StatusCodeResult((int)_successfulStatusCode).ExecuteResultAsync(context);
+                    return new StatusCodeResult((int)_successfulStatusCode);
                 }
                 else
                 {
-                    return new JsonResult(Response)
+                    return new JsonResult(_response)
                     {
                         ContentType = "application/json",
                         StatusCode = (int)_successfulStatusCode,
-                    }.ExecuteResultAsync(context);
+                    };
                 }
             }
             else
             {
-                return new JsonResult(Response)
+                return new JsonResult(_response.Problem)
                 {
                     ContentType = "application/problem+json",
-                    StatusCode = (int)Response.Error.Status
-                }.ExecuteResultAsync(context);
+                    StatusCode = (int)_response.Problem.Status
+                };
             }
         }
     }

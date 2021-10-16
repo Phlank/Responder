@@ -9,9 +9,9 @@ namespace Phlank.Responder.Extensions
 {
     internal static class ProblemDetailsExtensions
     {
-        public static ApiError ToApiError(this ProblemDetails problemDetails)
+        public static Problem ToProblem(this ProblemDetails problemDetails)
         {
-            return new ApiError(
+            return new Problem(
                 problemDetails.Status.Value,
                 title: problemDetails.Title,
                 detail: problemDetails.Detail,

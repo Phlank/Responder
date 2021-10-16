@@ -6,32 +6,32 @@ using System.Net;
 namespace Phlank.Responder
 {
     /// <summary>
-    /// An instance of IResponder is used to build an <see cref="ResponderResult"/>.
+    /// An instance of IResponder is used to build a <see cref="ResponderResult"/>.
     /// </summary>
     public interface IResponder
     {
         /// <summary>
         /// Adds an error to the <see cref="IResponder"/>.
         /// </summary>
-        IResponder AddError(ApiError error);
+        IResponder AddProblem(Problem problem);
 
         /// <summary>
         /// Creates an error from the arguments and adds it to the 
         /// <see cref="IResponder"/>.
         /// </summary>
-        IResponder AddError(
-            HttpStatusCode status, 
-            string title = null, 
-            string detail = null, 
-            Uri type = null, 
-            Uri instance = null, 
+        IResponder AddProblem(
+            HttpStatusCode status,
+            string title = null,
+            string detail = null,
+            Uri type = null,
+            Uri instance = null,
             IDictionary<string, object> extensions = null);
 
         /// <summary>
         /// Creates an error from the arguments and adds it to the 
         /// <see cref="IResponder"/>.
         /// </summary>
-        IResponder AddError(
+        IResponder AddProblem(
             int status,
             string title = null,
             string detail = null,
@@ -40,29 +40,27 @@ namespace Phlank.Responder
             IDictionary<string, object> extensions = null);
 
         /// <summary>
-        /// Adds errors to the <see cref="IResponder"/>.
-        /// </summary>
-        IResponder AddErrors(IEnumerable<ApiError> errors);
-
-        /// <summary>
-        /// Adds a <see cref="ProblemDetails">ProblemDetail</see> to the <see cref="IResponder"/>
+        /// Adds <see cref="ProblemDetails">ProblemDetails</see> to the <see cref="IResponder"/>.
         /// </summary>
         IResponder AddProblem(ProblemDetails problem);
+
+        /// <summary>
+        /// Adds errors to the <see cref="IResponder"/>.
+        /// </summary>
+        IResponder AddProblems(IEnumerable<Problem> problems);
 
         /// <summary>
         /// Adds <see cref="ProblemDetails"/> to the <see cref="IResponder"/>
         /// </summary>
         IResponder AddProblems(IEnumerable<ProblemDetails> problems);
 
-        /// <summary>
-        /// Adds a warning to the <see cref="IResponder"/>.
-        /// </summary>
-        IResponder AddWarning(Warning warning);
+        IResponder AddExtension(string key, object value);
 
-        /// <summary>
-        /// Adds warnings to the <see cref="IResponder"/>.
-        /// </summary>
-        IResponder AddWarnings(IEnumerable<Warning> warnings);
+        IResponder AddExtension(KeyValuePair<string, object> keyValuePair);
+
+        IResponder AddExtensions(IEnumerable<KeyValuePair<string, object>> extensions);
+
+        IResponder AddExtensions(IDictionary<string, object> extensions);
 
         /// <summary>
         /// Adds an exception to the <see cref="IResponder"/> as an error.
@@ -95,12 +93,6 @@ namespace Phlank.Responder
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException">An <see cref="ArgumentOutOfRangeException"/> may be thrown under two circumstances; first, if the provided <paramref name="statusCode"/> has no corresponding <see cref="HttpStatusCode"/>, and second, if the provided <paramref name="statusCode"/> has a matching <see cref="HttpStatusCode"/> but it is an erroring status code.</exception>
         IResponder AddStatusCodeOnSuccess(int statusCode);
-
-        /// <summary>
-        /// Creates a <see cref="Response"/> from the provided errors and
-        /// warnings.
-        /// </summary>
-        ResponderResult Build(ControllerBase controller);
 
         /// <summary>
         /// Creates a <see cref="ResponderResult{T}"/> from the provided errors

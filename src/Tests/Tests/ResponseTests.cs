@@ -13,12 +13,12 @@ namespace Phlank.Responder.Tests
         {
             var response = new Response();
             Assert.IsTrue(response.IsSuccessful);
-            response.Error = new ApiError(400);
+            response.Error = new Problem(400);
             Assert.IsFalse(response.IsSuccessful);
 
             var responseT = new Response<string>();
             Assert.IsTrue(responseT.IsSuccessful);
-            responseT.Error = new ApiError(400);
+            responseT.Error = new Problem(400);
             Assert.IsFalse(responseT.IsSuccessful);
         }
     }
