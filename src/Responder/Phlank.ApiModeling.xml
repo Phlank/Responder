@@ -4,6 +4,28 @@
         <name>Phlank.Responder</name>
     </assembly>
     <members>
+        <member name="T:Phlank.Responder.ResponderResult">
+            <summary>
+            An action result produced by the <see cref="T:Phlank.Responder.IResponder"/>. This
+            object should be returned by any client-facing controller methods in
+            your project. This result can hold any one of three forms of content:
+            <list type="bullet">
+                <item>
+                    No content with successful status code.
+                </item>
+                <item>
+                    JSON content (<c>application/json</c>) with a successful status
+                    code.
+                </item>
+                <item>
+                    JSON content (<c>application/problem+json</c>) with an
+                    unsuccessful status cude.
+                </item>
+            </list>
+            Each of these items will contain at the very least an HTTP status code
+            and a response type header.
+            </summary>
+        </member>
         <member name="T:Phlank.Responder.ResponderResult`1">
             <summary>
             An action result produced by the <see cref="T:Phlank.Responder.IResponder"/>. This
@@ -33,80 +55,118 @@
         </member>
         <member name="M:Phlank.Responder.IResponder.AddProblem(Phlank.Responder.Problem)">
             <summary>
-            Adds an error to the <see cref="T:Phlank.Responder.IResponder"/>.
+            Adds a problem to the IResponder.
             </summary>
+            <param name="problem">The problem to add.</param>
+            <returns>The IResponder instance.</returns>
         </member>
         <member name="M:Phlank.Responder.IResponder.AddProblem(System.Net.HttpStatusCode,System.String,System.String,System.Uri,System.Uri,System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
-            Creates an error from the arguments and adds it to the 
-            <see cref="T:Phlank.Responder.IResponder"/>.
+            Creates a <see cref="T:Phlank.Responder.Problem"/> from the arguments and adds it to the IResponder.
             </summary>
+            <param name="status">The status of the problem.</param>
+            <param name="title">The title of the problem.</param>
+            <param name="detail">The detail of the problem.</param>
+            <param name="type">The type of the problem.</param>
+            <param name="instance">The instance of the problem.</param>
+            <param name="extensions"></param>
         </member>
         <member name="M:Phlank.Responder.IResponder.AddProblem(System.Int32,System.String,System.String,System.Uri,System.Uri,System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
-            Creates an error from the arguments and adds it to the 
-            <see cref="T:Phlank.Responder.IResponder"/>.
+            Creates an error from the arguments and adds it to the IResponder.
             </summary>
         </member>
         <member name="M:Phlank.Responder.IResponder.AddProblem(Microsoft.AspNetCore.Mvc.ProblemDetails)">
             <summary>
-            Adds <see cref="T:Microsoft.AspNetCore.Mvc.ProblemDetails">ProblemDetails</see> to the <see cref="T:Phlank.Responder.IResponder"/>.
+            Adds the <see cref="T:Microsoft.AspNetCore.Mvc.ProblemDetails" /> to the IResponder.
             </summary>
+            <param name="problem">The ProblemDetails to add.</param>
+            <returns>The IResponder instance.</returns>
         </member>
         <member name="M:Phlank.Responder.IResponder.AddProblems(System.Collections.Generic.IEnumerable{Phlank.Responder.Problem})">
             <summary>
-            Adds errors to the <see cref="T:Phlank.Responder.IResponder"/>.
+            Adds errors to the IResponder.
             </summary>
         </member>
         <member name="M:Phlank.Responder.IResponder.AddProblems(System.Collections.Generic.IEnumerable{Microsoft.AspNetCore.Mvc.ProblemDetails})">
             <summary>
-            Adds <see cref="T:Microsoft.AspNetCore.Mvc.ProblemDetails"/> to the <see cref="T:Phlank.Responder.IResponder"/>
+            Adds <see cref="T:Microsoft.AspNetCore.Mvc.ProblemDetails"/> to the IResponder.
             </summary>
+        </member>
+        <member name="M:Phlank.Responder.IResponder.AddExtension(System.String,System.Object)">
+            <summary>
+            Adds a single extension to the IResponder.
+            </summary>
+            <param name="key">The key of the extension data.</param>
+            <param name="value">The value of the extension data.</param>
+            <returns>The IResponder instance.</returns>
         </member>
         <member name="M:Phlank.Responder.IResponder.AddException``1(``0)">
             <summary>
-            Adds an exception to the <see cref="T:Phlank.Responder.IResponder"/> as an error.
+            Adds an exception to the IResponder as a problem.
             </summary>
         </member>
         <member name="M:Phlank.Responder.IResponder.AddExceptions``1(System.Collections.Generic.IEnumerable{``0})">
             <summary>
-            Adds exceptions to the <see cref="T:Phlank.Responder.IResponder"/> as errors.
+            Adds exceptions to the IResponder as problems.
             </summary>
         </member>
         <member name="M:Phlank.Responder.IResponder.AddContent(System.Object)">
             <summary>
-            Adds content to the <see cref="T:Phlank.Responder.IResponder"/>
+            Adds content to the IResponder
             </summary>
         </member>
         <member name="M:Phlank.Responder.IResponder.AddStatusCodeOnSuccess(System.Net.HttpStatusCode)">
             <summary>
-            Adds a status code to return to the <see cref="T:Phlank.Responder.IResponder"/> if the
+            Adds a status code to return to the IResponder if the
             operation is successful. Using this method multiple times will
             replace previously added status codes. The default successful
             status code is <see cref="F:System.Net.HttpStatusCode.OK"/>.
             </summary>
+            <param name="statusCode">The status code to return to the client if the operation is successful.</param>
+            <exception cref="T:System.ArgumentException">Thrown if the <paramref name="statusCode"/> provided has a value greater than or equal to 400.</exception>
         </member>
         <member name="M:Phlank.Responder.IResponder.AddStatusCodeOnSuccess(System.Int32)">
             <summary>
-            Adds a status code to return to the <see cref="T:Phlank.Responder.IResponder"/> if the
+            Adds a status code to return to the IResponder if the
             operation is successful. Using this method multiple times will
             replace previously added status codes. The default successful 
             status code is 200.
             </summary>
-            <exception cref="T:System.ArgumentOutOfRangeException">An <see cref="T:System.ArgumentOutOfRangeException"/> may be thrown under two circumstances; first, if the provided <paramref name="statusCode"/> has no corresponding <see cref="T:System.Net.HttpStatusCode"/>, and second, if the provided <paramref name="statusCode"/> has a matching <see cref="T:System.Net.HttpStatusCode"/> but it is an erroring status code.</exception>
+            <param name="statusCode">The integer representation of the status code to return to the client if the operation is successful.</param>
+            <exception cref="T:System.ArgumentException">An <see cref="T:System.ArgumentException"/> may be thrown under two circumstances; first, if the provided <paramref name="statusCode"/> has no corresponding <see cref="T:System.Net.HttpStatusCode"/>, and second, if the provided <paramref name="statusCode"/> has a matching <see cref="T:System.Net.HttpStatusCode"/> but it is an erroring status code.</exception>
         </member>
         <member name="M:Phlank.Responder.IResponder.Build``1(Microsoft.AspNetCore.Mvc.ControllerBase)">
             <summary>
-            Creates a <see cref="T:Phlank.Responder.ResponderResult`1"/> from the provided errors
-            and warnings.
+            Creates a <see cref="T:Phlank.Responder.ResponderResult`1"/> from the provided content, problems, and extensions.
             </summary>
             <typeparam name="T">The type of the data to return.</typeparam>
+            <param name="controller">The controller making use of the IResponder.</param>
+            <exception cref="T:System.InvalidCastException">Thrown if the content provided cannot be cast into the given type.</exception>
+        </member>
+        <member name="M:Phlank.Responder.IResponder.Build``1(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Creates a <see cref="T:Phlank.Responder.ResponderResult`1"/> from the provided problems, content, and extensions.
+            </summary>
+            <typeparam name="T">The type of the content included in the <see cref="T:Phlank.Responder.ResponderResult`1"/>.</typeparam>
+            <param name="httpContext">The context of the current action.</param>
+            <returns></returns>
         </member>
         <member name="M:Phlank.Responder.Responder.#ctor(Microsoft.Extensions.Options.IOptions{Phlank.Responder.ResponderOptions})">
             <summary>
             Creates an instance of a <see cref="T:Phlank.Responder.Responder"/>.
             </summary>
             <param name="options">The options injected at startup to control the behavior of the <see cref="T:Phlank.Responder.Responder"/></param>
+        </member>
+        <member name="T:Phlank.Responder.ResponderOptions">
+            <summary>
+            Options for the behavior of the Responder library..
+            </summary>
+        </member>
+        <member name="F:Phlank.Responder.ResponderOptions.Responder">
+            <summary>
+            The configuration string for the Responder library.
+            </summary>
         </member>
         <member name="P:Phlank.Responder.IProblem.Detail">
             <summary>
@@ -137,12 +197,10 @@
         </member>
         <member name="P:Phlank.Responder.IProblem.Type">
             <summary>
-            A URI reference 
-            [<see href="https://www.rfc-editor.org/rfc/rfc3986">RFC3986</see>]
-            that identifies the problem type. RFC7807 encourages that, when 
-            dereferenced, it provide human-readable documentation for the 
-            problem type. When this member is not present, its value is assumed
-            to be "about:blank".
+            A URI reference [RFC3986] that identifies the problem type. RFC7807
+            encourages that, when dereferenced, it provide human-readable 
+            documentation for the problem type. When this member is not 
+            present, its value is assumed to be "about:blank".
             </summary>
         </member>
         <member name="P:Phlank.Responder.IProblem.Extensions">
@@ -154,27 +212,11 @@
             <summary>
             An error to be reflected by the API. This class follows the
             specification in
-            <see href="https://www.rfc-editor.org/rfc/rfc7807.html">RFC7807</see>.
+            <see href="https://datatracker.ietf.org/doc/html/rfc7807">RFC7807</see>.
             At minimum, a user should provide values for Status, Title, and Details.
             </summary>
         </member>
         <member name="M:Phlank.Responder.Problem.#ctor(System.Net.HttpStatusCode,System.String,System.String,System.Uri,System.Uri,System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Creates an <see cref="T:Phlank.Responder.Problem"/> from the given arguments. 
-            <paramref name="status" /> is the only required parameter in most 
-            circumstances. If a field is not provided, then the default value
-            from a base list of <see cref="T:Phlank.Responder.Problem">Problems</see> will be 
-            used.
-            </summary>
-            <param name="status">The <see cref="T:System.Net.HttpStatusCode"/> relating to the error.</param>
-            <param name="title">The title of the error. If none is provided, a default value will be used.</param>
-            <param name="detail">The detail text of the error. If none is provided, a default value will be used.</param>
-            <param name="type">The URI type reference of the error. If none is provided, a default value will be used.</param>
-            <param name="instance">The instance of the specific context relating to the Problem. If left blank, this will be provided for by the <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> belonging to the <see cref="T:Microsoft.AspNetCore.Mvc.ControllerContext"/>.</param>
-            <param name="extensions">Additional information relating to the error that has occured.</param>
-            <exception cref="T:System.ArgumentNullException">If no default <see cref="T:Phlank.Responder.Problem"/> is found matching the provided <paramref name="status"/>, and either <paramref name="title"/> or <paramref name="detail"/> are null, an <see cref="T:System.ArgumentNullException"/> will be thrown.</exception>
-        </member>
-        <member name="M:Phlank.Responder.Problem.#ctor(System.Int32,System.String,System.String,System.Uri,System.Uri,System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
             Creates an <see cref="T:Phlank.Responder.Problem"/> from the given arguments. 
             <paramref name="status" /> is the only required parameter in most 
@@ -189,21 +231,53 @@
             <param name="instance">The instance of the specific context relating to the Problem. If left blank, this will be provided for by the <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> belonging to the <see cref="T:Microsoft.AspNetCore.Mvc.ControllerContext"/>.</param>
             <param name="extensions">Additional information relating to the error that has occured.</param>
             <exception cref="T:System.ArgumentNullException">If no default <see cref="T:Phlank.Responder.Problem"/> is found matching the provided <paramref name="status"/>, and either <paramref name="title"/> or <paramref name="detail"/> are null, an <see cref="T:System.ArgumentNullException"/> will be thrown.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">If the provided <paramref name="status"/> has a value less than 400, an <see cref="T:System.ArgumentOutOfRangeException"/> is thrown.</exception>
+        </member>
+        <member name="M:Phlank.Responder.Problem.#ctor(System.Int32,System.String,System.String,System.Uri,System.Uri,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Creates a <see cref="T:Phlank.Responder.Problem"/> from the given arguments. 
+            <paramref name="status" /> is the only required parameter in most 
+            circumstances. If a field is not provided, then the default value
+            from a base list of <see cref="T:Phlank.Responder.Problem">Problems</see> will be 
+            used.
+            </summary>
+            <param name="status">The status code relating to the error.</param>
+            <param name="title">The title of the error. If none is provided, a default value will be used.</param>
+            <param name="detail">The detail text of the error. If none is provided, a default value will be used.</param>
+            <param name="type">The URI type reference of the error. If none is provided, a default value will be used.</param>
+            <param name="instance">The instance of the specific context relating to the Problem.</param>
+            <param name="extensions">Additional information relating to the error that has occured.</param>
+            <exception cref="T:System.ArgumentNullException">If no default <see cref="T:Phlank.Responder.Problem"/> is found matching the provided <paramref name="status"/>, and either <paramref name="title"/> or <paramref name="detail"/> are null, an <see cref="T:System.ArgumentNullException"/> will be thrown.</exception>
             <exception cref="T:System.ArgumentOutOfRangeException">An <see cref="T:System.ArgumentOutOfRangeException"/> may be thrown under two circumstances; first, if the provided <paramref name="status"/> has no corresponding <see cref="T:System.Net.HttpStatusCode"/>, and second, if the provided <paramref name="status"/> has a matching <see cref="T:System.Net.HttpStatusCode"/> but it is not a valid erroring status code.</exception>
         </member>
-        <member name="T:Phlank.Responder.ResponderOptions">
+        <member name="P:Phlank.Responder.IProblemResponse.Problem">
             <summary>
-            Options for the behavior of the Responder library..
+            Information regarding operational errors.
             </summary>
         </member>
-        <member name="F:Phlank.Responder.ResponderOptions.Responder">
+        <member name="P:Phlank.Responder.ISuccessResponse.IsSuccessful">
             <summary>
-            The configuration string for the Responder library.
+            The success of the response.
+            </summary>
+        </member>
+        <member name="P:Phlank.Responder.ISuccessResponse.Extensions">
+            <summary>
+            Additional information sent by the server.
+            </summary>
+        </member>
+        <member name="P:Phlank.Responder.ISuccessResponse`1.Data">
+            <summary>
+            Data sent by the server.
+            </summary>
+        </member>
+        <member name="T:Phlank.Responder.Response">
+            <summary>
+            Model without data for deserializing responses generated by the <see cref="T:Phlank.Responder.IResponder"/>.
             </summary>
         </member>
         <member name="T:Phlank.Responder.Response`1">
             <summary>
-            Content model for deserializing responses generated by the <see cref="T:Phlank.Responder.IResponder"/>.
+            Model with data for deserializing responses generated by the <see cref="T:Phlank.Responder.IResponder"/>.
             </summary>
         </member>
     </members>

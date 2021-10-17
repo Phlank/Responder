@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace Phlank.Responder
 {
-    public interface IProblem
+    internal interface IProblem
     {
         /// <summary>
         /// A short, human-readable summary of the problem type. It SHOULD NOT
@@ -44,12 +44,10 @@ namespace Phlank.Responder
         public string Title { get; }
 
         /// <summary>
-        /// A URI reference 
-        /// [<see href="https://www.rfc-editor.org/rfc/rfc3986">RFC3986</see>]
-        /// that identifies the problem type. RFC7807 encourages that, when 
-        /// dereferenced, it provide human-readable documentation for the 
-        /// problem type. When this member is not present, its value is assumed
-        /// to be "about:blank".
+        /// A URI reference [RFC3986] that identifies the problem type. RFC7807
+        /// encourages that, when dereferenced, it provide human-readable 
+        /// documentation for the problem type. When this member is not 
+        /// present, its value is assumed to be "about:blank".
         /// </summary>
         [JsonProperty(PropertyName = "detail")]
         [JsonPropertyName("detail")]

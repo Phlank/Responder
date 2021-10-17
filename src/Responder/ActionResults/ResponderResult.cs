@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Newtonsoft.Json;
 using Phlank.Responder.ActionResults;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +9,31 @@ using System.Threading.Tasks;
 
 namespace Phlank.Responder
 {
-    public class ResponderResult : ISuccessResponse, IConvertToActionResult
+    /// <summary>
+    /// An action result produced by the <see cref="IResponder"/>. This
+    /// object should be returned by any client-facing controller methods in
+    /// your project. This result can hold any one of three forms of content:
+    /// <list type="bullet">
+    ///     <item>
+    ///         No content with successful status code.
+    ///     </item>
+    ///     <item>
+    ///         JSON content (<c>application/json</c>) with a successful status
+    ///         code.
+    ///     </item>
+    ///     <item>
+    ///         JSON content (<c>application/problem+json</c>) with an
+    ///         unsuccessful status cude.
+    ///     </item>
+    /// </list>
+    /// Each of these items will contain at the very least an HTTP status code
+    /// and a response type header.
+    /// </summary>
+    public class ResponderResult : ISuccessResponse, IProblemResponse, IConvertToActionResult
     {
         protected readonly ResponderOptions _options;
         protected readonly HttpStatusCode _successfulStatusCode;
-        private readonly Response _response;
+        protected readonly Response _response;
 
         public ResponderResult(Response response, HttpStatusCode successfulStatusCode)
         {
@@ -24,14 +43,14 @@ namespace Phlank.Responder
 
         [System.Text.Json.Serialization.JsonExtensionData]
         [Newtonsoft.Json.JsonExtensionData]
-        public IDictionary<string, object> Extensions => throw new System.NotImplementedException();
-        public bool IsSuccessful => throw new System.NotImplementedException();
+        public IDictionary<string, object> Extensions => _response.Extensions;
+        public bool IsSuccessful => Problem == null;
 
         [System.Text.Json.Serialization.JsonIgnore]
         [Newtonsoft.Json.JsonIgnore]
         public Problem Problem => _response.Problem;
 
-        public IActionResult Convert()
+        public virtual IActionResult Convert()
         {
             return ResultConverter.Convert(this, _successfulStatusCode);
         }
@@ -57,29 +76,18 @@ namespace Phlank.Responder
     /// Each of these items will contain at the very least an HTTP status code
     /// and a response type header.
     /// </summary>
-    public class ResponderResult<T> : ISuccessResponse<T>, IConvertToActionResult where T : class
+    public class ResponderResult<T> : ResponderResult, ISuccessResponse<T>, IConvertToActionResult where T : class
     {
-        protected readonly ResponderOptions _options;
-        protected readonly HttpStatusCode _successfulStatusCode;
-        private readonly Response<T> _response;
+        protected readonly new Response<T> _response;
 
-        [System.Text.Json.Serialization.JsonExtensionData]
-        [Newtonsoft.Json.JsonExtensionData]
-        public IDictionary<string, object> Extensions => _response.Extensions;
         public T Data => _response.Data;
-        public bool IsSuccessful => _response.IsSuccessful;
 
-        [System.Text.Json.Serialization.JsonIgnore]
-        [Newtonsoft.Json.JsonIgnore]
-        public Problem Problem => _response.Problem;
-
-        internal ResponderResult(Response<T> response, HttpStatusCode successfulStatusCode)
+        internal ResponderResult(Response<T> response, HttpStatusCode successfulStatusCode) : base(response, successfulStatusCode) 
         {
             _response = response;
-            _successfulStatusCode = successfulStatusCode;
         }
 
-        public IActionResult ConvertAsync()
+        public override IActionResult Convert()
         {
             return ResultConverter.Convert(this, _successfulStatusCode);
         }

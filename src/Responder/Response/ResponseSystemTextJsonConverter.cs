@@ -4,12 +4,12 @@ using System.Text.Json.Serialization;
 
 namespace Phlank.Responder
 {
-    internal class ResponseSTJJsonConverter : JsonConverter<Response>
+    public class SystemTextJsonResponseConverter : JsonConverter<Response>
     {
         public override Response Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            var serializableResponse = JsonSerializer.Deserialize<SerializableResponse<object>>(ref reader, options);
-            return serializableResponse.ToEmptyResponse();
+            var serializableResponse = JsonSerializer.Deserialize<SerializableResponse>(ref reader, options);
+            return serializableResponse.ToResponse();
         }
 
         public override void Write(Utf8JsonWriter writer, Response value, JsonSerializerOptions options)
@@ -19,7 +19,7 @@ namespace Phlank.Responder
         }
     }
 
-    internal class ResponseSTJJsonConverter<T> : JsonConverter<Response<T>> where T : class
+    public class SystemTextJsonResponseConverter<T> : JsonConverter<Response<T>>
     {
         public override Response<T> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

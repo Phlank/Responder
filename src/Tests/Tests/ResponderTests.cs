@@ -3,10 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Phlank.Responder.Tests.Data;
 using System.Linq;
 
-namespace Phlank.Responder.Tests.Tests
+namespace Phlank.Responder.Tests
 {
     [TestClass]
     public class ResponderTests
@@ -45,7 +44,7 @@ namespace Phlank.Responder.Tests.Tests
             Assert.AreEqual("https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1", responderResult.Problem.Type.OriginalString);
             Assert.IsNull(responderResult.Problem.Instance);
             Assert.AreEqual("TestTrace", responderResult.Problem.Extensions["traceId"]);
-            Assert.IsNull(responderResult.Extensions);
+            Assert.IsTrue(responderResult.Extensions.Count() == 0);
             Assert.IsNull(responderResult.Data);
             Assert.IsFalse(responderResult.IsSuccessful);
         }

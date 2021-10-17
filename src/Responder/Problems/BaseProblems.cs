@@ -8,9 +8,9 @@ using System.Text;
 
 namespace Phlank.Responder
 {
-    internal static class BaseErrors
+    internal static class BaseProblems
     {
-        static BaseErrors() { }
+        static BaseProblems() { }
 
         private static IEnumerable<Problem> GetDefaultErrors()
         {
