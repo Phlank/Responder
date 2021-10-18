@@ -7,7 +7,7 @@ on:
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
@@ -29,11 +29,6 @@ jobs:
           dotnet-version: 6.0.x
           include-prerelease: true
 
-      - name: Install DocFX
-        uses: crazy-max/ghaction-chocolatey@v1
-        with:
-          args: install docfx
-
       - name: Build
         run: |
           dotnet restore
@@ -41,18 +36,6 @@ jobs:
       
       - name: Test
         run: dotnet test --no-build --verbosity normal
-
-      - name: Build Documentation
-        working-directory: docs
-        run: docfx docfx.json
-        continue-on-error: false
-      
-      - name: Deploy Documentation
-        uses: peaceiris/actions-gh-pages@v3.8.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: docs/_site
-          force_orphan: true
 
       - name: Publish NuGet Package
         uses: brandedoutcast/publish-nuget@v2.5.5
