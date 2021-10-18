@@ -7,7 +7,8 @@ namespace Phlank.Responder.WeatherExample.Models
     {
         [Range(0, int.MaxValue, ErrorMessage = "DaysAhead must be greater than zero.")]
         public int DaysAhead { get; set; }
+
         [RegularExpression(@"^[CcKkFf]$", ErrorMessage = "Acceptable values for TemperatureFormat are C, F, and K.")]
-        public string TemperatureUnits { get; set; }
+        public string TemperatureUnits { get; set; } = "F";
     }
 }

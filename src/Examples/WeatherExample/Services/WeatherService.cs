@@ -1,5 +1,4 @@
-﻿using Phlank.Responder.WeatherExample.Interfaces;
-using Phlank.Responder.WeatherExample.Models;
+﻿using Phlank.Responder.WeatherExample.Models;
 using System;
 
 namespace Phlank.Responder.WeatherExample.Services

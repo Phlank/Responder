@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Phlank.ApiModeling.Extensions;
-using Phlank.ApiModeling.WeatherExample.Interfaces;
-using Phlank.ApiModeling.WeatherExample.Services;
+using Phlank.Responder.Extensions;
+using Phlank.Responder.WeatherExample.Interfaces;
+using Phlank.Responder.WeatherExample.Services;
 
-namespace Phlank.ApiModeling.WeatherExample
+namespace Phlank.Responder.WeatherExample
 {
     public class Startup
     {
@@ -23,10 +23,7 @@ namespace Phlank.ApiModeling.WeatherExample
         {
             services.AddControllers();
 
-            services.ConfigureApiResponseBuilder(options =>
-            {
-                options.UseApiResponseForModelStateErrors();
-            });
+            services.AddScoped<IResponder, Responder>();
 
             services.AddTransient<IWeatherService, WeatherService>();
         }

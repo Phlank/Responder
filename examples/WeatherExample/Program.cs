@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace Phlank.ApiModeling.WeatherExample
+namespace Phlank.Responder.WeatherExample
 {
     public class Program
     {

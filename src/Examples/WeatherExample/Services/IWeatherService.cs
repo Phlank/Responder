@@ -1,6 +1,6 @@
 ﻿using Phlank.Responder.WeatherExample.Models;
 
-namespace Phlank.Responder.WeatherExample.Interfaces
+namespace Phlank.Responder.WeatherExample.Services
 {
     public interface IWeatherService
     {

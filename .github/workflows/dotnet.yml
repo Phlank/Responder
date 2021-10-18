@@ -1,4 +1,4 @@
-name: Build and Test .NET
+name: Build and Test
 
 on:
   push:
@@ -12,14 +12,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup .NET Core 3.1
+        uses: actions/setup-dotnet@v1.8.2
+        with:
+          dotnet-version: 3.1.x
+
+      - name: Setup .NET 5.0
+        uses: actions/setup-dotnet@v1.8.2
+        with:
+          dotnet-version: 5.0.x
+
+      - name: Setup .NET 6.0
+        uses: actions/setup-dotnet@v1.8.2
+        with:
+          dotnet-version: 6.0.x
+          include-prerelease: true
+
+      - name: Build
+        run: |
+          dotnet restore
+          dotnet build --no-restore
+      
+      - name: Test
+        run: dotnet test --no-build --verbosity normal
