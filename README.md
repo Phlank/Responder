@@ -1,3 +1,13 @@
+- [About](#about)
+- [Purpose](#purpose)
+- [Usage](#usage)
+  - [Dependency Injection](#dependency-injection)
+  - [Configuration](#configuration)
+  - [Returning data](#returning-data)
+  - [Problems](#problems)
+  - [Consuming responses](#consuming-responses)
+  - [The JSON itself](#the-json-itself)
+
 # About
 
 Responder is a project that I felt would be a benefit to those attempting to maintain a high quality of consistency and standardization in Web APIs on new projects with tight deadlines. I made it for myself and for my team at work during my off-time, and decided that it could likely benefit others. I've been doing my best to maintain the standards set forth in the RFC documents regarding Problem Details, HTTP status codes, etc. If you feel that there is room for improvement regarding standardization, please let me know by logging an issue on Github.
