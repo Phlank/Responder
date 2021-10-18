@@ -2,10 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Phlank.Responder.ActionResults;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace Phlank.Responder
 {
@@ -82,7 +79,7 @@ namespace Phlank.Responder
 
         public T Data => _response.Data;
 
-        internal ResponderResult(Response<T> response, HttpStatusCode successfulStatusCode) : base(response, successfulStatusCode) 
+        internal ResponderResult(Response<T> response, HttpStatusCode successfulStatusCode) : base(response, successfulStatusCode)
         {
             _response = response;
         }

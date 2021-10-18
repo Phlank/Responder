@@ -39,7 +39,7 @@
 	<!-- Packages for all target frameworks -->
 	<ItemGroup>
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-		<PackageReference Include="System.Text.Json" Version="6.0.0-rc.2.21480.5" />
+		<PackageReference Include="System.Text.Json" Version="5.0.0" />
 	</ItemGroup>
 	
 	<!-- Packages for specific target frameworks

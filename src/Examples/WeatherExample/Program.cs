@@ -14,6 +14,10 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddScoped<IResponder, Responder>();
 builder.Services.AddScoped<IWeatherService, WeatherService>();
+builder.Services.Configure<ResponderOptions>(options =>
+{
+    options.IncludeTraceIdOnErrors = true;
+});
 
 var app = builder.Build();
 

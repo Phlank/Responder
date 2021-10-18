@@ -13,8 +13,8 @@ namespace Phlank.Responder
     {
         private readonly ResponderOptions _options;
 
-        private List<Problem> _problems = new List<Problem>();
-        private Dictionary<string, object> _extensions = new Dictionary<string, object>();
+        private readonly List<Problem> _problems = new List<Problem>();
+        private readonly Dictionary<string, object> _extensions = new Dictionary<string, object>();
         private object _content;
         private HttpStatusCode _successStatusCode = HttpStatusCode.OK;
 

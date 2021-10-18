@@ -5,12 +5,12 @@ namespace Phlank.Responder
     internal interface ISuccessResponse
     {
         /// <summary>
-        /// The success of the response.
+        /// Indicates success of the requested operation on the server. Equivalent to <c>Response.Problem == null</c>.
         /// </summary>
         bool IsSuccessful { get; }
 
         /// <summary>
-        /// Additional information sent by the server.
+        /// Additional fields the server may send in relation to the operation.
         /// </summary>
         IDictionary<string, object> Extensions { get; }
     }
@@ -18,7 +18,7 @@ namespace Phlank.Responder
     internal interface ISuccessResponse<T>
     {
         /// <summary>
-        /// Data sent by the server.
+        /// Information sent by the server to consume in other applications.
         /// </summary>
         T Data { get; }
     }

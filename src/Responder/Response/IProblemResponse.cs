@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Phlank.Responder
+﻿namespace Phlank.Responder
 {
     internal interface IProblemResponse
     {
         /// <summary>
-        /// Information regarding operational errors.
+        /// Details regarding an error encountered during the execution of the requested operation. <c>null</c> if no error occured.
         /// </summary>
         public Problem Problem { get; }
     }

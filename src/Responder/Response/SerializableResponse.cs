@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Text;
 using System.Text.Json.Serialization;
-using Newtonsoft.Json;
 
 namespace Phlank.Responder
 {
