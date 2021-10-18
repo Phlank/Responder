@@ -106,7 +106,7 @@ public async ResponderResult Login(string email, string password)
 
 ## Consuming responses
 
-Responder is not just for the server, but also for the client! Digestion of responses created using Responder is simple. If there may be content, deserialize the content into Response<T>, and if there won't be content, use Response. There are also custom JsonConverters for both System.Text.Json and Json.NET. Either provide them to the global serializer settings or provide them as variables into the deserialization call itself. For Newtonsoft, use `NewtonsoftResponseConverter` and `NewtonsoftResponseConverter<T>`. For System.Text.Json, use `SystemTextJsonResponseConverter` and `SystemTextJsonResponseConverter<T>`.
+Responder is not just for the server, but also for the client! Digestion of responses created using Responder is simple. If there may be content, deserialize the content into `Response<T>`, and if there won't be content, use `Response`. There are also custom JsonConverters for both System.Text.Json and Json.NET. Either provide them to the global serializer settings or provide them as variables into the deserialization call itself. For Newtonsoft, use `NewtonsoftResponseConverter` and `NewtonsoftResponseConverter<T>`. For System.Text.Json, use `SystemTextJsonResponseConverter` and `SystemTextJsonResponseConverter<T>`.
 
 ```csharp
 var client = new HttpClient();
