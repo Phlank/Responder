@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Phlank.Responder.Extensions;
 using System;
@@ -12,9 +13,9 @@ namespace Phlank.Responder
     {
         private readonly ResponderOptions _options;
 
-        private List<ApiError> _errors = new List<ApiError>();
-        private List<Warning> _warnings = new List<Warning>();
-        private List<object> _content = new List<object>();
+        private readonly List<Problem> _problems = new List<Problem>();
+        private readonly Dictionary<string, object> _extensions = new Dictionary<string, object>();
+        private object _content;
         private HttpStatusCode _successStatusCode = HttpStatusCode.OK;
 
         /// <summary>
@@ -26,66 +27,35 @@ namespace Phlank.Responder
             _options = options?.Value ?? new ResponderOptions();
         }
 
-        public ResponderResult Build(ControllerBase controller)
-        {
-            var response = CreateResponse(controller);
-            return new ResponderResult(response, _successStatusCode);
-        }
-
-        private Response CreateResponse(ControllerBase controller)
-        {
-            var output = new Response();
-            if (_errors.Count > 0)
-            {
-                var firstError = _errors.First();
-                var remainingErrors = _errors.Skip(1);
-
-                var combinedExtensions = new Dictionary<string, object>(firstError.Extensions);
-                combinedExtensions.Add("additionalErrors", remainingErrors);
-
-                if (_options.IncludeTraceIdOnErrors) combinedExtensions["traceId"] = controller.ControllerContext.HttpContext.TraceIdentifier;
-
-                var combinedError = new ApiError(
-                    firstError.Status,
-                    title: firstError.Title,
-                    detail: firstError.Detail,
-                    type: firstError.Type,
-                    instance: firstError.Instance,
-                    combinedExtensions);
-
-                output.Error = combinedError;
-            }
-            else
-            {
-                output.Warnings = _warnings;
-                if (_content.Count == 0) output.Data = null;
-                else if (_content.Count == 1) output.Data = _content.First();
-                else output.Data = _content;
-            }
-
-            return output;
-        }
-
         public ResponderResult<T> Build<T>(ControllerBase controller) where T : class
         {
-            var response = CreateResponse<T>(controller);
+            var response = CreateResponse<T>(controller.HttpContext);
             return new ResponderResult<T>(response, _successStatusCode);
         }
 
-        private Response<T> CreateResponse<T>(ControllerBase controller) where T : class
+        public ResponderResult<T> Build<T>(HttpContext httpContext) where T : class
+        {
+            var response = CreateResponse<T>(httpContext);
+            return new ResponderResult<T>(response, _successStatusCode);
+        }
+
+        private Response<T> CreateResponse<T>(HttpContext httpContext) where T : class
         {
             var output = new Response<T>();
-            if (_errors.Count > 0)
+            if (_problems.Count > 0)
             {
-                var firstError = _errors.First();
-                var remainingErrors = _errors.Skip(1);
+                var firstError = _problems.First();
+                var remainingErrors = _problems.Skip(1);
 
                 var combinedExtensions = new Dictionary<string, object>(firstError.Extensions);
-                combinedExtensions.Add("additionalErrors", remainingErrors);
+                if (remainingErrors.Count() > 0)
+                {
+                    combinedExtensions.Add("additionalErrors", remainingErrors);
+                }
 
-                if (_options.IncludeTraceIdOnErrors) combinedExtensions["traceId"] = controller.ControllerContext.HttpContext.TraceIdentifier;
+                if (_options.IncludeTraceIdOnErrors) combinedExtensions["traceId"] = httpContext.TraceIdentifier;
 
-                var combinedError = new ApiError(
+                var combinedError = new Problem(
                     firstError.Status,
                     title: firstError.Title,
                     detail: firstError.Detail,
@@ -93,29 +63,69 @@ namespace Phlank.Responder
                     instance: firstError.Instance,
                     combinedExtensions);
 
-                output.Error = combinedError;
+                output.Problem = combinedError;
             }
             else
             {
-                output.Warnings = _warnings;
-                if (_content.Count == 0) output.Data = null;
-                else if (_content.Count == 1) output.Data = _content.First() as T;
-                else
-                {
-                    throw new Exception($"Multiple pieces of data have been added to the Responder, and they cannot all be cast together into a single instance of {typeof(T).Name}");
-                }
+                output.Extensions = _extensions;
+                if (_content != null) output.Data = (T)_content;
             }
 
             return output;
         }
 
-        public IResponder AddError(ApiError error)
+        public ResponderResult Build(ControllerBase controller)
         {
-            _errors.Add(error);
+            return Build(controller.HttpContext);
+        }
+
+        public ResponderResult Build(HttpContext httpContext)
+        {
+            var response = CreateResponse(httpContext);
+            return new ResponderResult(response, _successStatusCode);
+        }
+
+        private Response CreateResponse(HttpContext httpContext)
+        {
+            var output = new Response();
+            if (_problems.Count > 0)
+            {
+                var firstError = _problems.First();
+                var remainingErrors = _problems.Skip(1);
+
+                var combinedExtensions = new Dictionary<string, object>(firstError.Extensions);
+                if (remainingErrors.Count() > 0)
+                {
+                    combinedExtensions.Add("additionalErrors", remainingErrors);
+                }
+
+                if (_options.IncludeTraceIdOnErrors) combinedExtensions["traceId"] = httpContext.TraceIdentifier;
+
+                var combinedError = new Problem(
+                    firstError.Status,
+                    title: firstError.Title,
+                    detail: firstError.Detail,
+                    type: firstError.Type,
+                    instance: firstError.Instance,
+                    combinedExtensions);
+
+                output.Problem = combinedError;
+            }
+            else
+            {
+                output.Extensions = _extensions;
+            }
+
+            return output;
+        }
+
+        public IResponder AddProblem(Problem problem)
+        {
+            _problems.Add(problem);
             return this;
         }
 
-        public IResponder AddError(
+        public IResponder AddProblem(
             HttpStatusCode status,
             string title = null,
             string detail = null,
@@ -123,12 +133,12 @@ namespace Phlank.Responder
             Uri instance = null,
             IDictionary<string, object> extensions = null)
         {
-            var error = new ApiError(status, title, detail, type, instance, extensions);
-            AddError(error);
+            var error = new Problem(status, title, detail, type, instance, extensions);
+            AddProblem(error);
             return this;
         }
 
-        public IResponder AddError(
+        public IResponder AddProblem(
             int status,
             string title = null,
             string detail = null,
@@ -136,44 +146,32 @@ namespace Phlank.Responder
             Uri instance = null,
             IDictionary<string, object> extensions = null)
         {
-            var error = new ApiError(status, title, detail, type, instance, extensions);
-            AddError(error);
+            var error = new Problem(status, title, detail, type, instance, extensions);
+            AddProblem(error);
             return this;
         }
 
-        public IResponder AddErrors(IEnumerable<ApiError> errors)
+        public IResponder AddProblems(IEnumerable<Problem> problems)
         {
-            _errors.AddRange(errors);
+            _problems.AddRange(problems);
             return this;
         }
 
         public IResponder AddProblem(ProblemDetails problem)
         {
-            _errors.Add(problem.ToApiError());
-            return this;
+            var error = problem.ToProblem();
+            return AddProblem(error);
         }
 
         public IResponder AddProblems(IEnumerable<ProblemDetails> problems)
         {
-            _errors.AddRange(problems.Select(e => e.ToApiError()));
-            return this;
-        }
-
-        public IResponder AddWarning(Warning warning)
-        {
-            _warnings.Add(warning);
-            return this;
-        }
-
-        public IResponder AddWarnings(IEnumerable<Warning> warnings)
-        {
-            _warnings.AddRange(warnings);
-            return this;
+            var errors = problems.Select(e => e.ToProblem());
+            return AddProblems(errors);
         }
 
         public IResponder AddException<TException>(TException exception) where TException : Exception
         {
-            _errors.Add(exception.ToApiError());
+            _problems.Add(exception.ToProblem());
             return this;
         }
 
@@ -181,14 +179,16 @@ namespace Phlank.Responder
         {
             foreach (var exception in exceptions)
             {
-                _errors.Add(exception.ToApiError());
+                _problems.Add(exception.ToProblem());
             }
             return this;
         }
 
         public IResponder AddContent(object content)
         {
-            _content.Add(content);
+            if (content == null) throw new ArgumentNullException(nameof(content));
+            if (_content != null) throw new InvalidOperationException("Content has already been provided for this responder and cannot be overwritten.");
+            _content = content;
             return this;
         }
 
@@ -211,6 +211,36 @@ namespace Phlank.Responder
 
             var status = (HttpStatusCode)successfulStatusCode;
             return AddStatusCodeOnSuccess(status);
+        }
+
+        public IResponder AddExtension(string key, object value)
+        {
+            _extensions.Add(key, value);
+            return this;
+        }
+
+        public IResponder AddExtension(KeyValuePair<string, object> keyValuePair)
+        {
+            _extensions.Add(keyValuePair.Key, keyValuePair.Value);
+            return this;
+        }
+
+        public IResponder AddExtensions(IEnumerable<KeyValuePair<string, object>> extensions)
+        {
+            foreach (var extension in extensions)
+            {
+                _extensions.Add(extension.Key, extension.Value);
+            }
+            return this;
+        }
+
+        public IResponder AddExtensions(IDictionary<string, object> extensions)
+        {
+            foreach (var extension in extensions)
+            {
+                _extensions.Add(extension.Key, extension.Value);
+            }
+            return this;
         }
     }
 }

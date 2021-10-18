@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Phlank.Responder
+﻿namespace Phlank.Responder
 {
     /// <summary>
     /// Options for the behavior of the Responder library..

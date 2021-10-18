@@ -1,51 +1,35 @@
 using Microsoft.AspNetCore.Mvc;
 using Phlank.Responder.WeatherExample.Models;
 using Phlank.Responder.WeatherExample.Services;
+using Phlank.Responder;
 using System.Collections.Generic;
 
 namespace Phlank.Responder.WeatherExample.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    [Route("api/[controller]")]
+    public class WeatherForecastController : Controller
     {
-        private readonly IResponder _resultBuilder;
+        private readonly IResponder _responder;
         private readonly IWeatherService _weatherService;
 
-        public WeatherForecastController(IResponder responseBuilder, IWeatherService weatherService)
+        public WeatherForecastController(IResponder responder, IWeatherService weatherService)
         {
-            _resultBuilder = responseBuilder;
+            _responder = responder;
             _weatherService = weatherService;
         }
 
-        private static readonly Warning LowConfidenceForecastWarning = new Warning(
-            Severity.Low,
-            "Forecasts seven days or more into the future may not be accurate and are subject to change.",
-            new Dictionary<string, object>()
-            {
-                { "Fields", new List<string>() { "DaysAhead" } }
-            });
-
-        private static readonly Warning NoConfidenceForecastWarning = new Warning(
-            Severity.High,
-            "Forecasts ten or more days into the future are extremely volatile and should not be relied upon for any circumstance.",
-            new Dictionary<string, object>()
-            {
-                { "Fields", new List<string>() { "DaysAhead" } }
-            });
-
-        [ProducesErrorResponseType(typeof(ApiError))]
-        [ProducesResponseType(typeof(WeatherForecast), 200)]
-        [HttpPost]
-        public ResponderResult<WeatherForecast> GetForecast([FromBody] WeatherForecastRequest request)
+        [ProducesErrorResponseType(typeof(Problem))]
+        [HttpGet]
+        public ResponderResult<WeatherForecast> GetForecast([FromRoute] WeatherForecastRequest request)
         {
-            if (request.DaysAhead > 15) _resultBuilder.AddError(new ApiError(System.Net.HttpStatusCode.NotAcceptable));
-            if (request.DaysAhead > 10) _resultBuilder.AddWarning(NoConfidenceForecastWarning);
-            else if (request.DaysAhead > 7) _resultBuilder.AddWarning(LowConfidenceForecastWarning);
-
-            var content = _weatherService.GetRandomWeatherForecast(request.DaysAhead, request.TemperatureUnits);
-            _resultBuilder.AddContent(content);
-            return _resultBuilder.Build<WeatherForecast>(this);
+            if (request.DaysAhead > 15) _responder.AddProblem(new Problem(System.Net.HttpStatusCode.NotAcceptable));
+            else
+            {
+                var content = _weatherService.GetRandomWeatherForecast(request.DaysAhead, request.TemperatureUnits);
+                _responder.AddContent(content);
+            }
+            return _responder.Build<WeatherForecast>(this);
         }
     }
 }

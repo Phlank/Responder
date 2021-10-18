@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Phlank.Responder.ActionResults;
+using System.Collections.Generic;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace Phlank.Responder
 {
@@ -24,46 +26,30 @@ namespace Phlank.Responder
     /// Each of these items will contain at the very least an HTTP status code
     /// and a response type header.
     /// </summary>
-    public class ResponderResult : ActionResult, IActionResult
+    public class ResponderResult : ISuccessResponse, IProblemResponse, IConvertToActionResult
     {
-        private readonly ResponderOptions _options;
-        private readonly HttpStatusCode _successfulStatusCode;
+        protected readonly ResponderOptions _options;
+        protected readonly HttpStatusCode _successfulStatusCode;
+        protected readonly Response _response;
 
-        [System.Text.Json.Serialization.JsonExtensionData]
-        [Newtonsoft.Json.JsonExtensionData]
-        public readonly Response Response;
-
-        internal ResponderResult(Response response, HttpStatusCode successfulStatusCode)
+        public ResponderResult(Response response, HttpStatusCode successfulStatusCode)
         {
-            Response = response;
+            _response = response;
             _successfulStatusCode = successfulStatusCode;
         }
 
-        public override Task ExecuteResultAsync(ActionContext context)
+        [System.Text.Json.Serialization.JsonExtensionData]
+        [Newtonsoft.Json.JsonExtensionData]
+        public IDictionary<string, object> Extensions => _response.Extensions;
+        public bool IsSuccessful => Problem == null;
+
+        [System.Text.Json.Serialization.JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
+        public Problem Problem => _response.Problem;
+
+        public virtual IActionResult Convert()
         {
-            if (Response.IsSuccessful)
-            {
-                if (Response.Data == null && Response.Warnings == null)
-                {
-                    return new StatusCodeResult((int)_successfulStatusCode).ExecuteResultAsync(context);
-                }
-                else
-                {
-                    return new JsonResult(Response)
-                    {
-                        ContentType = "application/json",
-                        StatusCode = (int)_successfulStatusCode,
-                    }.ExecuteResultAsync(context);
-                }
-            }
-            else
-            {
-                return new JsonResult(Response)
-                {
-                    ContentType = "application/problem+json",
-                    StatusCode = (int)Response.Error.Status
-                }.ExecuteResultAsync(context);
-            }
+            return ResultConverter.Convert(this, _successfulStatusCode);
         }
     }
 
@@ -87,46 +73,20 @@ namespace Phlank.Responder
     /// Each of these items will contain at the very least an HTTP status code
     /// and a response type header.
     /// </summary>
-    public class ResponderResult<T> : ActionResult, IActionResult where T : class
+    public class ResponderResult<T> : ResponderResult, ISuccessResponse<T>, IConvertToActionResult where T : class
     {
-        private readonly ResponderOptions _options;
-        private readonly HttpStatusCode _successfulStatusCode;
+        protected readonly new Response<T> _response;
 
-        [System.Text.Json.Serialization.JsonExtensionData]
-        [Newtonsoft.Json.JsonExtensionData]
-        public readonly Response<T> Response;
+        public T Data => _response.Data;
 
-        internal ResponderResult(Response<T> response, HttpStatusCode successfulStatusCode)
+        internal ResponderResult(Response<T> response, HttpStatusCode successfulStatusCode) : base(response, successfulStatusCode)
         {
-            Response = response;
-            _successfulStatusCode = successfulStatusCode;
+            _response = response;
         }
 
-        public override Task ExecuteResultAsync(ActionContext context)
+        public override IActionResult Convert()
         {
-            if (Response.IsSuccessful)
-            {
-                if (Response.Data == null && Response.Warnings == null)
-                {
-                    return new StatusCodeResult((int)_successfulStatusCode).ExecuteResultAsync(context);
-                }
-                else
-                {
-                    return new JsonResult(Response)
-                    {
-                        ContentType = "application/json",
-                        StatusCode = (int)_successfulStatusCode,
-                    }.ExecuteResultAsync(context);
-                }
-            }
-            else
-            {
-                return new JsonResult(Response)
-                {
-                    ContentType = "application/problem+json",
-                    StatusCode = (int)Response.Error.Status
-                }.ExecuteResultAsync(context);
-            }
+            return ResultConverter.Convert(this, _successfulStatusCode);
         }
     }
 }

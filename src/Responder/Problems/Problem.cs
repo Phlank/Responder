@@ -6,18 +6,16 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text.Json.Serialization;
-using System.Linq;
-using System.Collections.ObjectModel;
 
 namespace Phlank.Responder
 {
     /// <summary>
     /// An error to be reflected by the API. This class follows the
     /// specification in
-    /// <see href="https://www.rfc-editor.org/rfc/rfc7807.html">RFC7807</see>.
+    /// <see href="https://datatracker.ietf.org/doc/html/rfc7807">RFC7807</see>.
     /// At minimum, a user should provide values for Status, Title, and Details.
     /// </summary>
-    public class ApiError : IApiError
+    public sealed class Problem : IProblem
     {
         private HttpStatusCode _status;
         private string _title, _detail;
@@ -25,20 +23,21 @@ namespace Phlank.Responder
         private IDictionary<string, object> _extensions;
 
         /// <summary>
-        /// Creates an <see cref="ApiError"/> from the given arguments. 
+        /// Creates an <see cref="Problem"/> from the given arguments. 
         /// <paramref name="status" /> is the only required parameter in most 
         /// circumstances. If a field is not provided, then the default value
-        /// from a base list of <see cref="ApiError">ApiErrors</see> will be 
+        /// from a base list of <see cref="Problem">Problems</see> will be 
         /// used.
         /// </summary>
-        /// <param name="status">The <see cref="HttpStatusCode"/> relating to the error.</param>
+        /// <param name="status">The status code relating to the error.</param>
         /// <param name="title">The title of the error. If none is provided, a default value will be used.</param>
         /// <param name="detail">The detail text of the error. If none is provided, a default value will be used.</param>
         /// <param name="type">The URI type reference of the error. If none is provided, a default value will be used.</param>
-        /// <param name="instance">The instance of the specific context relating to the ApiError. If left blank, this will be provided for by the <see cref="HttpContext"/> belonging to the <see cref="ControllerContext"/>.</param>
+        /// <param name="instance">The instance of the specific context relating to the Problem. If left blank, this will be provided for by the <see cref="HttpContext"/> belonging to the <see cref="ControllerContext"/>.</param>
         /// <param name="extensions">Additional information relating to the error that has occured.</param>
-        /// <exception cref="ArgumentNullException">If no default <see cref="ApiError"/> is found matching the provided <paramref name="status"/>, and either <paramref name="title"/> or <paramref name="detail"/> are null, an <see cref="ArgumentNullException"/> will be thrown.</exception>
-        public ApiError(
+        /// <exception cref="ArgumentNullException">If no default <see cref="Problem"/> is found matching the provided <paramref name="status"/>, and either <paramref name="title"/> or <paramref name="detail"/> are null, an <see cref="ArgumentNullException"/> will be thrown.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">If the provided <paramref name="status"/> has a value less than 400, an <see cref="ArgumentOutOfRangeException"/> is thrown.</exception>
+        public Problem(
             HttpStatusCode status,
             string title = null,
             string detail = null,
@@ -52,21 +51,21 @@ namespace Phlank.Responder
         }
 
         /// <summary>
-        /// Creates an <see cref="ApiError"/> from the given arguments. 
+        /// Creates a <see cref="Problem"/> from the given arguments. 
         /// <paramref name="status" /> is the only required parameter in most 
         /// circumstances. If a field is not provided, then the default value
-        /// from a base list of <see cref="ApiError">ApiErrors</see> will be 
+        /// from a base list of <see cref="Problem">Problems</see> will be 
         /// used.
         /// </summary>
         /// <param name="status">The status code relating to the error.</param>
         /// <param name="title">The title of the error. If none is provided, a default value will be used.</param>
         /// <param name="detail">The detail text of the error. If none is provided, a default value will be used.</param>
         /// <param name="type">The URI type reference of the error. If none is provided, a default value will be used.</param>
-        /// <param name="instance">The instance of the specific context relating to the ApiError. If left blank, this will be provided for by the <see cref="HttpContext"/> belonging to the <see cref="ControllerContext"/>.</param>
+        /// <param name="instance">The instance of the specific context relating to the Problem.</param>
         /// <param name="extensions">Additional information relating to the error that has occured.</param>
-        /// <exception cref="ArgumentNullException">If no default <see cref="ApiError"/> is found matching the provided <paramref name="status"/>, and either <paramref name="title"/> or <paramref name="detail"/> are null, an <see cref="ArgumentNullException"/> will be thrown.</exception>
+        /// <exception cref="ArgumentNullException">If no default <see cref="Problem"/> is found matching the provided <paramref name="status"/>, and either <paramref name="title"/> or <paramref name="detail"/> are null, an <see cref="ArgumentNullException"/> will be thrown.</exception>
         /// <exception cref="ArgumentOutOfRangeException">An <see cref="ArgumentOutOfRangeException"/> may be thrown under two circumstances; first, if the provided <paramref name="status"/> has no corresponding <see cref="HttpStatusCode"/>, and second, if the provided <paramref name="status"/> has a matching <see cref="HttpStatusCode"/> but it is not a valid erroring status code.</exception>
-        public ApiError(
+        public Problem(
             int status,
             string title = null,
             string detail = null,
@@ -84,7 +83,7 @@ namespace Phlank.Responder
         {
             extensions ??= new Dictionary<string, object>();
 
-            var baseError = BaseErrors.FromStatusCode(_status);
+            var baseError = BaseProblems.FromStatusCode(_status);
             if (baseError != null)
             {
                 Title = title ?? baseError._title;
@@ -95,8 +94,8 @@ namespace Phlank.Responder
             }
             else
             {
-                _title = title ?? throw new ArgumentNullException(nameof(title), "Must provide a title when no base ApiError is specified for a given HttpStatusCode");
-                _detail = detail ?? throw new ArgumentNullException(nameof(detail), "Must provide details when no base ApiError is specified for a given HttpStatusCode");
+                _title = title ?? throw new ArgumentNullException(nameof(title), "Must provide a title when no base Problem is specified for a given HttpStatusCode");
+                _detail = detail ?? throw new ArgumentNullException(nameof(detail), "Must provide details when no base Problem is specified for a given HttpStatusCode");
                 Type = type;
                 Instance = instance;
                 Extensions = extensions != default ? new Dictionary<string, object>(extensions) : new Dictionary<string, object>();
