@@ -14,7 +14,7 @@
 		<Copyright>Copyright 2021 Colin Ledbetter</Copyright>
 		<RepositoryUrl>https://github.com/Phlank/ApiModeling</RepositoryUrl>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<Version>1.0.0</Version>
+		<Version>1.0.1</Version>
 		<DocumentationFile>Phlank.ApiModeling.xml</DocumentationFile>
 	</PropertyGroup>
 
