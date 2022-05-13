@@ -1,3 +1,7 @@
+** Note to everyone **
+
+This library kind of sucks and the responses it generates don't follow OpenAPI conventions. I really would recommend just familiarizing yourself with the tools already inside of ASP.NET Core to become more adept at building APIs that way, and look into [ApiEndpoints](https://github.com/ardalis/ApiEndpoints) if it's not on your radar. It should be if you're here.
+
 - [About](#about)
 - [Purpose](#purpose)
 - [Usage](#usage)
